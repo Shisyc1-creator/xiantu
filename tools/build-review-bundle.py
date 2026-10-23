@@ -3,6 +3,7 @@ import argparse
 import hashlib
 from html.parser import HTMLParser
 import json
+import os
 from pathlib import Path, PurePosixPath
 import re
 import subprocess
@@ -14,9 +15,13 @@ class ResourceParser(HTMLParser):
         super().__init__();self.refs=[]
     def handle_starttag(self,tag,attrs):
         attrs=dict(attrs)
-        if tag in ('script','img','source','iframe') and attrs.get('src'):
+        if attrs.get('src'):
             self.refs.append((attrs['src'],True))
-        if tag=='link' and attrs.get('href'):
+        if tag=='video' and attrs.get('poster'):
+            self.refs.append((attrs['poster'],True))
+        if tag=='object' and attrs.get('data'):
+            self.refs.append((attrs['data'],True))
+        if tag in ('link','image','use') and attrs.get('href'):
             self.refs.append((attrs['href'],True))
         if tag=='a' and attrs.get('href'):
             self.refs.append((attrs['href'],False))
@@ -47,7 +52,11 @@ def build_bundle(root,files,commit,output):
             if active:raise ValueError('external runtime resource: '+value)
             return
         if u.path.startswith('/') or '\\' in u.path:raise ValueError('path escape: '+value)
-        path=(root/base/unquote(u.path)).resolve()
+        candidate=root/base/unquote(u.path)
+        if candidate.is_symlink() or any(parent.is_symlink() for parent in candidate.parents if parent!=root and root in parent.parents):
+            raise ValueError('symlink resource not allowed: '+value)
+        # URLs refer to archive member paths, not the target of a filesystem link.
+        path=Path(os.path.abspath(candidate))
         if not path.is_relative_to(root/'prototype'):raise ValueError('path escape: '+value)
         name=path.relative_to(root).as_posix()
         if name not in payload:raise ValueError('missing resource: '+name)
@@ -59,7 +68,7 @@ def build_bundle(root,files,commit,output):
             parser=ResourceParser();parser.feed(text)
             for ref,active in parser.refs:reference(ref,Path(name).parent,active)
         if suffix in ('.html','.css'):
-            for match in re.finditer(r'url\(\s*[\'"]?([^\'"\)]+)[\'"]?\s*\)',text):
+            for match in re.finditer(r'url\(\s*[\'"]?([^\'"\)]+)[\'"]?\s*\)',text,re.IGNORECASE):
                 reference(match[1],Path(name).parent)
         # Existing atlas artwork uses document-relative static JS string literals.
         if suffix in ('.html','.js'):

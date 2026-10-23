@@ -49,6 +49,19 @@ class BundleTests(unittest.TestCase):
     def test_external_runtime_script_fails(self):
         (self.root/'prototype/index.html').write_text('<script src="https://example.com/x.js"></script>')
         with self.assertRaisesRegex(ValueError,'external'):self.build()
+    def test_untracked_symlink_alias_cannot_hide_missing_archive_member(self):
+        alias=self.root/'prototype/assets/alias.js';alias.symlink_to('app.js')
+        (self.root/'prototype/index.html').write_text('<script src="assets/alias.js"></script>')
+        with self.assertRaisesRegex(ValueError,'symlink|missing resource'):self.build()
+    def test_audio_runtime_resource_is_checked(self):
+        for url in ['https://example.com/a.mp3','assets/missing.mp3']:
+            with self.subTest(url=url):
+                self.output.unlink(missing_ok=True)
+                (self.root/'prototype/index.html').write_text('<audio src="'+url+'"></audio>')
+                with self.assertRaisesRegex(ValueError,'external|missing resource'):self.build()
+    def test_uppercase_css_url_is_checked(self):
+        (self.root/'prototype/assets/site.css').write_text('body{background:URL(https://example.com/a.webp)}')
+        with self.assertRaisesRegex(ValueError,'external'):self.build()
     def test_existing_output_is_not_overwritten(self):
         self.output.write_bytes(b'keep')
         with self.assertRaises(FileExistsError):self.build()
