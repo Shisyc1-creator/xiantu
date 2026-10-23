@@ -135,10 +135,22 @@ test('employee details use actual person age and expose pay without advancing st
  assert.equal(game.run('JSON.stringify({day:XTSandbox.now(),stones:G.stones,staff:XTSandbox.state().staff,warehouse:XTSandbox.state().warehouse})'),before);
 });
 
-test('employee details keep missing dates unknown and show due wages',()=>{
+test('real legacy person birth falls back to saved employee birth without removing them',()=>{
  const game=fixture();hire(game);
- game.run("globalThis.personReader54=XTWorld36.get;XTWorld36.get=id=>id==='lin'?{...personReader54(id),birth:null}:personReader54(id);XTSandbox.state().staff[0].born=null;XTSandbox.state().staff[0].nextWage=XTSandbox.now();XTSandbox.go('home','staff');XTSandbox.dispatch('selectWorker','lin');");
+ game.run("XTWorld36.get('lin').birth=null;XTSandbox.state().staff[0].born=XTSandbox.now()-22*360-5;XTSandbox.go('home','staff');XTSandbox.dispatch('selectWorker','lin');");
+ assert.equal(game.run('XTSandbox.state().staff.length'),1);
+ assert.match(game.run("document.getElementById('scene').innerHTML"),/年龄 22岁5日/);
+ assert.equal(game.run("XTWorld36.get('lin').birth"),game.run('XTSandbox.state().staff[0].born'));
+});
+
+test('real missing birth stays unknown across rendering, time and save restore',()=>{
+ const game=fixture();hire(game);
+ game.run("delete XTWorld36.get('lin').birth;XTSandbox.state().staff[0].born=null;XTSandbox.state().staff[0].nextWage=XTSandbox.now();XTSandbox.go('home','staff');XTSandbox.dispatch('selectWorker','lin');");
+ assert.equal(game.run('XTSandbox.state().staff.length'),1);
  const html=game.run("document.getElementById('scene').innerHTML");
- assert.match(html,/年龄 未核定/);assert.match(html,/下次发薪 已到期/);
- assert.doesNotMatch(html,/NaN|Infinity/);
+ assert.match(html,/年龄 未核定/);assert.match(html,/下次发薪 已到期/);assert.doesNotMatch(html,/NaN|Infinity/);
+ game.run("advanceDays(1,{act:'test54',rate:0,incomeMul:0,eventRate:0});save();restore(localStorage.getItem(SAVE_KEY));XTSandbox.go('home','staff');XTSandbox.dispatch('selectWorker','lin');");
+ assert.equal(game.run('XTSandbox.state().staff.length'),1);
+ assert.match(game.run("document.getElementById('scene').innerHTML"),/年龄 未核定/);
+ assert.equal(game.run("XTWorld36.get('lin').alive"),true);
 });

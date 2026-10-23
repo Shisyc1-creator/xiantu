@@ -342,7 +342,7 @@ function tick(){
  if(!G?.sandbox35)return;
  const d=data(),t=now();
  for(const w of [...d.staff]){
-   if(t-w.born>=w.life*360){log(w.name+'寿尽，离开了人世。');d.staff=d.staff.filter(x=>x!==w);continue;}
+   if(Number.isFinite(w.born)&&Number.isFinite(w.life)&&t-w.born>=w.life*360){log(w.name+'寿尽，离开了人世。');d.staff=d.staff.filter(x=>x!==w);continue;}
    if(!ownedHome()){if(w.job){w.job=null;log('租期已满，'+w.name+'的工作中止。');}continue;}
    if(t>=w.nextWage){
      const count=Math.floor((t-w.nextWage)/30)+1,each=money(w.wage),affordable=Math.min(count,Math.floor(G.stones/each));

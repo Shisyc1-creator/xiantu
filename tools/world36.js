@@ -89,7 +89,7 @@ function registerFamily(){
  }
 }
 function age(n){return Math.max(0,Math.floor((S.now()-n.birth)/YEAR));}
-function alive(n){return !!n&&n.alive!==false&&age(n)<n.life;}
+function alive(n){return !!n&&n.alive!==false&&(!Number.isFinite(n.birth)||!Number.isFinite(n.life)||age(n)<n.life);}
 function get(id){return world()?.people[npcKey(id)];}
 function relation(id,create=true){
  const w=world();id=npcKey(id);if(!w.people[id])return null;
@@ -100,8 +100,14 @@ function remember(id,text,deed){const r=relation(id);if(!r)return;r.history.unsh
 function present(id){const n=get(id);return alive(n)&&n.id!==world().playerId&&n.place===G.place&&n.room===S.state().room;}
 function sync(){
  if(!G)return;const w=world();registerFamily();
+ // Restore an existing employee's recorded birth, never infer a missing age.
+ for(const worker of S.state().staff){
+  const n=w.people[worker.id];if(!n)continue;
+  if(!Number.isFinite(n.birth)&&Number.isFinite(worker.born))n.birth=worker.born;
+  if(Number.isFinite(n.birth))worker.born=n.birth;
+ }
  for(const [id,n]of Object.entries(w.people)){
-  if(n.alive!==false&&age(n)>=n.life){n.alive=false;world().followers=w.followers.filter(k=>k!==id);if(w.relations[id])remember(id,'寿元已尽，往事留存。','');}
+  if(n.alive!==false&&Number.isFinite(n.birth)&&Number.isFinite(n.life)&&age(n)>=n.life){n.alive=false;world().followers=w.followers.filter(k=>k!==id);if(w.relations[id])remember(id,'寿元已尽，往事留存。','');}
   const a=S.actors[id];if(!a)S.actors[id]={name:n.name,role:n.role||'当地人',place:n.place,room:n.room};
   Object.assign(S.actors[id],{name:n.name,role:n.role||'当地人',place:n.place,room:n.room});
  }

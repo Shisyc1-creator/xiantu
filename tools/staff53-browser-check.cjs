@@ -98,6 +98,17 @@ async function inherit(page){
      assert(overflow<=1,'horizontal overflow '+overflow);
      await page.screenshot({path:path.join(out,device.name+'.png'),fullPage:true});
     });
+    await check('real legacy missing birth survives page rendering and reload without inventing age',async()=>{
+     await fixture(page);await hire(page);
+     await page.evaluate(()=>{XTWorld36.get('lin').birth=null;XTSandbox.state().staff[0].born=XTSandbox.now()-22*360-5;});
+     await staff(page);await page.locator('[data-sb="selectWorker"][data-arg="lin"]').click();
+     assert.equal(await page.evaluate(()=>XTSandbox.state().staff.length),1);
+     assert((await page.locator('#scene').innerText()).includes('年龄 22岁5日'));
+     await page.evaluate(()=>{delete XTWorld36.get('lin').birth;XTSandbox.state().staff[0].born=null;save();});
+     await page.reload();await staff(page);await page.locator('[data-sb="selectWorker"][data-arg="lin"]').click();
+     assert.equal(await page.evaluate(()=>XTSandbox.state().staff.length),1);
+     assert((await page.locator('#scene').innerText()).includes('年龄 未核定'));
+    });
     await check('unrelated new game has no previous estate employees',async()=>{
      await page.evaluate(()=>newGame('新来客','寒门散修','男'));
      assert.equal(await page.evaluate(()=>XTSandbox.state().staff.length),0);
