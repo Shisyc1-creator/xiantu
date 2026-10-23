@@ -4,19 +4,26 @@ const root=path.resolve(__dirname,'..'),out=path.join(root,'.screenshots/batch36
 (async()=>{const browser=await chromium.launch({channel:process.env.XT_BROWSER_CHANNEL||undefined,headless:true});const results=[],errors=[],failed=[];
 try{
 const page=await browser.newPage({viewport:{width:1440,height:1000}});page.on('pageerror',e=>errors.push(e.message));page.on('requestfailed',r=>failed.push(r.url()));
-await page.goto(pathToFileURL(path.join(root,'prototype/index.html')).href+'?developer=1');
+await page.goto(pathToFileURL(path.join(root,'prototype/index.html')).href+'?developer=1');await page.evaluate(()=>{globalThis.start36=function(origin){
+ newGame('沈行舟',origin,'男');
+ const variant=XTBackground47.visibleOriginVariants(origin,G.birthContext)[0].i;chooseChild(variant);
+ if(!G.opening46?.childhood)throw Error('current childhood fixture missing');
+ for(let step=0;step<4;step++)XTOpening46.chooseChildhood(XTOpening46.childhoodToken(),0);
+ for(let step=0;step<4;step++)XTOpening46.dispatch(XTOpening46.token(),step%2);
+ beginCultivation();if(G.mode!=='idle')throw Error('current opening did not finish');
+};});
 await page.evaluate(()=>{
-XTDeveloper47.scenario('寒门散修');G.mode='idle';G.lastResult=null;G.stones=3000;G.inventory.herb=120;G.inventory.ironOre=60;render();
+start36('寒门散修');G.mode='idle';G.lastResult=null;G.stones=3000;G.inventory.herb=120;G.inventory.ironOre=60;render();
 globalThis.fixture36=JSON.stringify(G);tryEvent=()=>null;meetLive=()=>null;
 globalThis.reset36=(extra={})=>{G=JSON.parse(fixture36);Object.assign(G,extra);const d=XTSandbox.state();d.roomAt=G.place;d.room='square';XTSandbox.view.actor=null;XTSandbox.view.detail=null;XTWorld36.sync();XTSandbox.go('cult');};
 globalThis.room36=(place,room)=>{G.place=place;const d=XTSandbox.state();d.roomAt=place;d.room=room;XTWorld36.sync();XTSandbox.go('scene');};
 globalThis.pass36=days=>advanceDays(days,{act:'test',rate:0,incomeMul:0,eventRate:0});
 });
 async function check(name,fn){assert(await page.evaluate(fn),name);results.push(name);console.log('PASS '+name);}
-const starts=await page.evaluate(()=>{const rows=[];for(const origin of Object.keys(ORIGINS)){XTDeveloper47.scenario(origin);G.mode='idle';G.lastResult=null;render();const d=XTSandbox.state(),w=XTWorld36.world();rows.push({origin,place:G.place,home:G.home,mind:d.mind,level:d.books[d.mind]?.level,from:w.start.from,location:w.start.residence});}return rows;});
+const starts=await page.evaluate(()=>{const rows=[];for(const origin of Object.keys(ORIGINS)){start36(origin);G.mode='idle';G.lastResult=null;render();const d=XTSandbox.state(),w=XTWorld36.world();rows.push({origin,place:G.place,home:G.home,mind:d.mind,level:d.books[d.mind]?.level,from:w.start.from,location:w.start.residence});}return rows;});
 assert(starts.every(r=>r.mind&&r.level===1&&r.from));assert(new Set(starts.map(r=>r.mind)).size===9);results.push('六种开局各有已入门、来源明确且不同的基础心法');
 assert(new Set(starts.map(r=>r.location)).size===9);results.push('六种出身有各自家处描述与既有出生地点');
-await check('宗门开局已经属于本门而非再次付钱入门',()=>{XTDeveloper47.scenario('宗门外门弟子');return XTSandbox.state().faction.id==='temple'&&G.sect.rank==='外门弟子';});
+await check('宗门开局已经属于本门而非再次付钱入门',()=>{start36('宗门外门弟子');return XTSandbox.state().faction.id==='temple'&&G.sect.rank==='外门弟子';});
 await check('升级年数与闭关预算预测文案已移除',()=>{reset36();return !document.querySelector('#scene .calc')&&!document.querySelector('#scene').textContent.includes('离下一层');});
 await check('普通城镇与道路不再按筑基硬锁',()=>{reset36();return ['prefecture','riverTown','spiritMarket','taiyueSect'].every(k=>placeAvailable(k))&&routeAvailable(routeOf('county','prefecture'))&&!placeAvailable('mistSecret');});
 await check('县观主持和监院按原设保持筑基层次',()=>{const w=XTWorld36.world();return w.people.N01.realm===1&&w.people.N01.layer===4&&w.people.mentor.realm===1&&w.people.mentor.layer===2;});
