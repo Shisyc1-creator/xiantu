@@ -24,8 +24,10 @@ Interfaces: build_bundle(root:Path, files:list[str], commit:str, output:Path)->d
 - [x] 用标准库实现构建器，静态资源失败返回非零，不覆盖已有输出。
 - [x] 运行python -m unittest discover -s tools -p test_review_bundle.py -v及原人手逻辑检查。
 - [x] 现有CI加入构建器测试、完整仓库构建、附件；只保留PR/手动触发，避免同一提交push和PR重复运行。
-- [ ] 检查真实CI附件文件清单与hash，并记录未发布、真机和存档回滚限制。
+- [x] 检查真实CI附件文件清单与hash，并记录未发布、真机和存档回滚限制。
 
 独立复核：3项Important（未跟踪符号链接别名放行、音频等src漏查、CSS URL大小写漏查）均有真实临时目录用例RED→GREEN修复，10项测试通过。无剩余Minor。
 
 Ruling: 静态资源检查仅覆盖已声明的HTML src/href/poster/object data、HTML/CSS url和现有图册字面量，不把任意JS动态拼接/完整浏览器资源语义视作已验证；漏网动态资源仍由真实运行与后续测试承担。当前五张美术以真实CI归档回读为准；不把本机缺图快照当完整发行包。
+
+完成：2dc6478d工作流39998049402成功。10项构建保护、13项人手逻辑、16项浏览器检查通过。实际附件46运行文件含5张美术，下载后46项哈希一致。回滚说明已写，但未宣称用户设备演练通过。
