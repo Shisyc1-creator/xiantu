@@ -85,8 +85,14 @@ async function inherit(page){
      assert.equal(await page.evaluate(()=>XTSandbox.state().warehouse.herb),4);
      await staff(page);
     });
-    await check('staff controls fit viewport and remain reachable',async()=>{
+    await check('staff details show age and pay without advancing state and fit viewport',async()=>{
+     const snapshot=()=>page.evaluate(()=>JSON.stringify({day:XTSandbox.now(),stones:G.stones,staff:XTSandbox.state().staff,warehouse:XTSandbox.state().warehouse}));
+     const before=await snapshot();
      await page.locator('[data-sb="selectWorker"][data-arg="lin"]').click();
+     const detail=await page.locator('#scene').innerText();
+     assert(detail.includes('产业雇佣')&&detail.includes('年龄 ')&&detail.includes('寿限 100岁'));
+     assert(detail.includes('下次发薪 30日后')&&detail.includes('欠薪 0个月'));
+     assert.equal(await snapshot(),before,'opening employee details must not advance time, wages or work');
      assert(await page.locator('[data-sb="dismiss"][data-arg="lin"]').isVisible());
      const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth);
      assert(overflow<=1,'horizontal overflow '+overflow);

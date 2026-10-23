@@ -306,10 +306,20 @@ function hire(id){
  stoneChange(G,-(money(r.fee)),'地方交易与经营');act(1,'hire',()=>{d.roster[id]={born};d.staff.push({id,name:r.name,realm:r.realm,wage:r.wage,nextWage:now()+30,born,life:r.life,job:null});log(r.name+'前来效力，首月食宿已结清。');});
 }
 const jobs={purchase:{name:'采购草药',days:30,fee:8,output:{herb:3}},garden:{name:'照料药圃',days:30,fee:1,output:{herb:2}},gather:{name:'外出采集',days:30,fee:2,output:{herb:4}},alchemy:{name:'代炼聚气散',days:10,fee:3,materials:{herb:2},output:{qiPill:1}},forge:{name:'代制青钢短剑',days:15,fee:8,materials:{ironOre:3},output:{ironSword:1}}};
+function staffDetails(w){
+ const person=window.XTWorld36?.get(w.id),t=now();
+ const born=Number.isFinite(person?.birth)?person.birth:w.born;
+ const elapsed=Number.isFinite(born)&&born<=t?t-born:null;
+ const age=elapsed===null?'未核定':Math.floor(elapsed/360)+'岁'+Math.floor(elapsed%360)+'日';
+ const life=Number.isFinite(w.life)?w.life+'岁':'未核定';
+ const pay=Number.isFinite(w.nextWage)?(w.nextWage<=t?'已到期':Math.ceil(w.nextWage-t)+'日后'):'未核定';
+ const arrears=Number.isFinite(w.arrears)?w.arrears:0;
+ return `产业雇佣 · 年龄 ${age} · 寿限 ${life}。<br>月俸 ${money(w.wage)} 灵石 · 下次发薪 ${pay} · 欠薪 ${arrears}个月。<br>`;
+}
 function renderStaff(){
  const d=data();
  const selected=d.staff.find(w=>w.id===V.worker);
- const detail=selected?card(selected.name+' · 委派',selected.job?`正在${jobs[selected.job.type].name}，还需 ${Math.max(0,selected.job.due-now())} 日。`:'选择一项工作，产出送往仓库。代工耗材从仓库扣除，月俸另计。',
+ const detail=selected?card(selected.name+' · 委派',staffDetails(selected)+(selected.job?`正在${jobs[selected.job.type].name}，还需 ${Math.max(0,selected.job.due-now())} 日。`:'选择一项工作，产出送往仓库。代工耗材从仓库扣除，月俸另计。'),
  (selected.job?btn('取消工作（耗材不退）','cancelJob',selected.id):Object.entries(jobs).map(([id,j])=>btn(j.name+' · '+j.days+'日 / '+money(j.fee)+'灵石','assign',selected.id+':'+id,!ownedHome())).join(''))+btn('遣散','dismiss',selected.id)):'';
  return note(`已招募 ${d.staff.length}/${homeSize()} 人。欠薪三月会离去。`)+
  (d.staff.map(w=>`<div class="sb-item"><div><b>${w.name} · ${w.realm<0?'凡人':(REALM_NAMES[w.realm]||'修士')}</b><small>月俸 ${money(w.wage)} 灵石 · ${w.job?jobs[w.job.type].name:'待命'}</small></div>${btn('安排','selectWorker',w.id)}</div>`).join('')||note('还没有人手。到县城牙行招募。'))+detail;

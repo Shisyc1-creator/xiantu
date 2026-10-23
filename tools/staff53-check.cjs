@@ -124,3 +124,21 @@ test('unpaid and dead employees retain existing consequences',()=>{
  dead.run("XTWorld36.get('an').birth=XTSandbox.now()-100*360;XTWorld36.sync();");
  assert.equal(dead.run('XTSandbox.state().staff.length'),0);
 });
+
+test('employee details use actual person age and expose pay without advancing state',()=>{
+ const game=fixture();hire(game);
+ game.run("const worker54=XTSandbox.state().staff[0];worker54.born=XTSandbox.now()-18*360;XTWorld36.get('lin').birth=XTSandbox.now()-27*360-12;worker54.arrears=2;worker54.nextWage=XTSandbox.now()+11;XTSandbox.go('home','staff');");
+ const before=game.run('JSON.stringify({day:XTSandbox.now(),stones:G.stones,staff:XTSandbox.state().staff,warehouse:XTSandbox.state().warehouse})');
+ game.run("XTSandbox.dispatch('selectWorker','lin');XTSandbox.dispatch('selectWorker','lin');");
+ const html=game.run("document.getElementById('scene').innerHTML");
+ assert.match(html,/年龄 27岁12日/);assert.match(html,/寿限 100岁/);assert.match(html,/欠薪 2个月/);assert.match(html,/下次发薪 11日后/);assert.match(html,/产业雇佣/);
+ assert.equal(game.run('JSON.stringify({day:XTSandbox.now(),stones:G.stones,staff:XTSandbox.state().staff,warehouse:XTSandbox.state().warehouse})'),before);
+});
+
+test('employee details keep missing dates unknown and show due wages',()=>{
+ const game=fixture();hire(game);
+ game.run("globalThis.personReader54=XTWorld36.get;XTWorld36.get=id=>id==='lin'?{...personReader54(id),birth:null}:personReader54(id);XTSandbox.state().staff[0].born=null;XTSandbox.state().staff[0].nextWage=XTSandbox.now();XTSandbox.go('home','staff');XTSandbox.dispatch('selectWorker','lin');");
+ const html=game.run("document.getElementById('scene').innerHTML");
+ assert.match(html,/年龄 未核定/);assert.match(html,/下次发薪 已到期/);
+ assert.doesNotMatch(html,/NaN|Infinity/);
+});
