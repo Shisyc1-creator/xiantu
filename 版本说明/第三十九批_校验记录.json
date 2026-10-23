@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-22",
+  "version": "第三十九批 · 宣纸墨朱砂界面版",
+  "entry": "prototype/index.html",
+  "sourceIntegrity": {
+    "onlyExistingSourceChanged": [
+      "prototype/index.html"
+    ],
+    "htmlChange": "新增一个独立样式引用",
+    "productionGameScriptsUnchanged": true,
+    "cssCopiesMatch": true,
+    "cssSha256": "f78e0362d3ecb7de63062571b8c9791c0108b7d7528bf13a01bb5608db74c5b8"
+  },
+  "regressions": [
+    {
+      "script": "shop38-check.cjs",
+      "checks": 34,
+      "passed": true,
+      "record": ".screenshots/batch38/validation.json"
+    },
+    {
+      "script": "local37-check.cjs",
+      "checks": 34,
+      "passed": true,
+      "record": ".screenshots/batch37/validation.json"
+    },
+    {
+      "script": "world36-check.cjs",
+      "checks": 41,
+      "passed": true,
+      "record": ".screenshots/batch36/validation.json"
+    },
+    {
+      "script": "world36-regression.cjs",
+      "checks": 12,
+      "passed": true,
+      "record": ".screenshots/batch36/regression.json"
+    }
+  ],
+  "gameplayChecks": 121,
+  "visualChecks": 113,
+  "viewports": [
+    "360×800",
+    "390×844",
+    "390×667",
+    "430×932",
+    "768×1024",
+    "1024×768",
+    "1440×1000"
+  ],
+  "independentReview": [
+    "320×568长道号/七位灵石/地图/存档无横向溢出",
+    "2560×1440长道号/七位灵石/地图/存档无横向溢出",
+    "选中出身悬停文本对比度正常",
+    "手机场景信息顺序与人物返回正常"
+  ],
+  "dimContrast": {
+    "paper": 5.62,
+    "card": 6.123,
+    "sidebar": 5.228
+  },
+  "browser": "Microsoft Edge 独立临时上下文",
+  "browserErrors": [],
+  "resourceErrors": [],
+  "scope": "界面更新及受控游戏状态检查；未实现大众/硬核模式，未覆盖九境全流程平衡。"
+}

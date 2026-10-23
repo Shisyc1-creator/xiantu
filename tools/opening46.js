@@ -1,0 +1,92 @@
+/* 六出身正式开局：安置、办事、约定、传法；只对新角色开启。 */
+(()=>{'use strict';
+const S=XTSandbox,W=XTWorld36,V=S.view;
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const stories={
+ '寒门散修':{route:'乡中旧居 → 灶间与田边 → 家中托付 → 游方抄诀',scenes:[
+ ['薄墙小院','灶上稀粥尚温，你的铺盖放在窗下。测出灵根后，修行并不能替家里免去柴米。桌上留下两句叮嘱：东西是谁的，就该先问谁。',['先认清自己的床位和物柜','先问清家中公用物件的规矩']],
+ ['第一件家务','你替家里整理送货的草绳，发现一处绳结松了。若只把它藏在下面，今天看不见，挑担的人明日就可能跌货。',['拆开重结，学会看清用物（悟性+1）','把问题说清，替挑担人留记号（心性+1）']],
+ ['日子仍要过','修行之外，总得有一件能做的事。你把第一份打算写在灶边的小木牌上；往后到实际地点做过，才算履行。',['入城或就近找短工，挣一回工钱','到乡野采药坡做一次实际采集']],
+ ['游方人的抄诀','旧纸上的字已经抄过数手，仍能辨出调息与守一的口诀。它只够引气入门，不是凭空得来的完整高阶传承。',['逐句认读，记下口诀来源','先把运气的禁忌写在页边']]],duties:[['work','做一次实际短工','county'],['gather','做一次乡野采集','village']]},
+ '宗门外门弟子':{route:'弟子住处 → 公用水房 → 监院问话 → 基础授法',scenes:[
+ ['借住弟子院','你的名字已在外门名册上。床位、物柜可用，地火与库房另有规矩；不必再交一次拜门费，也不能把弟子院当个人产业。',['核对自己的床位与名牌','记下公用物件的领还规矩']],
+ ['水桶破口','第一次轮到你整理水房，木桶箍边已经松动。只求今日交差，下一位同门就要替你承担漏水的麻烦。',['找出松箍位置再报告（悟性+1）','先替后来的同门作提醒（心性+1）']],
+ ['监院的问话','玄诚问你愿先学哪一项日常规矩。你已列名外门，往后如何与同门相处，还要从小事做起。',['完成一次本门工役','先整理弟子住处的旧规条']],
+ ['青云入门诀','监院把调息篇授给你：门中能给入门之法，是否专心、是否守约，须看以后。授法不会凭空把修为推到下一层。',['先记调息的次序','先记独自练功时的禁忌']]],duties:[['sectTask','完成一次青云观工役','temple'],['h41:letter','整理一次弟子住处规条','temple']]},
+ '没落家族子弟':{route:'城西旧宅 → 残卷与家账 → 守宅打算 → 家传调息',scenes:[
+ ['旧宅还有灯','窗纸已有破处，屋檐仍能遮雨。你能住的房间与私人物柜已经分好；祖产属于共同家计，不是你随手可以卖掉的东西。',['认清自己可住可用的部分','把家族公物另列一页']],
+ ['两页不同的账','残卷中夹着旧家账。有一笔修屋支出记了两次，另一张纸写着照看长辈的日子。修行前，你先学着辨认这些差别。',['核对重记的账目（悟性+1）','先把照看亲人的约定抄清（心性+1）']],
+ ['留下怎样的承诺','旧宅可以落脚，维持它却还要生计。你决定先做一件能在日后查证的小事，不把一纸承诺当成已经做完。',['整理旧宅留下的个人旧物','到县中做一回短工']],
+ ['补齐入门残页','家传调息篇由旧藏与口传拼合而成。你只收下能核对清楚的基础段落，缺失的高阶篇章仍须以后寻访。',['按页抄清基础调息','在缺页处留下待访标记']]],duties:[['h41:letter','整理一次旧宅个人旧物','county'],['work','完成一次县城短工','county']]},
+ '世家嫡系':{route:'宗族大宅 → 族学初课 → 个人责任 → 正式启蒙',scenes:[
+ ['门内各有门户','大宅里住着不同房支。你有自己的卧房与物柜，族中钱库、药圃和产业却没有交到你手上；你能支用的银钱和药材，自有族中规定的份额。',['核对个人份额与住处','先听清公产取用的边界']],
+ ['族学第一课','教习让你看两份领用簿：一份写物件归属，一份写领还日期。读得快并非本事，能辨出哪一笔由自己负责才重要。',['辨清物件与归属（悟性+1）','先把领还责任写明（心性+1）']],
+ ['承诺须能兑现','受家中照拂，也该做一件力所能及的事。你为自己选下第一项日常责任，族中不会因这句话再给一整份产业。',['整理个人起居簿与旧物','到县中做一次实际短工']],
+ ['宗族培元诀','启蒙篇被放在你面前。它是族中已有的基础教本，较好的起点不等于已经修成，也不等于所有高阶传承都向你开放。',['先学守一与呼吸次序','先记用功时应回避的躁进']]],duties:[['h41:letter','整理一次个人起居簿','county'],['work','完成一次县中短工','county']]},
+ '妖血遗孤':{route:'山间藏处 → 血脉征兆 → 第一次出行打算 → 藏息入门',scenes:[
+ ['枝叶掩着入口','山石后的铺盖和旧物是你熟悉的家处。枝叶遮住入口，旧笔记压在枕边；山下的人来来往往，这里仍是你能退回的地方。',['辨认自己的藏身入口','清点只属于自己的随身物']],
+ ['掌心的一点热意','你发现气息急促时，掌心会生出异样热意。旧笔记没有说这能让你越过所有关隘，只提醒你先观察，别急着在人前试。',['分辨热意与呼吸的关系（悟性+1）','按住躁念，先顾身边的安稳（心性+1）']],
+ ['出门之前','你需要认识周围的地形，也需要记得回家的路。出门前，你想先为这个小家做些什么。',['整理养育者留下的寻路记号','到近处药坡做一次实际采集']],
+ ['藏息养脉法','旧教法或养育者的留记把调息步骤写得很慢。藏息只是入门方法，血脉不会替你省去所有修行与处世。',['先记藏息的次序','先记气息失稳时如何停下']]],duties:[['h41:letter','整理藏身处的寻路记号','ridge'],['gather','完成一次山间采集','ridge']]},
+ '魔道弃徒':{route:'坊市暂居 → 旧身份余波 → 谋生打算 → 残页护身',scenes:[
+ ['暂住凭据','你在坊市巷底有一间有期限的落脚处。旧师门的称号换不来这里的房契，凭据和个人物柜需要自己保管。',['核清暂住期限与个人物柜','把旧师门信物收进私人物件']],
+ ['不要替旧事添新债','一段残页夹在衣包里，字迹与旧师门有关。你先学着辨别其中能保命的基础内容，不把危险的夸口当作现成力量。',['辨清可用的调息段落（悟性+1）','先记不可再碰的旧规矩（心性+1）']],
+ ['如何安顿这一日','坊市里的人只看眼前约定是否履行。你决定先把一件小事办妥，至于向谁说明旧来历，仍留待日后实际相处。',['到摊街做一回短工','整理暂住凭据与自己的旧物']],
+ ['残页纳气法','你记下的只是凡界别院所用的基础调息。它不包含夺人修为的捷径，也不能让幼童凭空往返灵界主宗。',['按残页次序缓缓调息','把不明之处标为以后求证']]],duties:[['work','完成一次坊市短工','market'],['h41:letter','整理一次暂住凭据','market']]}
+};
+const state=()=>G?.opening46;
+const pending=()=>!!state()?.eligible&&!state().completed&&G.mode==='awaken'&&!!state().timelineReady;
+const deferGrant=()=>!!state()?.eligible&&!state().granted;
+const token=()=>state()?G.origin+'|'+state().step+'|'+state().revision:'';
+let notice='';
+function kin(){const ns=Object.values(W.world().people);return ns.find(n=>n.source==='开局家人档案'&&W.alive(n)&&n.place===G.place);}
+function dispatch(t,choice){const o=state(),spec=stories[G?.origin];if(!pending()||t!==token()||![0,1].includes(Number(choice)))return false;const before=JSON.stringify(G),step=o.step,c=Number(choice);notice='';
+ try{
+  const h=XTHome41.residence();if(step===0&&h){h.openingAcknowledged=true;h.openingChoice=c;}
+  if(step===1){const key=c===0?'wu':'xin';G.attr[key]=Math.min(12,G.attr[key]+1);o.firstLesson=key;}
+  if(step===2){const [action,label,place]=spec.duties[c];o.duty={action,label,place,status:'accepted',ownerId:W.world().playerId};const target=G.origin==='宗门外门弟子'?W.get('mentor'):kin();if(target){const r=W.relation(target.id);r.trust=Math.min(100,r.trust+2);r.history.unshift({day:S.now(),text:'正式起步时，当面说明了第一项打算：'+label});o.contactId=target.id;}}
+  if(step===3){const book=W.starts[G.origin].book,d=S.state();d.books[book]=d.books[book]||{level:1};G.arts[book]=true;if(!d.mind)d.mind=book;W.world().start.grantPending=false;o.granted=true;o.completed=true;addLog('正式授予基础心法《'+book+'》，收录一次，尚待引气入体。','up');}
+  const scene=spec.scenes[step];o.history.push({step,title:scene[0],choice:c,text:scene[2][c],at:S.now()});o.step++;o.revision++;addLog('出身开局 · '+scene[0]+'：'+scene[2][c]+'。','mute');
+  const raw=JSON.stringify(G);localStorage.setItem(SAVE_KEY,raw);if(localStorage.getItem(SAVE_KEY)!==raw)throw Error('保存失败');
+ }catch(e){G=JSON.parse(before);try{localStorage.setItem(SAVE_KEY,before);}catch(_){}notice='这一选择未能保存，属性、约定和授法已撤回，请稍后重试。';render();return false;}
+ render();return true;
+}
+function draw(){const o=state(),spec=stories[G.origin],s=spec.scenes[o.step],h=XTHome41.residence(),contact=G.origin==='宗门外门弟子'?W.get('mentor'):kin();document.body.classList.remove('sb-screen');
+ document.getElementById('scene').innerHTML=`<section class="opening46"><small>${G.qiAge}岁 · 正式起步 · ${esc(G.origin)} · ${o.step+1}/4</small><h2>${esc(s[0])}</h2><p class="opening-route46">${esc(window.XTBackground47?.localize(spec.route)||spec.route)}</p><p>${esc(window.XTBackground47?.localize(s[1])||s[1])}</p><aside>${esc(W.locationLabel())}<br>${esc(h?.name||'出身家处')} · ${esc(h?.owner||'按现有身份安置')}<br>${contact?'眼前可以相谈的人：'+esc(contact.name):'旧物留在这里，几处磨损的字迹藏着往事。'}</aside>${notice?'<p class="opening-notice46" role="alert">'+esc(notice)+'</p>':''}<div class="choices">${s[2].map((label,i)=>`<button class="choice" data-opening46="${i}" data-token="${esc(token())}"><span class="num">${i+1}</span><span class="body">${esc(label)}</span></button>`).join('')}</div><details><summary>已做选择 ${o.history.length}/4</summary>${o.history.map(x=>'<p>✓ '+esc(x.title)+' · '+esc(x.text)+'</p>').join('')}</details><small>${G.measureAge}岁测灵，${G.qiAge}岁起步。选下的约定会记在已接事项中，日后办妥再回来交代。</small></section>`;
+ document.querySelectorAll('[data-opening46]').forEach(b=>b.onclick=()=>dispatch(b.dataset.token,Number(b.dataset.opening46)));
+}
+const old={newGame,chooseChild,beginCultivation,renderScene,observe:XTInteraction42.observe};
+newGame=function(...args){notice='';const inherited=args.length>=4&&G?.mode==='dead';const result=old.newGame(...args);if(!inherited){G.opening46={version:2,eligible:true,step:0,revision:0,completed:false,granted:false,history:[],baseT:G.t,birthT:G.t};G.birthYear=Math.floor(G.opening46.birthT/12);G.lifeEvents=[{age:0,kind:'出生',place:G.home}];save();render();}return result;};
+chooseChild=function(...args){if(G?.mode!=='child')return false;const result=old.chooseChild(...args);if(state()?.eligible&&!state().timelineReady){for(const f of G.family||[])f.ageAtEight=f.age;if(state().version===2){const o=state();o.latentRoot=G.root;o.childhood={step:0,revision:0,history:[],study:null,route:null};G.root=null;G.coef=1;G.cap=0;G.age=0;G.t=o.birthT;syncChildhoodFamily();}save();render();}return result;};
+function chooseMeasureAge(age){const o=state();if(o?.version===2)return false;if(!o?.eligible||G.mode!=='awaken'||o.timelineReady||G.measureAge||![7,8,10,12].includes(age))return false;return chooseTimeline(age,age);}
+function chooseTimeline(measure,qi){const o=state();if(!o?.eligible||G.mode!=='awaken'||o.timelineReady||![7,8,10,12].includes(measure)||![0,2,5].includes(qi-measure)||(G.measureAge&&G.measureAge!==measure))return false;
+ const before=JSON.stringify(G);try{o.baseT??=G.t;o.birthT??=o.baseT-8*12;G.birthYear=Math.floor(o.birthT/12);G.measureAge=measure;G.qiAge=qi;G.cultivationAge=qi;G.age=qi;G.t=o.birthT+qi*12;G.month=((G.t%12)+12)%12;G.day=0;
+ for(const f of G.family||[]){f.ageAtEight??=f.age;if(!Number.isFinite(f.ageAtEight))continue;f.age=Math.max(0,f.ageAtEight-8+qi);const n=W.get('family_'+W.world().playerId+'_'+f.id);if(n){n.birth=(o.birthT+(8-f.ageAtEight)*12)*30;if(f.age>=f.life){n.alive=false;f.alive=false;f.diedAt=Math.floor(n.birth/30)+f.life*12;}}}
+ const at=S.now(),delta=at-o.baseT*30;const home=XTHome41.residence();if(home){if(home.expires!==null)home.expires=at+(home.expires-home.createdAt);home.createdAt=at;}W.world().knownAt=at;for(const r of Object.values(W.world().relations)){r.met=at;for(const h of r.history||[])h.day=at;}for(const l of G.log||[]){l.at+=delta;l.y=qi;}worldSeed();G.lifeEvents=G.lifeEvents||[{age:0,kind:'出生',place:G.home}];G.lifeEvents.push({age:measure,kind:'测灵',place:G.home,note:G.root});o.timelineReady=true;
+ const raw=JSON.stringify(G);localStorage.setItem(SAVE_KEY,raw);if(localStorage.getItem(SAVE_KEY)!==raw)throw Error('保存失败');
+ }catch(e){G=JSON.parse(before);notice='时间线保存失败，尚未确认，请重试。';render();return false;}render();return true;
+}
+function drawTimeline(){if(state()?.version===2&&state().childhood){drawChildhood();return;}if(G.measureAge&&!state().timelineReady){chooseTimeline(G.measureAge,G.measureAge);return;}document.body.classList.remove('sb-screen');document.getElementById('scene').innerHTML=`<section class="opening46"><small>身世 · ${esc(G.origin)} · ${esc(G.variant)}</small><h2>何时遇见测灵机会</h2><p>先确定测灵的机缘。得到基础心法后，引气所需时日由灵根、悟性和根骨决定。</p>${notice?'<p role="alert">'+esc(notice)+'</p>':''}<div class="choices">${[7,8,10,12].map((n,i)=>`<button class="choice" data-time46="${n}"><span class="num">${i+1}</span><span class="body">${n}岁测灵</span></button>`).join('')}</div><small>普通天赋约需一至三个月，天赋极佳者可在数日至数周间引气入体。</small></section>`;document.querySelectorAll('[data-time46]').forEach(b=>b.onclick=()=>chooseMeasureAge(Number(b.dataset.time46)));}
+/* 从出生开始的关键成长篇章；年龄由实际经历推进，测灵是路线结果。 */
+function childhoodToken(){const c=state()?.childhood;return c?G.origin+'|childhood|'+c.step+'|'+c.revision:'';}
+function syncChildhoodFamily(){const o=state(),w=W.world();for(const f of G.family||[]){if(!Number.isFinite(f.ageAtEight))continue;f.originalAlive48??=f.alive;const age=f.ageAtEight-8+G.age;f.notBorn48=age<0;f.age=Math.max(0,age);const n=W.get('family_'+w.playerId+'_'+f.id);if(n){n.birth=(o.birthT+(8-f.ageAtEight)*12)*30;n.alive=!!f.originalAlive48&&!f.notBorn48&&f.age<f.life;}f.alive=!!f.originalAlive48&&!f.notBorn48&&f.age<f.life;}W.sync();}
+function growthScene(){if(window.XTChildhood49)return XTChildhood49.scene();const c=G.birthContext||{},v=state().childhood,temple=c.places?.temple||placeName('temple'),market=c.places?.market||placeName('market'),county=c.county||placeName('county');const routes=G.origin==='港口船户'?['跟着船家认潮汐、学船上规矩','向往来船客打听识字与修行的门路']:G.origin==='北地部族家庭'?['听长辈辨风雪、认山口路标','跟着家中人认驿站的文书与标记']:G.origin==='湖泽水族寄养家庭'?['随岸上亲人识字、读水契','随水族亲缘辨水色、记浅湾的禁忌']:['随养育者识字、听地方掌故','在家人陪伴下认路、辨草木与用物'];
+ return [
+ {title:'初来人间',text:'你在'+county+'的家中出生。最初几年，你能依赖的是养育者与熟悉的声息。这一段选择描述家庭怎样照料你；婴孩还不能独自远行。',choices:[['由养育者照料，在家中安稳长大',3],['由养育者带着认熟家门附近的环境',3]]},
+ {title:'渐渐认得身边的世界',text:'你已能记住身边的人和事。'+(c.terrain||'当地的道路与生活')+'，组成最早的见闻。不同的学习经历会留下不同的入门准备。',choices:[[routes[0],3],[routes[1],3]]},
+ {title:'修行人的消息',text:'在'+county+'生活的这些年，家中人终于探听到查验灵根的门路。它来自具体的人和地方，仍需有人陪伴、引荐与等候。',choices:[['家人向'+temple+'求问，等候授业者来访',2],['家人在'+market+'托人引荐，等候行脚修士来访',3]]},
+ {title:'终于有人愿意为你查验',text:(v.route===0?temple+'的授业者':market+'来访的行脚修士')+'来到家中，愿意为你查验灵根。'+(v.study===0?'识字与掌故让你更容易听懂嘱咐。':'辨路与观察用物的经验，让你习惯先看清再动手。')+'是否现在接受查验，由眼前的经历自然走到这里。',choices:[['接受查验，听取结果',0],['暂缓查验，继续家中学习，等下一次来访（悟性+1）',2]]}
+ ][v.step];
+}
+function drawChildhood(){const o=state(),c=o.childhood,s=growthScene(),b=G.birthContext||{};document.body.classList.remove('sb-screen');const scene=document.getElementById('scene');scene.innerHTML='<section class="opening46"><small>'+G.age+'岁 · 童年成长 · '+(c.step+1)+'/4 · 灵根未测</small><h2>'+esc(s.title)+'</h2><aside>'+esc([b.country,b.state,b.prefecture,b.county,placeName(G.place)].filter(Boolean).join(' · '))+'<br>'+esc(G.background?.family||G.variant||'出生家庭')+'</aside><p>'+esc(s.text)+'</p>'+(notice?'<p role="alert">'+esc(notice)+'</p>':'')+'<div class="choices">'+s.choices.map((x,i)=>'<button class="choice" data-childhood48="'+i+'" data-token="'+esc(childhoodToken())+'"><span class="num">'+(i+1)+'</span><span class="body">'+esc(x[0])+'<span class="hint">'+(x[1]?'这一段经历经过'+x[1]+'年':'在当前年月完成查验')+'</span></span></button>').join('')+'</div><details><summary>已走过的童年 '+c.history.length+' 段</summary>'+c.history.map(x=>'<p>'+x.from+'—'+x.to+'岁 · '+esc(x.text)+'</p>').join('')+'</details></section>';scene.querySelectorAll('[data-childhood48]').forEach(b=>b.onclick=()=>chooseChildhood(b.dataset.token,Number(b.dataset.childhood48)));}
+function chooseChildhood(t,i){const o=state(),c=o?.childhood;if(G?.mode!=='awaken'||!c||o.timelineReady||t!==childhoodToken()||![0,1].includes(i))return false;const before=JSON.stringify(G),persist=localStorage.getItem(SAVE_KEY),s=growthScene(),from=G.age;notice='';try{const years=s.choices[i][1];G.age+=years;G.t+=years*12;G.month=((G.t%12)+12)%12;syncChildhoodFamily();if(c.step===1){c.study=i;const key=i===0?'wu':'gen';G.attr[key]=Math.min(12,G.attr[key]+1);}if(c.step===2){c.route=i;if(s.choices[i][2])c.route49=JSON.parse(JSON.stringify(s.choices[i][2]));}c.history.push({step:c.step,choice:i,from,to:G.age,text:s.choices[i][0],at:S.now()});G.lifeEvents.push({age:G.age,kind:'童年经历',place:G.place,at:S.now(),note:s.choices[i][0]});addLog(from+'—'+G.age+'岁 · '+s.choices[i][0]+'。','mute');if(c.step===3){G.root=G.root||o.latentRoot;G.coef=ROOTS[G.root].coef;G.cap=ROOTS[G.root].cap;G.measureAge=G.age;G.qiAge=G.age;G.cultivationAge=G.age;o.timelineReady=true;c.completed=true;c.prepared=i===1;if(c.prepared)G.attr.wu=Math.min(12,G.attr.wu+1);G.lifeEvents.push({age:G.age,kind:'测灵',place:G.place,at:S.now(),note:G.root+'；由'+(c.route49?.source||(c.route===0?placeName('temple'):placeName('market')))+'引荐来访'});const h=XTHome41.residence();if(h){if(h.expires!==null)h.expires=S.now()+(h.expires-h.createdAt);h.createdAt=S.now();}delete o.latentRoot;window.XTChildhood49?.onMeasured();}c.step++;c.revision++;const raw=JSON.stringify(G);localStorage.setItem(SAVE_KEY,raw);if(localStorage.getItem(SAVE_KEY)!==raw)throw Error('写入未确认');}catch(e){G=JSON.parse(before);try{if(persist===null)localStorage.removeItem(SAVE_KEY);else localStorage.setItem(SAVE_KEY,persist);}catch(_){}notice='这一段经历未能保存，年龄、属性与记录已撤回，请重试。';render();return false;}render();return true;}
+
+const entryBase47={'绝灵根':120,'五灵根':90,'四灵根':70,'三灵根':45,'双灵根':20,'变异灵根':12,'天灵根':7};
+function entryDays47(s=G){const talent=Math.max(.65,Math.min(1.5,1+((s.attr?.wu||5)-5)*.04+((s.attr?.gen||5)-5)*.025));return Math.max(3,Math.ceil((entryBase47[s.root]||90)/talent));}
+
+beginCultivation=function(...args){if(state()?.eligible&&(!state().timelineReady||pending())){notice='先选择测灵与引气时机，完成安置、约定与基础授法。';render();return;}if(G?.mode==='awaken'&&state()?.completed){const before=JSON.stringify(G),persist=localStorage.getItem(SAVE_KEY);try{if(!G.entry47)G.entry47={version:1,days:entryDays47(),done:0,root:G.root,wu:G.attr.wu,gen:G.attr.gen,startedAt:S.now(),status:'preparing'};const n=G.entry47.days-G.entry47.done;const r=advanceDays(n,{act:'引气入门',rate:0,incomeMul:0,eventRate:0},{stopOnEvent:false});G.entry47.done+=r.days;if(r.died){G.entry47.status='interrupted';die('寿元耗尽');return;}if(G.entry47.done<G.entry47.days){save();render();return;}G.entry47.status='complete';G.entry47.completedAt=S.now();G.qiAge=G.age;G.cultivationAge=G.age;const out=old.beginCultivation(...args);const e=G.lifeEvents[G.lifeEvents.length-1];e.days=G.entry47.days;e.at=S.now();e.place=G.birthContext?.county||G.place;addLog('依《'+W.starts[G.origin].book+'》调息'+G.entry47.days+'日，终于引气入体。','up');G.lastResult.text+='<br><span class="mute">本次引气共用'+G.entry47.days+'日；天赋与所学已记入生平。</span>';const raw=JSON.stringify(G);localStorage.setItem(SAVE_KEY,raw);if(localStorage.getItem(SAVE_KEY)!==raw)throw Error('读回失败');render();return out;}catch(e){G=JSON.parse(before);try{if(persist===null)localStorage.removeItem(SAVE_KEY);else localStorage.setItem(SAVE_KEY,persist);}catch(_){}notice='引气进度未能保存，本次时间和记录已撤回。';render();return;}}return old.beginCultivation(...args);};
+renderScene=function(){old.renderScene();if(G?.mode==='awaken'&&state()?.eligible&&!state().timelineReady){drawTimeline();return;}if(pending()){draw();return;}if(G?.mode==='awaken'&&state()?.completed){const node=document.createElement('p');node.className='opening-complete46';node.textContent='基础心法已经收录。依你的'+G.root+'、悟性'+G.attr.wu+'与根骨'+G.attr.gen+'，本次引气需'+entryDays47()+'日。';const button=document.getElementById('btAwe');if(button){button.querySelector('.hint').textContent='调息'+entryDays47()+'日，尝试引气入体；实际经过这些时日。';button.onclick=()=>beginCultivation();}if(notice){node.textContent+=' '+notice;}document.querySelector('#scene .prologue')?.prepend(node);}};
+XTInteraction42.observe=function(action,arg,fn){const placeBeforeDuty46=G.place;const result=old.observe(action,arg,fn),d=state()?.duty,r=XTInteraction42.data()?.last;if(d?.status==='accepted'&&d.ownerId===G.world36?.playerId&&action===d.action&&placeBeforeDuty46===d.place&&G.place===d.place&&r?.action===action&&r.status==='已完成'&&r.at===S.now()) {d.status='done';d.completedAt=S.now();addLog('起步约定已履行：'+d.label+'。原行动报酬已按实际结算，不重复发奖。','mute');save();render();}return result;};
+const restoreBeforeChildhood48=restore;restore=function(raw){const previous=G;const ok=restoreBeforeChildhood48(raw);if(!ok)return false;const o=state();if(o?.eligible&&o.version===1&&!o.timelineReady&&!G.measureAge&&['child','awaken'].includes(G.mode)){try{stoneBackup(raw);o.version=2;o.birthT=G.t-G.age*12;G.birthYear=Math.floor(o.birthT/12);if(G.mode==='awaken'){o.latentRoot=G.root;o.childhood={step:0,revision:0,history:[],study:null,route:null};G.root=null;G.coef=1;G.cap=0;for(const f of G.family||[])f.ageAtEight??=f.age;syncChildhoodFamily();}}catch(e){G=previous;XTEconomy40.lastRestoreError='童年路线迁移前原档无法备份，请检查存储空间后重试。';return false;}}return true;};
+window.XTOpening46={childhoodToken,chooseChildhood,state,pending,deferGrant,token,dispatch,stories,chooseMeasureAge,chooseTimeline,entryDays:entryDays47,entryBase:entryBase47};if(G)render();
+})();

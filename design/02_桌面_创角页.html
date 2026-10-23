@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>仙途 · 创角页（桌面）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3EBDC;color:#1F1A17;font-family:"Noto Serif SC","Songti SC","SimSun",serif;font-size:15px;line-height:1.8;-webkit-font-smoothing:antialiased}
+a{color:#B4321F;text-decoration:none}a:hover{color:#8E2415}
+button{font-family:inherit;cursor:pointer}
+.origin{display:flex;flex-direction:column;gap:6px;min-height:150px;padding:18px 20px;border:1px solid #C9B99A;background:#FAF5EA;text-align:left;color:#1F1A17;position:relative}
+.origin:hover{border-color:#1F1A17}
+.origin.on{border:1.5px solid #B4321F}
+.origin.on::after{content:"已选";position:absolute;top:12px;right:12px;padding:1px 7px;border:1.5px solid #B4321F;color:#B4321F;font-size:11px;letter-spacing:.14em;line-height:1.5}
+.origin h3{margin:0;font-size:20px;font-weight:700;letter-spacing:.12em}
+.origin p{margin:0;font-size:13.5px;color:#4A4036}
+.origin .fa{margin-top:auto;font-size:12px;color:#7A6F62;letter-spacing:.06em}
+.mode{flex:1 1 300px;display:flex;flex-direction:column;gap:8px;padding:18px 20px;border:1px solid #C9B99A;background:#FAF5EA;text-align:left;color:#1F1A17}
+.mode.on{border:1.5px solid #B4321F}
+.mode h3{margin:0;font-size:18px;font-weight:700;letter-spacing:.14em;display:flex;align-items:center;gap:10px}
+.mode ul{margin:0;padding-left:18px;font-size:13.5px;color:#4A4036}
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 40px;border:1px solid #B4321F;background:#B4321F;color:#FAF5EA;font-size:17px;letter-spacing:.3em}
+.btn-primary:hover{background:#8E2415}
+.btn-ghost{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:1px solid #C9B99A;background:transparent;color:#4A4036;font-size:14px;letter-spacing:.06em}
+.btn-ghost:hover{border-color:#1F1A17;color:#1F1A17}
+.muted{color:#7A6F62}
+.lbl{font-size:13px;letter-spacing:.2em;color:#7A6F62;display:flex;align-items:center;gap:12px}
+.lbl::after{content:"";flex:1;height:1px;background:#DCCFB4}
+input[type=text]{font-family:inherit;font-size:22px;letter-spacing:.14em;padding:8px 2px;border:0;border-bottom:1.5px solid #1F1A17;background:transparent;color:#1F1A17;width:100%;box-sizing:border-box;outline:none}
+input[type=text]:focus{border-bottom-color:#B4321F}
+</style>
+</head>
+<body>
+<div style="min-height:100vh;display:flex;flex-wrap:wrap;background:#F3EBDC">
+
+  <!-- 左：封面 -->
+  <aside style="flex:1 1 380px;min-width:0;position:relative;background:#1F1A17;color:#FAF5EA;display:flex;flex-direction:column;justify-content:space-between;padding:48px 44px;box-sizing:border-box;background-image:radial-gradient(ellipse 80% 60% at 70% 30%,rgba(63,122,94,.35),transparent 70%),radial-gradient(ellipse 60% 40% at 20% 90%,rgba(180,50,31,.25),transparent 70%)">
+    <div style="display:flex;align-items:flex-start;gap:16px">
+      <div style="writing-mode:vertical-rl;font-family:'Ma Shan Zheng','Noto Serif SC',serif;font-size:96px;line-height:1;letter-spacing:.1em">仙途</div>
+      <div style="writing-mode:vertical-rl;font-size:13px;letter-spacing:.4em;color:#C9B99A;padding-top:8px">凡界篇 · 青石县</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <p style="margin:0;font-size:15px;line-height:2;color:#DCCFB4;max-width:300px">九州三百二十四府，修士二十四万。你从一个县开始，寿元一百年。</p>
+      <div style="display:flex;gap:10px;font-size:12px;letter-spacing:.14em;color:#C9B99A">
+        <span style="padding:2px 8px;border:1px solid #4A4036">九境五十阶</span>
+        <span style="padding:2px 8px;border:1px solid #4A4036">六种出身</span>
+        <span style="padding:2px 8px;border:1px solid #4A4036">寿元不重置</span>
+      </div>
+      <div style="writing-mode:vertical-rl;font-size:11px;letter-spacing:.3em;color:#FAF5EA;background:#B4321F;padding:8px 3px;line-height:1;align-self:flex-start">修行纪</div>
+    </div>
+  </aside>
+
+  <!-- 右：表单 -->
+  <main style="flex:999 1 640px;min-width:0;padding:48px 56px 56px;box-sizing:border-box;display:flex;flex-direction:column;gap:36px;max-width:980px">
+
+    <header style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid #1F1A17;padding-bottom:14px">
+      <div>
+        <div class="muted" style="font-size:13px;letter-spacing:.2em">第一步 · 共三步</div>
+        <h1 style="margin:4px 0 0;font-size:34px;font-weight:700;letter-spacing:.14em;line-height:1.3">立身世</h1>
+      </div>
+      <div style="display:flex;gap:18px;font-size:13px;letter-spacing:.16em">
+        <span style="color:#B4321F;font-weight:700;border-bottom:2px solid #B4321F;padding-bottom:2px">一 身世</span>
+        <span class="muted">二 测灵</span>
+        <span class="muted">三 起名</span>
+      </div>
+    </header>
+
+    <section style="display:flex;flex-direction:column;gap:14px">
+      <div class="lbl">道号</div>
+      <div style="max-width:360px">
+        <label for="dname" style="position:absolute;left:-9999px">道号</label>
+        <input id="dname" type="text" value="沈行舟">
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:14px">
+      <div class="lbl">出身 <span class="muted" style="letter-spacing:.06em">· 决定起始住处、家人与基础功法</span></div>
+      <div style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:14px">
+        <button class="origin on" type="button">
+          <h3>寒门散修</h3>
+          <p>村中农户，无宗无师。起始灵石少，但无人约束。</p>
+          <span class="fa">基础功法 · 吐纳诀</span>
+        </button>
+        <button class="origin" type="button">
+          <h3>世家子弟</h3>
+          <p>县中修真家族旁支。有宅可住，有长辈可问，也有家规。</p>
+          <span class="fa">基础功法 · 家传心法</span>
+        </button>
+        <button class="origin" type="button">
+          <h3>宗门外门</h3>
+          <p>太岳宗外山记名弟子。有功法可学，须按月交差。</p>
+          <span class="fa">基础功法 · 太岳引气篇</span>
+        </button>
+        <button class="origin" type="button">
+          <h3>商贾之家</h3>
+          <p>商街铺户之后。凡钱宽裕，灵石需自己换。</p>
+          <span class="fa">基础功法 · 养气诀</span>
+        </button>
+        <button class="origin" type="button">
+          <h3>道观童子</h3>
+          <p>青云观收养的孤儿。观中清苦，但识字早。</p>
+          <span class="fa">基础功法 · 青云静坐法</span>
+        </button>
+        <button class="origin" type="button">
+          <h3>炉坊学徒</h3>
+          <p>城南炉坊的学徒。会一门手艺，修炼起步晚。</p>
+          <span class="fa">基础功法 · 炉火凝神诀</span>
+        </button>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:14px">
+      <div class="lbl">模式 <span class="muted" style="letter-spacing:.06em">· 出生后锁定，身份与模式各自选</span></div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap">
+        <button class="mode on" type="button">
+          <h3>大众<span style="font-size:11px;padding:1px 7px;border:1.5px solid #B4321F;color:#B4321F;letter-spacing:.14em;font-weight:600">推荐</span></h3>
+          <ul>
+            <li>显示成功率、材料缺口与期限</li>
+            <li>每代一次有限救援，转成重伤与治疗开销</li>
+            <li>可回到自选备份重试</li>
+          </ul>
+        </button>
+        <button class="mode" type="button">
+          <h3>硬核</h3>
+          <ul>
+            <li>敌方实力与机缘保留迷雾</li>
+            <li>无系统救援，护命物与撤退照常</li>
+            <li>关键结果提交后再显示，无回滚</li>
+          </ul>
+        </button>
+      </div>
+    </section>
+
+    <footer style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:auto;padding-top:20px;border-top:1px solid #C9B99A">
+      <button class="btn-ghost" type="button">读取旧档</button>
+      <button class="btn-primary" type="button">测灵根</button>
+    </footer>
+  </main>
+</div>
+</body>
+</html>

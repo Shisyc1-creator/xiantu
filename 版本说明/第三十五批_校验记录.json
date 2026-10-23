@@ -1,0 +1,48 @@
+{
+  "version": "第三十五批_地方沙盒基础版",
+  "date": "2026-10-21",
+  "previousVersionBackup": "版本归档\\第三十五批沙盒重构前_20261021_135240\\index.html",
+  "previousHTMLSHA256": "0CACA18271DAB10B0208E9E6D489CC3418404CD5D3B3752387C3E3E594AA6C49",
+  "originalHTMLSHA256": "7F29E3D762927BA41E45F6C1320919394582A0F6C6FBE1BF781BD4B3D901BA83",
+  "checksPassed": 58,
+  "browserErrors": 0,
+  "failedResourceRequests": 0,
+  "files": [
+    {
+      "file": "prototype\\index.html",
+      "sha256": "5A14971CEDF0FCB28511166DB23548545C4B1871D1C7B0810CC4F7656CD746E8",
+      "bytes": 447292
+    },
+    {
+      "file": "prototype\\assets\\sandbox35.js",
+      "sha256": "4F5EC1D3D35F62A2E6C3AEC7247936A0C9FDD346FA2C25AF2F8E402D045AB130",
+      "bytes": 47608
+    },
+    {
+      "file": "prototype\\assets\\sandbox35.css",
+      "sha256": "04DEC57FF1F73CC0B22DA49652406CC019561DB172A6838568AFE265860C4582",
+      "bytes": 6973
+    },
+    {
+      "file": "tools\\sandbox35.js",
+      "sha256": "4F5EC1D3D35F62A2E6C3AEC7247936A0C9FDD346FA2C25AF2F8E402D045AB130",
+      "bytes": 47608
+    },
+    {
+      "file": "tools\\sandbox35.css",
+      "sha256": "04DEC57FF1F73CC0B22DA49652406CC019561DB172A6838568AFE265860C4582",
+      "bytes": 6973
+    },
+    {
+      "file": "tools\\sandbox35-check.cjs",
+      "sha256": "A7EE3723E8D8F1C5D1FF88F0BBCE0E5974F8508A86643FFDE6092D485EC1AAF7",
+      "bytes": 17444
+    },
+    {
+      "file": "README.md",
+      "sha256": "7872BBE9EC9DC2455ECD2F8F60634C50E59E1B5840B72421720FFDC7673CDFBE",
+      "bytes": 2906
+    }
+  ],
+  "novelModified": false
+}

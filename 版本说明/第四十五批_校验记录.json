@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-22",
+  "version": "第四十五批·县城街巷与回执事件链版",
+  "backup": "版本归档/第四十五批县城街巷前_20261022_161012",
+  "checks": {
+    "batch45": 33,
+    "batch44": 49,
+    "auction43": 30,
+    "interaction": 30,
+    "homesModes": 32,
+    "economyHelp": 29,
+    "shop38": 34,
+    "local37": 34,
+    "world36": 41,
+    "world36Regression": 12,
+    "visual": 113,
+    "total": 437
+  },
+  "sourceMatchesPublished": {
+    "maps45.js": true,
+    "maps45.css": true,
+    "county45.js": true,
+    "sandbox35.js": true,
+    "interaction42.js": true,
+    "homes41.js": true,
+    "help40.js": true
+  },
+  "sha256": {
+    "prototype/index.html": "c823529947aff51a3c0cfe1527908dd9032aabf2e883f27db1e239a7e72b833a",
+    "README.md": "08114d22a2faf3351e06c7931b578c75df864eeaaaebe6697efae6868616915a",
+    "设定与设计/06_凡界开发统合计划.md": "6ad1f48b13753de033eddfe6e023f55986b85a9f5136642d05537c41d57f91ce",
+    "设定与设计/07_双模式与开发进度清单.md": "fdadfe328ba32ccd8a931743de870f1a1b58b04a523a99a1e9f7f4288b8a34bb",
+    "设定与设计/08_场景互动与拍卖补全计划.md": "5dfd4b237d9a13d5ff27cef8413a5489951e69809e461eb9a262855f65b004fe",
+    "设定与设计/09_地图层次与开局排期.md": "94d33ca4a3000e19be610be5fe5d4afbe7a1ad98ef6b51fcdcaaf70aba2d2633",
+    "版本说明/第四十五批_县城街巷与回执事件链.md": "e8f810ef2fc38856bf1bb38b11705427f358c6c93e8b0ca10c47a95eb0120417",
+    "tools/batch45-check.cjs": "c12499bdc5667045b3255aa7e737913832810318d22ba0c5cf6271592258ab30",
+    "tools/batch44-check.cjs": "5b5e8b740247f97a087ed1fd912c0f46e4eb77fecc4d7beb4e7382d680356b43",
+    "tools/interaction42-check.cjs": "2b5d6b612b17f62c715ef3abfae2f21576e17fd09c83b8d108d5599358097705",
+    "tools/auction43-check.cjs": "4dcd3524c9e27425d7111e87c3ebe3b76a5dc6d8fd29c3ded088813d6804e392",
+    "tools/maps45.js": "1bd1356a40131f54afaa0f9f760ed3671ffc6e4f5d84cf8c383a6d8f6e9f47c8",
+    "prototype/assets/maps45.js": "1bd1356a40131f54afaa0f9f760ed3671ffc6e4f5d84cf8c383a6d8f6e9f47c8",
+    "tools/maps45.css": "3077acfba9f5312e9ca58e568ed8cd0fdd5cebbdb21f3c9c166047bc3cd5e867",
+    "prototype/assets/maps45.css": "3077acfba9f5312e9ca58e568ed8cd0fdd5cebbdb21f3c9c166047bc3cd5e867",
+    "tools/county45.js": "c9ea34c5306544b41851212da46671e8fa65eb0d80fe9c6bfe65da5527ae365d",
+    "prototype/assets/county45.js": "c9ea34c5306544b41851212da46671e8fa65eb0d80fe9c6bfe65da5527ae365d",
+    "tools/sandbox35.js": "f700c6b025fe719874553dc6514e882f28dff43a66127ae54aca6339a3d3d418",
+    "prototype/assets/sandbox35.js": "f700c6b025fe719874553dc6514e882f28dff43a66127ae54aca6339a3d3d418",
+    "tools/interaction42.js": "ece6ffd425ba1a359256424f0ddfc3331ea8b35228d51386ef2e61140997ab51",
+    "prototype/assets/interaction42.js": "ece6ffd425ba1a359256424f0ddfc3331ea8b35228d51386ef2e61140997ab51",
+    "tools/homes41.js": "2cc1ac70c22c8aa3794fb997e1dbf67eba1dce5b97e0760322ca44b2f5bf5989",
+    "prototype/assets/homes41.js": "2cc1ac70c22c8aa3794fb997e1dbf67eba1dce5b97e0760322ca44b2f5bf5989",
+    "tools/help40.js": "90fed3f51a08ba6fc2e2abceaf4952bde30d671b2d0630645bdf77b5dd295e74",
+    "prototype/assets/help40.js": "90fed3f51a08ba6fc2e2abceaf4952bde30d671b2d0630645bdf77b5dd295e74"
+  },
+  "limits": [
+    "青石县二十处公共地点；其他地区多为已有房间的差异方位模板",
+    "一条五步回执链，非全世界长篇剧情",
+    "下一轮优先六出身正式开局，本批尚未实现",
+    "凡钱与大众/硬核D2真实规则仍待之后接入",
+    "独立Edge上下文，未访问玩家日常浏览器档案"
+  ]
+}

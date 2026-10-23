@@ -1,0 +1,38 @@
+{
+  "version": "第三十六批",
+  "checksPassed": 53,
+  "publicPeople": 32,
+  "familyTemplates": 22,
+  "novelUnchanged": true,
+  "backup": "版本归档\\第三十六批设定与人物重构前_20261021_143904",
+  "files": [
+    {
+      "file": "prototype\\index.html",
+      "sha256": "5123147D53816EF0369B3C44B732029EA9285062B4DF3522F4B7815D60336108"
+    },
+    {
+      "file": "tools\\world36.js",
+      "sha256": "7CEAC4C03B29D9F3B704BD35B91FE119CB8475AAB08298C2E32CB52361E490EF"
+    },
+    {
+      "file": "prototype\\assets\\world36.js",
+      "sha256": "7CEAC4C03B29D9F3B704BD35B91FE119CB8475AAB08298C2E32CB52361E490EF"
+    },
+    {
+      "file": "tools\\sandbox35.js",
+      "sha256": "CAAA91E567735474395C402D58CF824EF02B1147EAB0D49BAB201DBB5E8C7396"
+    },
+    {
+      "file": "prototype\\assets\\sandbox35.js",
+      "sha256": "CAAA91E567735474395C402D58CF824EF02B1147EAB0D49BAB201DBB5E8C7396"
+    },
+    {
+      "file": "设定与设计\\05_人物境界与地域分布审查.md",
+      "sha256": "DF684DF6C5ECC7DA9B743C1C2AFD496703365D1F97E9A106A33BDDF39AF052C6"
+    },
+    {
+      "file": "版本说明\\第三十六批_人物与世界校准.md",
+      "sha256": "141CEFFB2FF55526527EB2256931B972C475F007DA5A6BDADECADBBD2E1AF438"
+    }
+  ]
+}

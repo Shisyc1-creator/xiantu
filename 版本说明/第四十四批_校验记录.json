@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-22",
+  "version": "第四十四批·房间道路图与府城寄拍版",
+  "backup": "版本归档/第四十四批府城与场景前_20261022_153326",
+  "checks": {
+    "batch44": 49,
+    "auction43": 30,
+    "interaction": 30,
+    "homesModes": 32,
+    "economyHelp": 29,
+    "shop38": 34,
+    "local37": 34,
+    "world36": 41,
+    "world36Regression": 12,
+    "visual": 113,
+    "total": 404
+  },
+  "sourceMatchesPublished": {
+    "scene44.js": true,
+    "scene44.css": true,
+    "auction44.js": true,
+    "auction44.css": true,
+    "auction43.js": true,
+    "sandbox35.js": true,
+    "interaction42.js": true,
+    "help40.js": true
+  },
+  "sha256": {
+    "prototype/index.html": "cbb940d80c7e7005007a7c41b5d1f65a4b8c1e6cf005a03f9adea2a16e2b05b8",
+    "README.md": "0492746fd7240f9d4ba134484d73f0cd7ddac1fbb882e130490b424ed2949bed",
+    "设定与设计/06_凡界开发统合计划.md": "c575a4f7a6f28bc497502c0610c5f0ec85f9aee23f3d946dfc46c4b047bbf39d",
+    "设定与设计/07_双模式与开发进度清单.md": "26b46136184de44ff58836cb548e6bec8f5f3869115eb52cbffa70d7956106ab",
+    "设定与设计/08_场景互动与拍卖补全计划.md": "48161b7852b52b89d1ba3718dfdb25f310823893a74117a0b8a242d267f8bc9a",
+    "版本说明/第四十四批_房间道路图与府城寄拍.md": "1988d7ae6488591452e343e4fe036d0df6585230a8dd06a7b76bb64ee9b04d0a",
+    "tools/batch44-check.cjs": "25b725f01a5c87a3e47c6ecd0e7b6a7066336e1e390a398590df49abeff177e7",
+    "tools/scene44.js": "3520d27334dfd4471b5054a4421611cfdd1c559ed4ed5cb76b492a76d5749aa0",
+    "prototype/assets/scene44.js": "3520d27334dfd4471b5054a4421611cfdd1c559ed4ed5cb76b492a76d5749aa0",
+    "tools/scene44.css": "e0855df571dfa3d4cb44ab9c136fa86b6680170ea506fa82c76ceb512478a39b",
+    "prototype/assets/scene44.css": "e0855df571dfa3d4cb44ab9c136fa86b6680170ea506fa82c76ceb512478a39b",
+    "tools/auction44.js": "c8565ab2806cd0898eb088ecc67af50e05d5b719353ac8df7ae7bb6d4be5d747",
+    "prototype/assets/auction44.js": "c8565ab2806cd0898eb088ecc67af50e05d5b719353ac8df7ae7bb6d4be5d747",
+    "tools/auction44.css": "06ff6ef450375ed4bd5941690fdf831294786c6692d33542fcac675cee653f87",
+    "prototype/assets/auction44.css": "06ff6ef450375ed4bd5941690fdf831294786c6692d33542fcac675cee653f87",
+    "tools/auction43.js": "ca0c8d31cea2e01c897e25a1611cd2916b7506feb24438eab59d37a46594f36c",
+    "prototype/assets/auction43.js": "ca0c8d31cea2e01c897e25a1611cd2916b7506feb24438eab59d37a46594f36c",
+    "tools/sandbox35.js": "094272baa5e66e889c6b7caab26a3e1e78bc5549ec5ee06b21604058e909056d",
+    "prototype/assets/sandbox35.js": "094272baa5e66e889c6b7caab26a3e1e78bc5549ec5ee06b21604058e909056d",
+    "tools/interaction42.js": "e6e5851624cc8be382a658be11f9480adf3bcffd3777f7225a8b67af833b4611",
+    "prototype/assets/interaction42.js": "e6e5851624cc8be382a658be11f9480adf3bcffd3777f7225a8b67af833b4611",
+    "tools/help40.js": "b6de8826ec2be04a6950d87d81c714cdce415ba8aa5404cfa870bc03b7d5f1d6",
+    "prototype/assets/help40.js": "b6de8826ec2be04a6950d87d81c714cdce415ba8aa5404cfa870bc03b7d5f1d6"
+  },
+  "limits": [
+    "节点图基于现有房间与通路，各地专属布局和长篇事件待补",
+    "有限首批库存与NPC私款，不自动补满",
+    "会后短谈并非长篇支线或斗法",
+    "大众/硬核D2实际差异未实现",
+    "独立Edge上下文，未访问玩家日常浏览器存档"
+  ]
+}

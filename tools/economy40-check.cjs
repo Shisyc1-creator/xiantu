@@ -1,0 +1,67 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const {pathToFileURL}=require('url');
+const {chromium}=require('C:/Users/EDY/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const root=path.resolve(__dirname,'..'),out=path.join(root,'.screenshots/batch40');fs.mkdirSync(out,{recursive:true});
+(async()=>{
+ const browser=await chromium.launch({channel:'msedge',headless:true}),results=[],errors=[],failed=[];
+ try{
+  const page=await browser.newPage({viewport:{width:1440,height:1000}});
+  page.on('pageerror',e=>errors.push(e.message));page.on('requestfailed',r=>failed.push(r.url()));
+  await page.goto(pathToFileURL(path.join(root,'prototype/index.html')).href);await page.evaluate(()=>{globalThis.legacyChild47=function(i){if(G.mode==='child'){const c=G.origin==='妖血遗孤'?XTBackground47.contexts.find(c=>XTBackground47.visibleOriginVariants(G.origin,c).some(v=>v.i===i)):XTBackground47.contexts[0];G.birthContext=JSON.parse(JSON.stringify(c));G.fate=genFate();}return chooseChild(i);};});
+  await page.evaluate(()=>{
+   newGame('沈行舟','寒门散修','男');legacyChild47(0);XTOpening46.chooseTimeline(8,8);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();G.mode='idle';G.lastResult=null;
+   tryEvent=()=>null;meetLive=()=>null;G.stones=3000;G.inventory={herb:36};render();
+   globalThis.fixture40=JSON.stringify(G);
+   globalThis.reset40=()=>{G=JSON.parse(fixture40);};
+   globalThis.pass40=(days,mul=0)=>advanceDays(days,{act:'test40',rate:0,incomeMul:mul,eventRate:0});
+   globalThis.snapshot40=()=>JSON.stringify({stones:G.stones,n:G.wallet40.pendingN,d:G.wallet40.pendingD,t:G.t,month:G.month,day:G.day});
+   globalThis.room40=()=>{G.place='county';Object.assign(XTSandbox.state(),{roomAt:'county',room:'shops'});XTWorld36.sync();XTSandbox.go('scene');};
+  });
+  async function check(name,fn){const value=await page.evaluate(fn);assert(value,name);results.push(name);console.log('PASS '+name);}
+  await check('新建账户与已选择难度独立于动作状态',()=>G.difficulty.id==='standard'&&G.mode==='idle'&&G.difficulty.rulesVersion===1&&G.wallet40.version===1);
+  await check('一年整段与360次逐日营生同账',()=>{reset40();pass40(360,1);const a=snapshot40();reset40();for(let i=0;i<360;i++)pass40(1,1);return a===snapshot40()&&Number.isInteger(G.stones);});
+  await check('30日与30次一天累计收益一致',()=>{reset40();const r=pass40(30,1),a=snapshot40();reset40();let paid=0;for(let i=0;i<30;i++)paid+=pass40(1,1).income;return a===snapshot40()&&paid===r.income;});
+  await check('跨年跨世纪分段收益一致且报价为整数',()=>{reset40();G.t=99*12+11;G.month=11;G.day=29;const raw=JSON.stringify(G);pass40(62,1);const a=snapshot40();G=JSON.parse(raw);for(let i=0;i<62;i++)pass40(1,1);return a===snapshot40()&&[currentWalkIncome(),currentIdleIncome(),currentRetreatCost()].every(Number.isInteger);});
+  await check('灵田40枚每360日第9日到账1枚且到期不多发',()=>{reset40();const w=XTWorld36.world();w.contracts.push({playerId:w.playerId,last:XTSandbox.now(),until:XTSandbox.now()+360,annual:40});pass40(9);const first=G.stones===3001;pass40(351);pass40(30);return first&&G.stones===3040&&G.wallet40.pendingN==='0';});
+  await check('灵田逐日与整段结算相同',()=>{reset40();const w=XTWorld36.world();w.contracts.push({playerId:w.playerId,last:XTSandbox.now(),until:XTSandbox.now()+360,annual:40});const raw=JSON.stringify(G);pass40(360);const a=snapshot40();G=JSON.parse(raw);for(let i=0;i<360;i++)pass40(1);return a===snapshot40();});
+  await check('不足一枚权益跨存读档保存并在足额时到账',()=>{reset40();stoneAccrue(G,1,3,'测试');const raw=JSON.stringify(G);restore(raw);const kept=G.wallet40.pendingN==='1'&&G.wallet40.pendingD==='3';stoneAccrue(G,2,3,'测试');return kept&&G.stones===3001&&G.wallet40.pendingN==='0';});
+  await check('旧档10.75原文先备份再分离10枚和3/4权益',()=>{reset40();delete G.wallet40;delete G.difficulty;G.stones=10.75;const raw=JSON.stringify(G);const ok=restore(raw);globalThis.oldRaw40=raw;return ok&&G.stones===10&&G.wallet40.pendingN==='3'&&G.wallet40.pendingD==='4'&&JSON.parse(localStorage.getItem('xiantu_migration40_backups')).some(x=>x.raw===raw);});
+  await check('旧档重载不重复迁移备份或多发灵石',()=>{const count=JSON.parse(localStorage.getItem('xiantu_migration40_backups')).length;restore(oldRaw40);const once=G.stones===10;const raw=JSON.stringify(G);restore(raw);return once&&G.stones===10&&JSON.parse(localStorage.getItem('xiantu_migration40_backups')).length===count;});
+  await check('旧档零头与新应计收益累计而非向上赠送',()=>{restore(oldRaw40);stoneAccrue(G,1,4,'测试');return G.stones===11&&G.wallet40.pendingN==='0';});
+  await check('十进制长尾与科学计数余额精确保留',()=>{const a={stones:.30000000000000004},b={stones:1e-7};stoneAccount(a);stoneAccount(b);return a.wallet40.pendingN==='7500000000000001'&&a.wallet40.pendingD==='25000000000000000'&&b.wallet40.pendingN==='1'&&b.wallet40.pendingD==='10000000';});
+  await check('负数非数字超安全数和损坏权益拒绝载入且保留当前局',()=>{reset40();const before=JSON.stringify(G);const bad=[-1,'bad',null,Number.MAX_SAFE_INTEGER+2];for(const value of bad){const o=JSON.parse(fixture40);delete o.wallet40;o.stones=value;if(restore(JSON.stringify(o))||JSON.stringify(G)!==before)return false;}const o=JSON.parse(fixture40);o.wallet40.pendingD='0';return !restore(JSON.stringify(o))&&JSON.stringify(G)===before;});
+  await check('旧档备份写入失败则不迁移也不替换当前局',()=>{reset40();const before=JSON.stringify(G),o=JSON.parse(fixture40);delete o.wallet40;o.stones=12.875;const proto=Storage.prototype,original=proto.setItem;proto.setItem=function(k,v){if(k==='xiantu_migration40_backups')throw Error('模拟磁盘已满');return original.call(this,k,v);};let ok;try{ok=restore(JSON.stringify(o));}finally{proto.setItem=original;}return !ok&&JSON.stringify(G)===before;});
+  await check('余额刚好等于报价可以购买且账本记录一次收支',()=>{reset40();room40();XTSandbox.dispatch('shop','grocer');const cost=XTSandbox.price('grocer','herb');G.stones=cost;const seq=G.wallet40.sequence,n=G.inventory.herb;sysBuy('herb');return G.stones===0&&G.inventory.herb===n+1&&G.wallet40.sequence===seq+1&&G.wallet40.entries.at(-1).amount===-cost;});
+  await check('应计权益不能充作购买余额',()=>{reset40();room40();XTSandbox.dispatch('shop','grocer');const cost=XTSandbox.price('grocer','herb');G.stones=cost-1;stoneAccrue(G,9,10,'测试');const before=G.inventory.herb;sysBuy('herb');return G.inventory.herb===before&&G.stones===cost-1;});
+  await check('寿尽仅结实际经过日期的营生与工钱',()=>{reset40();G.age=99;G.lifespan=100;G.month=11;G.day=29;const w=XTWorld36.world();w.contracts.push({playerId:w.playerId,last:XTSandbox.now(),until:XTSandbox.now()+360,annual:360});const r=pass40(30);return r.days===1&&r.died&&G.stones===3001;});
+  await check('事件打断后只结实际经过的日子',()=>{reset40();G.month=11;G.day=29;const original=tryEvent;tryEvent=()=>EVENTS.find(e=>e.id==='E008');let r;try{r=advanceDays(40,{act:'walk',rate:0,incomeMul:1,eventRate:1});}finally{tryEvent=original;}return r.days===1&&!!r.event&&G.stones===3000&&G.wallet40.pendingN!=='0';});
+  await check('已选择模式可查询规则且不影响账户',()=>{reset40();return XTEconomy40.rule(G).id==='standard'&&!document.querySelector('[data-difficulty]');});
+  await check('个人四成继承保留份额中的未满一枚权益',()=>{const old={stones:11.75},next={stones:0};stoneAccount(old);stoneInherit(next,old);return next.stones===4&&next.wallet40.pendingN==='7'&&next.wallet40.pendingD==='10';});
+  await check('真实后人接续保留难度版本且每代救援记录独立',()=>{reset40();G.stones=3011;stoneAccrue(G,3,4,'应计工钱');const w=XTWorld36.world(),id='child40_test';w.people[id]={id,name:'沈承舟',sex:'男',realm:0,layer:1,root:'五灵根',birth:XTSandbox.now()-10*360,life:100,place:'county',room:'residence36',alive:true,source:'测试登记后人',parents:[w.playerId]};w.children.push(id);G.rescue40.used=true;G.mode='dead';XTSandbox.dispatch('r36:inherit',id);return G.mode==='idle'&&G.stones===1204&&G.wallet40.pendingN==='7'&&G.wallet40.pendingD==='10'&&G.difficulty.id==='standard'&&G.rescue40.generation===2&&!G.rescue40.used;});
+  await check('六种主身份均能建档恢复并保持账目',()=>{for(const origin of Object.keys(XTWorld36.starts)){newGame('沈行舟',origin,'男');legacyChild47(0);XTOpening46.chooseTimeline(8,8);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();stoneAccrue(G,2,7,'应计工钱');const raw=JSON.stringify(G),amount=G.stones;if(!restore(raw)||G.stones!==amount||G.wallet40.pendingN!=='2'||G.wallet40.pendingD!=='7'||G.difficulty.id!=='standard')return false;}return true;});
+  await check('帮助通过人物设置进入并有八类条目',()=>{reset40();XTSandbox.go('self','settings');XTSandbox.dispatch('guide');return document.querySelectorAll('[data-help40]').length===8&&document.querySelector('#helpSearch40');});
+  await page.locator('#helpSearch40').fill('月俸');
+  await check('关键词搜索跨分类且无关条目不显示',()=>document.querySelector('#helpResults40').textContent.includes('委派与月俸')&&!document.querySelector('#helpResults40').textContent.includes('起步与突破'));
+  await page.locator('#helpSearch40').fill('不存在的关键词');
+  await check('无匹配帮助明确提示',()=>document.querySelector('#helpResults40').textContent.includes('没有匹配'));
+  await page.evaluate(()=>{XTSandbox.go('guide','saves');});
+  const downloadEvent=page.waitForEvent('download');await page.locator('[data-backup40]').first().click();const download=await downloadEvent;
+  assert(download.suggestedFilename().endsWith('.json'));results.push('迁移前原始备份可下载');
+  await download.saveAs(path.join(out,'migration-backup-test.json'));
+  assert(fs.readFileSync(path.join(out,'migration-backup-test.json'),'utf8').includes('10.75'));
+  await page.evaluate(()=>{reset40();stoneAccrue(G,3,4,'应计营生');stoneChange(G,-12,'百草铺购药');XTSandbox.go('guide','money');});await page.screenshot({path:path.join(out,'desktop-help-money.png'),fullPage:true});
+  await page.evaluate(()=>{openSettings();});await page.locator('#openHelp40').click();
+  await check('界面设置也能打开帮助并关闭设置浮层',()=>document.getElementById('settingsPanel').hidden&&document.querySelector('#helpSearch40'));
+  await page.setViewportSize({width:390,height:844});await page.evaluate(()=>{XTSandbox.go('guide','money');});
+  await check('手机帮助与账本不横向溢出',()=>document.documentElement.scrollWidth<=innerWidth&&document.querySelector('#helpResults40').textContent.includes('待结权益'));
+  await page.screenshot({path:path.join(out,'mobile-help-money.png'),fullPage:true});
+  await page.locator('#helpResults40 details').scrollIntoViewIfNeeded();await page.locator('#helpResults40 summary').click();
+  await page.screenshot({path:path.join(out,'mobile-ledger.png'),fullPage:true});
+  await check('手机可滚动到收支记录并展开实际金额',()=>{const e=document.querySelector('#helpResults40 details');return e.open&&e.textContent.includes('百草铺购药')&&e.textContent.includes('-12');});
+  await page.evaluate(()=>{room40();});await page.locator('#contextHelp40').click();
+  await check('场景问号直接定位旅行帮助',()=>XTSandbox.view.sub==='travel'&&document.querySelector('[data-help40="travel"]').classList.contains('on'));
+  assert.deepStrictEqual(errors,[]);assert.deepStrictEqual(failed,[]);
+  fs.writeFileSync(path.join(out,'validation.json'),JSON.stringify({checks:results.length,results,errors,failed,scope:'Edge独立上下文，受控账目/迁移/异常/帮助测试，不访问玩家日常存档。'},null,2));
+  console.log('ALL '+results.length+' CHECKS PASSED');
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});

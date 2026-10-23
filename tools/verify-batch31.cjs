@@ -1,0 +1,26 @@
+const fs=require('fs'),vm=require('vm');
+const html=fs.readFileSync('prototype/index.html','utf8');
+const scripts=[...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(m=>m[1]);
+const elements=new Map(),store=new Map();
+const element=id=>{if(elements.has(id))return elements.get(id);const e={innerHTML:'',textContent:'',value:'',dataset:{},style:{setProperty(){}},classList:{add(){},remove(){},toggle(){},contains(){return false}},querySelectorAll(){return []},querySelector(s){return element(id+s)},addEventListener(){},appendChild(){},remove(){},setAttribute(){},getAttribute(){return null}};elements.set(id,e);return e};
+const document={documentElement:element('html'),body:element('body'),getElementById:element,querySelector:element,querySelectorAll(){return []},createElement:element,addEventListener(){}};
+const localStorage={getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,String(v)),removeItem:k=>store.delete(k)};
+const context={document,localStorage,console,confirm:()=>true,alert(){},setTimeout:()=>0,clearTimeout(){},setInterval:()=>0,clearInterval(){},navigator:{},location:{},matchMedia:()=>({matches:false,addEventListener(){}})};
+context.window=context;context.addEventListener=()=>{};vm.createContext(context);
+for(const source of scripts)new vm.Script(source).runInContext(context,{timeout:10000});
+function check(value,message){if(!value)throw Error(message);console.log('PASS '+message)}
+check(scripts.length===1,'embedded script parses and initializes');
+check(!/<(?:script|link|img)\b[^>]*(?:src|href)=["'](?!data:|#)/i.test(html),'no external script/style/image dependency');
+vm.runInContext("newGame('归档核验','寒门散修');chooseChild(0);XTOpening46.chooseTimeline(8,8);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();ensureGameSystems();G.inventory={};openBagPanel('bag')",context);
+check(elements.get('modal').innerHTML.includes('行囊尚空'),'empty inventory');
+vm.runInContext("G.inventory.herb=2;openBagPanel('bag')",context);
+check(elements.get('modal').innerHTML.includes('青叶草')&&!elements.get('modal').innerHTML.includes('行囊尚空'),'owned inventory');
+vm.runInContext("G.huntBounty={progress:2,claimed:false};globalThis.before=G.stones;sysClaimBounty()",context);
+check(vm.runInContext('G.stones===before&&!G.huntBounty.claimed',context),'incomplete bounty blocked');
+vm.runInContext("G.huntBounty.progress=3;globalThis.contribution=G.sect.contribution;sysClaimBounty()",context);
+check(vm.runInContext('G.stones===before+24&&G.sect.contribution===contribution+3&&G.huntBounty.claimed',context),'completed bounty rewards');
+vm.runInContext('sysClaimBounty()',context);
+check(vm.runInContext('G.stones===before+24&&G.sect.contribution===contribution+3',context),'duplicate bounty blocked');
+vm.runInContext('save()',context);
+check(store.has('xiuxian_slice_v1'),'autosave uses existing key');
+console.log('Validation complete (DOM stubs; browser visual QA not included).');

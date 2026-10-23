@@ -1,0 +1,177 @@
+{
+  "date": "2026-10-22",
+  "version": "第四十一批·住处与模式选择版",
+  "backup": "版本归档/第四十一批住处与模式前_20261022_135814",
+  "checks": {
+    "homesModes": 32,
+    "economyHelp": 29,
+    "shop38": 34,
+    "local37": 34,
+    "world36": 41,
+    "world36Regression": 12,
+    "visual": 113,
+    "total": 295
+  },
+  "sourceMatchesPublished": {
+    "homes41.js": true,
+    "modes41.js": true,
+    "homes41.css": true,
+    "sandbox35.js": true,
+    "world36.js": true,
+    "help40.js": true,
+    "economy40.js": true,
+    "local37.js": true,
+    "shop38.js": true
+  },
+  "evidence": ".screenshots/batch41/",
+  "playerSaveAccessed": false,
+  "limitations": [
+    "模式选择锁定已完成，当前仅默认指引不同，D2实际成长/失败/救援未完成",
+    "场景整体反馈/对话/地点节点式互动及真实竞价拍卖按08计划待做",
+    "凡钱试点待M1.2",
+    "构造状态和旧格式样本，非真实玩家旧档与九境平衡验收",
+    "手机视口模拟，非真机测试"
+  ],
+  "files": [
+    {
+      "path": "prototype/index.html",
+      "bytes": 450003,
+      "sha256": "c4d2e45554e80e0c2bc3089108257aae32cb62f00e08670aae76c8b561684c94"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7027,
+      "sha256": "6ad285509ad75d1f8cb9374feab2240e72f5313a23e450738fee6a5704ee1385"
+    },
+    {
+      "path": "设定与设计/06_凡界开发统合计划.md",
+      "bytes": 34068,
+      "sha256": "941e0f43af6e1533136fb5c062272937744ea86a1532442d22c19ed62f77df88"
+    },
+    {
+      "path": "设定与设计/07_双模式与开发进度清单.md",
+      "bytes": 15466,
+      "sha256": "36d9ab2f56431d583afa782cde8407e01f202e2d45b05cfbeaf5aa9932f9b7e6"
+    },
+    {
+      "path": "设定与设计/08_场景互动与拍卖补全计划.md",
+      "bytes": 7849,
+      "sha256": "18889c8db9007cc9d019cb5831be3e6d21c5e01cf2bf9a56c26372e637c9f8b7"
+    },
+    {
+      "path": "版本说明/第四十一批_住处与模式选择.md",
+      "bytes": 4781,
+      "sha256": "98ec531e15ffa895b4adf5da3dcc8ba9d5bd88b71e48e20de219a915c1c0cc86"
+    },
+    {
+      "path": "tools/homes41.js",
+      "bytes": 10378,
+      "sha256": "903c2e521862026d27e58a93a4f33b1624f2f6b6a7cef0418b37f541b376714e"
+    },
+    {
+      "path": "tools/modes41.js",
+      "bytes": 6919,
+      "sha256": "ff2aba47b7d51f477927bf4351d5bba7f8bedf15b75ffd7f334ae3e94a0ceabb"
+    },
+    {
+      "path": "tools/homes41.css",
+      "bytes": 1015,
+      "sha256": "6b47a3594a4e62a62f3f84863466b6dfb5e48be5223eed509786fb62faadb9e3"
+    },
+    {
+      "path": "tools/sandbox35.js",
+      "bytes": 48234,
+      "sha256": "7068654adc40f7253c4b727a822cff49f8028764d5bbffc9ed58845f9ac16f67"
+    },
+    {
+      "path": "tools/world36.js",
+      "bytes": 35632,
+      "sha256": "5df6ac1a0f46b67861a2ce8cb57e93f9ea7d7fa7b706180ee69f4e3a3b922e3e"
+    },
+    {
+      "path": "tools/help40.js",
+      "bytes": 9542,
+      "sha256": "e0156197b30753d894440494f0237e1ac153c2e9aa9b65250da23c8d7cd49bcd"
+    },
+    {
+      "path": "tools/economy40.js",
+      "bytes": 4263,
+      "sha256": "949f97571209df8535a1e3c4a6cf93377845ae7eb0baa45e5c2b8eeae308a898"
+    },
+    {
+      "path": "tools/local37.js",
+      "bytes": 13935,
+      "sha256": "41e97447f561eefb1a4eb3f87cb8e2b328d396dd96c11dc3d35f9b1befa351ff"
+    },
+    {
+      "path": "tools/shop38.js",
+      "bytes": 14785,
+      "sha256": "d65028d0d358da52270801183041d7213916ba7f19d1d23959974410413a3f66"
+    },
+    {
+      "path": "prototype/assets/homes41.js",
+      "bytes": 10378,
+      "sha256": "903c2e521862026d27e58a93a4f33b1624f2f6b6a7cef0418b37f541b376714e"
+    },
+    {
+      "path": "prototype/assets/modes41.js",
+      "bytes": 6919,
+      "sha256": "ff2aba47b7d51f477927bf4351d5bba7f8bedf15b75ffd7f334ae3e94a0ceabb"
+    },
+    {
+      "path": "prototype/assets/homes41.css",
+      "bytes": 1015,
+      "sha256": "6b47a3594a4e62a62f3f84863466b6dfb5e48be5223eed509786fb62faadb9e3"
+    },
+    {
+      "path": "prototype/assets/sandbox35.js",
+      "bytes": 48234,
+      "sha256": "7068654adc40f7253c4b727a822cff49f8028764d5bbffc9ed58845f9ac16f67"
+    },
+    {
+      "path": "prototype/assets/world36.js",
+      "bytes": 35632,
+      "sha256": "5df6ac1a0f46b67861a2ce8cb57e93f9ea7d7fa7b706180ee69f4e3a3b922e3e"
+    },
+    {
+      "path": "prototype/assets/help40.js",
+      "bytes": 9542,
+      "sha256": "e0156197b30753d894440494f0237e1ac153c2e9aa9b65250da23c8d7cd49bcd"
+    },
+    {
+      "path": "prototype/assets/economy40.js",
+      "bytes": 4263,
+      "sha256": "949f97571209df8535a1e3c4a6cf93377845ae7eb0baa45e5c2b8eeae308a898"
+    },
+    {
+      "path": "prototype/assets/local37.js",
+      "bytes": 13935,
+      "sha256": "41e97447f561eefb1a4eb3f87cb8e2b328d396dd96c11dc3d35f9b1befa351ff"
+    },
+    {
+      "path": "prototype/assets/shop38.js",
+      "bytes": 14785,
+      "sha256": "d65028d0d358da52270801183041d7213916ba7f19d1d23959974410413a3f66"
+    },
+    {
+      "path": "tools/homes41-check.cjs",
+      "bytes": 15311,
+      "sha256": "07e8c2065bf50099e03dce137bed71bc7e77105eccd6a73101ee1f35f05f6e3c"
+    },
+    {
+      "path": "tools/visual41-check.cjs",
+      "bytes": 15615,
+      "sha256": "b57131573d509b24d8fcfbb4654e6c4c1ef6df4caa1f3bdcb352f74e666ebc1a"
+    },
+    {
+      "path": "tools/economy40-check.cjs",
+      "bytes": 11736,
+      "sha256": "f7626ea664b60cf76a532dfa75fc378993f6b2f57234377ea6441440cf01f1fc"
+    },
+    {
+      "path": "tools/world36-check.cjs",
+      "bytes": 14010,
+      "sha256": "f3bc547b26b3d4d458aec41142beaaeed730fb20b34320222a130c05c4bf8c82"
+    }
+  ]
+}

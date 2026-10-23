@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-22",
+  "version": "第四十三批·县域真实竞价拍卖版",
+  "backup": "版本归档/第四十三批县域拍卖前_20261022_151935",
+  "checks": {
+    "auction": 30,
+    "interaction": 30,
+    "homesModes": 32,
+    "economyHelp": 29,
+    "shop38": 34,
+    "local37": 34,
+    "world36": 41,
+    "world36Regression": 12,
+    "visual": 113,
+    "total": 355
+  },
+  "sourceMatchesPublished": {
+    "auction43.js": true,
+    "auction43.css": true,
+    "sandbox35.js": true,
+    "interaction42.js": true,
+    "help40.js": true
+  },
+  "sha256": {
+    "prototype/index.html": "4744b3daa5aa4f1667bdee5fa9bc217417e4c6129de6487916b6395b67bb05d4",
+    "README.md": "6bacd73e87b8463459588ef18ce1d511d3b911fd3f7bfadada7a391a32059379",
+    "设定与设计/06_凡界开发统合计划.md": "bc0c5c51ab8abc8a76830a72a56a3f9e7c99c774181bb008c0bf523e82e596b0",
+    "设定与设计/07_双模式与开发进度清单.md": "a571a6b8157ac248038b351584be64c95f6f3275a887662b57e756bec626bfbf",
+    "设定与设计/08_场景互动与拍卖补全计划.md": "977c1528dc1e60e95132608113e9b5ff245aafe0ea1588ecc15eb9a9eefb4817",
+    "版本说明/第四十三批_县域真实竞价拍卖.md": "2025a08b01ce56a1fd17627c5c362eded76dd70f3aad62379c01a3335822b047",
+    "tools/auction43-check.cjs": "a043cf045ae9d8f21f7b330c4efac867c7699c1f6fd5dcd6caacb00a70468cf7",
+    "tools/interaction42-check.cjs": "16a909a37db5add60f36f02db5d4bc0bf076ae02d8db7cde8f01fd1c89fa7702",
+    "tools/auction43.js": "90e6ee05cea3d3dbab1fb720498731cfa3b62f93ff9add60d510143196b0821f",
+    "prototype/assets/auction43.js": "90e6ee05cea3d3dbab1fb720498731cfa3b62f93ff9add60d510143196b0821f",
+    "tools/auction43.css": "b182a2127a486ecd71a391e8ae6ea7d967c573fd291e14db83aa18f302377fac",
+    "prototype/assets/auction43.css": "b182a2127a486ecd71a391e8ae6ea7d967c573fd291e14db83aa18f302377fac",
+    "tools/sandbox35.js": "19b5c3a744e24b181c2c91236c69af6b40323a09bb583920e98615f81c3cf73c",
+    "prototype/assets/sandbox35.js": "19b5c3a744e24b181c2c91236c69af6b40323a09bb583920e98615f81c3cf73c",
+    "tools/interaction42.js": "aa1524751cbc72c2a338cd0b15c6becc09982253d5eb1d7d22b7456d6cd7ef15",
+    "prototype/assets/interaction42.js": "aa1524751cbc72c2a338cd0b15c6becc09982253d5eb1d7d22b7456d6cd7ef15",
+    "tools/help40.js": "a7d2a52293bd29b7e2774ca875e5338be1242b7c73a1384257acf3270e95987d",
+    "prototype/assets/help40.js": "a7d2a52293bd29b7e2774ca875e5338be1242b7c73a1384257acf3270e95987d"
+  },
+  "limits": [
+    "县域固定三拍品首批样例，不自动补货",
+    "同日议价，三十日后只重拍余货",
+    "府城、寄拍、鉴定佣金、会后关系尚未实现",
+    "独立测试上下文，未访问玩家真实存档"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "version": 37,
+  "checks": {
+    "local37": 34,
+    "world36": 41,
+    "regression36": 12,
+    "total": 87
+  },
+  "backup": "版本归档/第三十七批沙盒药路前_20261021_171243",
+  "files": [
+    {
+      "file": "prototype/index.html",
+      "sha256": "9bede8672dfa8fb95cb8f278303206a921686d77f34d87ac932e551cc6a679ee"
+    },
+    {
+      "file": "tools/sandbox35.js",
+      "sha256": "06cdfa2d77da1195c81bc0f39b01e5ae056b5036ccab0c2719483a4b6f2d7e24"
+    },
+    {
+      "file": "prototype/assets/sandbox35.js",
+      "sha256": "06cdfa2d77da1195c81bc0f39b01e5ae056b5036ccab0c2719483a4b6f2d7e24"
+    },
+    {
+      "file": "tools/local37.js",
+      "sha256": "2fccf82ba6b59c1b5e76b6657df7ef96da99fb62e7a8e5e3cfdff2c92a9457e9"
+    },
+    {
+      "file": "prototype/assets/local37.js",
+      "sha256": "2fccf82ba6b59c1b5e76b6657df7ef96da99fb62e7a8e5e3cfdff2c92a9457e9"
+    },
+    {
+      "file": "tools/local37-check.cjs",
+      "sha256": "5107a3cd2eb43ada979171d700505e4dcc888e105efb022a195dd187a45386a5"
+    },
+    {
+      "file": "README.md",
+      "sha256": "da2c84be013f225cd9a718b3b86e989ac3e24a378449d09772eee990439dae79"
+    },
+    {
+      "file": "版本说明/第三十七批_沙盒药路.md",
+      "sha256": "0994e8d836920963fed7b9f6a99164eb2c1d9ff9366b48336b15059156220aa1"
+    },
+    {
+      "file": "设定与设计/06_凡界开发统合计划.md",
+      "sha256": "75b7095244349f0c5b591b89624ab1bdb22a5841c0bde42a283f2b064b795a5c"
+    }
+  ]
+}

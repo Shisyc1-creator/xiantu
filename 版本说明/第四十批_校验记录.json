@@ -1,0 +1,132 @@
+{
+  "date": "2026-10-22",
+  "version": "第四十批·账目与帮助版",
+  "backup": "版本归档/第四十批账目与帮助前_20261022_134320",
+  "checks": {
+    "economyHelp": 29,
+    "shop38": 34,
+    "local37": 34,
+    "world36": 41,
+    "world36Regression": 12,
+    "visual": 113,
+    "total": 263
+  },
+  "sourceMatchesPublished": {
+    "economy40.js": true,
+    "help40.js": true,
+    "sandbox35.js": true,
+    "world36.js": true,
+    "local37.js": true,
+    "shop38.js": true
+  },
+  "evidence": ".screenshots/batch40/",
+  "playerSaveAccessed": false,
+  "limitations": [
+    "受控旧格式样本，非真实玩家旧档验收",
+    "大众/硬核尚未开放",
+    "九境与长期经济尚未平衡",
+    "手机浏览器视口验收，非真机测试"
+  ],
+  "files": [
+    {
+      "path": "prototype/index.html",
+      "bytes": 449874,
+      "sha256": "733f2464edeb0731433027b47d2937713367107b8990f75756e65b213e9bd114"
+    },
+    {
+      "path": "tools/economy40.js",
+      "bytes": 4263,
+      "sha256": "949f97571209df8535a1e3c4a6cf93377845ae7eb0baa45e5c2b8eeae308a898"
+    },
+    {
+      "path": "tools/help40.js",
+      "bytes": 7082,
+      "sha256": "80446f88ad3adf8ab618dd8566617eae0c572622387e1b13be875e36d8dcf4ea"
+    },
+    {
+      "path": "tools/sandbox35.js",
+      "bytes": 48016,
+      "sha256": "81f5a0085147a5432a6521d6f2e97819464656650c9089a14ec41d77227ba2be"
+    },
+    {
+      "path": "tools/world36.js",
+      "bytes": 35669,
+      "sha256": "23417679ccc388393f6124f5898f8ffed0b9a3252c0bbe2f7d3a623bad47a3f9"
+    },
+    {
+      "path": "tools/local37.js",
+      "bytes": 13935,
+      "sha256": "41e97447f561eefb1a4eb3f87cb8e2b328d396dd96c11dc3d35f9b1befa351ff"
+    },
+    {
+      "path": "tools/shop38.js",
+      "bytes": 14785,
+      "sha256": "d65028d0d358da52270801183041d7213916ba7f19d1d23959974410413a3f66"
+    },
+    {
+      "path": "tools/economy40-check.cjs",
+      "bytes": 11670,
+      "sha256": "c246c67e67140f658bcd03804fc284ae906294c9e42ddcccf069b696f235c5ce"
+    },
+    {
+      "path": "tools/visual40-check.cjs",
+      "bytes": 15618,
+      "sha256": "ea26f3a00c6e50393d1f2fb9e6b6a6fb51447885dec03bb3946cdfb2f392cb7d"
+    },
+    {
+      "path": "tools/world36-check.cjs",
+      "bytes": 13938,
+      "sha256": "1315b0a8d793a6bada4d316b648a00cdabd4734bf983d7d4a383d2536e8a74db"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6207,
+      "sha256": "99e444b805cd888a2296e1617e3c40f78d6cae6edd0f246bf38a13eaab54d26d"
+    },
+    {
+      "path": "设定与设计/06_凡界开发统合计划.md",
+      "bytes": 33199,
+      "sha256": "1b082dc321391b7b49593385066ee2548bbc6ee596aec82576f5e468a058c3f2"
+    },
+    {
+      "path": "设定与设计/07_双模式与开发进度清单.md",
+      "bytes": 13539,
+      "sha256": "4737e8df8e86ba329a6d4b9647ed83a2da9b15d64bb3dc0a73c5860657acf1b6"
+    },
+    {
+      "path": "版本说明/第四十批_账目与帮助.md",
+      "bytes": 4517,
+      "sha256": "9cef00a23f787170fb9b226a2aed7db957edc52a3b3794d0cb6d145b3dc5c9b6"
+    },
+    {
+      "path": "prototype/assets/economy40.js",
+      "bytes": 4263,
+      "sha256": "949f97571209df8535a1e3c4a6cf93377845ae7eb0baa45e5c2b8eeae308a898"
+    },
+    {
+      "path": "prototype/assets/help40.js",
+      "bytes": 7082,
+      "sha256": "80446f88ad3adf8ab618dd8566617eae0c572622387e1b13be875e36d8dcf4ea"
+    },
+    {
+      "path": "prototype/assets/sandbox35.js",
+      "bytes": 48016,
+      "sha256": "81f5a0085147a5432a6521d6f2e97819464656650c9089a14ec41d77227ba2be"
+    },
+    {
+      "path": "prototype/assets/world36.js",
+      "bytes": 35669,
+      "sha256": "23417679ccc388393f6124f5898f8ffed0b9a3252c0bbe2f7d3a623bad47a3f9"
+    },
+    {
+      "path": "prototype/assets/local37.js",
+      "bytes": 13935,
+      "sha256": "41e97447f561eefb1a4eb3f87cb8e2b328d396dd96c11dc3d35f9b1befa351ff"
+    },
+    {
+      "path": "prototype/assets/shop38.js",
+      "bytes": 14785,
+      "sha256": "d65028d0d358da52270801183041d7213916ba7f19d1d23959974410413a3f66"
+    }
+  ]
+}

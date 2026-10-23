@@ -1,0 +1,2569 @@
+{
+  "version": "第四十七批及炼气路线/百艺续改",
+  "date": "2026-10-23",
+  "items": {
+    "qiPill": {
+      "id": "qiPill",
+      "name": "聚气散",
+      "currency": "stone",
+      "kind": "丹药",
+      "grade": "一阶下品",
+      "source": "百草铺、按方炼制",
+      "price": 18,
+      "status": "已接入既有或本批玩法",
+      "desc": "修行辅助丹药。服用后获得当前境界满层需求的 4% 修为；每次最多补至当前境界圆满，不直接突破。"
+    },
+    "healingPowder": {
+      "id": "healingPowder",
+      "name": "养脉散",
+      "currency": "stone",
+      "kind": "丹药",
+      "grade": "一阶下品",
+      "source": "百草铺、按方炼制",
+      "price": 12,
+      "status": "已接入既有或本批玩法",
+      "desc": "缓解伤势。服用后减少 1 年伤势；无伤时不消耗。"
+    },
+    "herb": {
+      "id": "herb",
+      "name": "青叶草",
+      "currency": "stone",
+      "kind": "灵药材",
+      "grade": "一阶下品",
+      "source": "各地药坡采集、百草铺",
+      "price": 3,
+      "status": "已接入既有或本批玩法",
+      "desc": "常见灵草，山野可采，是基础丹药的药引。"
+    },
+    "ironOre": {
+      "id": "ironOre",
+      "name": "赤铁砂",
+      "currency": "stone",
+      "kind": "灵矿",
+      "grade": "一阶下品",
+      "source": "山野采集、铁匠铺",
+      "price": 5,
+      "status": "已接入既有或本批玩法",
+      "desc": "含有微弱灵性的赤铁砂，可用于炼制低阶法器与法衣。"
+    },
+    "lowTalisman": {
+      "id": "lowTalisman",
+      "name": "护身符",
+      "currency": "stone",
+      "kind": "符箓",
+      "grade": "一阶下品",
+      "source": "坊市交易",
+      "price": 16,
+      "status": "已接入既有或本批玩法",
+      "desc": "一次性护身符；遭遇风险时可消耗，抵消一次轻微伤害（当前原型以恢复 1 年伤势体现）。"
+    },
+    "ironSword": {
+      "id": "ironSword",
+      "name": "青钢短剑",
+      "currency": "wen",
+      "kind": "兵器",
+      "grade": "凡品·精制",
+      "slot": "weapon",
+      "source": "百工坊购买或凡铁锻造",
+      "effect": "主修修炼效率+2%；现有遭遇战中提供兵器加成",
+      "price": 900,
+      "status": "已接入既有或本批玩法",
+      "desc": "凡铁精制兵器；装备后修炼产出提高2%，遭遇战提供兵器加成。"
+    },
+    "qiManual": {
+      "id": "qiManual",
+      "name": "引气篇",
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·残篇",
+      "manual": "引气篇",
+      "source": "药铺与坊市",
+      "price": 45,
+      "status": "已接入既有或本批玩法",
+      "desc": "黄阶心法残篇。研读后修炼效率小幅提升。"
+    },
+    "blankSlip": {
+      "id": "blankSlip",
+      "name": "空白丹方",
+      "currency": "stone",
+      "kind": "制丹辅材",
+      "grade": "一阶下品",
+      "source": "坊市",
+      "price": 20,
+      "status": "用途待接入",
+      "desc": "可供炼丹试配的基础丹方。"
+    },
+    "clothArmor": {
+      "id": "clothArmor",
+      "name": "青纹护衣",
+      "currency": "stone",
+      "kind": "法衣",
+      "grade": "一阶下品",
+      "slot": "armor",
+      "woundAvoid": 0.45,
+      "source": "工坊、府城拍卖",
+      "price": 42,
+      "status": "已接入既有或本批玩法",
+      "desc": "以灵矿和药草辅助缝制的低阶法衣，装备后降低遭遇战伤势风险。"
+    },
+    "spiritBlade": {
+      "id": "spiritBlade",
+      "name": "引灵剑",
+      "currency": "stone",
+      "kind": "法器",
+      "grade": "一阶下品",
+      "slot": "weapon",
+      "source": "府城商店、拍卖或炼器",
+      "price": 120,
+      "status": "已接入既有或本批玩法",
+      "desc": "低阶修士法器，筑基以下亦可使用；提升遭遇战胜算。"
+    },
+    "bloodQiPill": {
+      "id": "bloodQiPill",
+      "name": "凝血丹",
+      "currency": "stone",
+      "kind": "丹药",
+      "grade": "一阶中品",
+      "source": "府城商人、拍卖",
+      "price": 26,
+      "status": "已接入既有或本批玩法",
+      "desc": "恢复两年伤势的丹药。"
+    },
+    "mobileFurnace": {
+      "id": "mobileFurnace",
+      "name": "便携丹炉",
+      "currency": "stone",
+      "kind": "炼丹工具",
+      "grade": "一阶下品",
+      "source": "炉坊与府城商铺",
+      "price": 65,
+      "status": "已接入既有或本批玩法",
+      "desc": "安全落脚处可开炉；野外、山道和秘境不能使用。"
+    },
+    "forgeKit": {
+      "id": "forgeKit",
+      "name": "炼器工具箱",
+      "currency": "stone",
+      "kind": "炼器工具",
+      "grade": "一阶下品",
+      "source": "工坊与府城商铺",
+      "price": 75,
+      "status": "已接入既有或本批玩法",
+      "desc": "带小砧、锻锤与火匣；需安全作业场地。"
+    },
+    "alchemyPrimer": {
+      "id": "alchemyPrimer",
+      "name": "基础丹方册",
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "一阶·丹方",
+      "source": "炉坊与药铺",
+      "price": 24,
+      "status": "已接入既有或本批玩法",
+      "desc": "载聚气散、养脉散丹方。请在行囊阅读。"
+    },
+    "forgePrimer": {
+      "id": "forgePrimer",
+      "name": "基础器谱",
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "一阶·器谱",
+      "source": "铁匠铺",
+      "recipes": [
+        "clothArmor"
+      ],
+      "price": 28,
+      "status": "已接入既有或本批玩法",
+      "desc": "载青纹护衣的基础炼制工艺；凡器与引灵剑另有专册。"
+    },
+    "pigIron47": {
+      "id": "pigIron47",
+      "name": "凡铁料",
+      "currency": "wen",
+      "kind": "材料",
+      "grade": "凡品·普通",
+      "source": "百工坊铁匠铺",
+      "price": 60,
+      "status": "已接入既有或本批玩法",
+      "desc": "普通铁料，三份可锻青钢短剑；不含灵性。"
+    },
+    "linen47": {
+      "id": "linen47",
+      "name": "麻布",
+      "currency": "wen",
+      "kind": "材料",
+      "grade": "凡品·普通",
+      "source": "县城百工坊",
+      "price": 30,
+      "status": "已接入既有或本批玩法",
+      "desc": "普通纤维织成的布料，两匹可缝护身布衣。"
+    },
+    "mundanePatterns47": {
+      "id": "mundanePatterns47",
+      "name": "凡器工艺册",
+      "currency": "wen",
+      "kind": "书册",
+      "grade": "凡品·工艺",
+      "source": "铁匠铺",
+      "recipes": [
+        "ironSword",
+        "linenArmor47"
+      ],
+      "price": 240,
+      "status": "已接入既有或本批玩法",
+      "desc": "记有青钢短剑和护身布衣的工艺；阅读后可在铁匠铺制作。"
+    },
+    "linenArmor47": {
+      "id": "linenArmor47",
+      "name": "护身布衣",
+      "currency": "wen",
+      "kind": "护具",
+      "grade": "凡品·精制",
+      "slot": "armor",
+      "woundAvoid": 0.2,
+      "source": "百工坊购买或麻布缝制",
+      "price": 260,
+      "status": "已接入既有或本批玩法",
+      "desc": "加厚布衣，凡品护具；遭遇战中有20%机会少受一年伤势。"
+    },
+    "spiritTimber47": {
+      "id": "spiritTimber47",
+      "name": "青纹灵木",
+      "currency": "stone",
+      "kind": "灵木",
+      "grade": "一阶下品",
+      "source": "山林药坡寻材、铁匠铺",
+      "price": 8,
+      "status": "已接入既有或本批玩法",
+      "desc": "含有微弱木灵气，一阶下品灵材；两段可作引灵剑的导灵剑柄。"
+    },
+    "bladePattern47": {
+      "id": "bladePattern47",
+      "name": "引灵剑器谱",
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "一阶·器谱",
+      "source": "铁匠铺与府城商铺",
+      "recipes": [
+        "spiritBlade"
+      ],
+      "price": 28,
+      "status": "已接入既有或本批玩法",
+      "desc": "记载引灵剑的炼制工艺，需赤铁砂四份、青纹灵木两段和实际炉火。"
+    },
+    "edge51": {
+      "id": "edge51",
+      "name": "《养锋诀》抄本",
+      "price": 18,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。凝气于锋，短促发力；持剑时擅长剑术。"
+    },
+    "body51": {
+      "id": "body51",
+      "name": "《锻骨诀》抄本",
+      "price": 18,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。以真元温养筋骨，发力迅猛，近身招式较稳。"
+    },
+    "spirit51": {
+      "id": "spirit51",
+      "name": "《御器诀》抄本",
+      "price": 18,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。以心神牵引器物，持续分念；需法器才能御器攻击。"
+    },
+    "focus51": {
+      "id": "focus51",
+      "name": "《定神篇》抄本",
+      "price": 10,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。稳住分念，减轻精细运气消耗。"
+    },
+    "restore51": {
+      "id": "restore51",
+      "name": "《养元诀》抄本",
+      "price": 10,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。调息时收束散逸真元，擅长战中续气。"
+    },
+    "calm51": {
+      "id": "calm51",
+      "name": "《缓息诀》抄本",
+      "price": 10,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。维持舒缓气息，守势时加固气罩；与短促爆发的运气要求相冲。"
+    },
+    "sword51": {
+      "id": "sword51",
+      "name": "《点锋剑术》抄本",
+      "price": 8,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。借剑锋刺破守势，须装备兵器。"
+    },
+    "palm51": {
+      "id": "palm51",
+      "name": "《震脉掌》抄本",
+      "price": 8,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。近身发劲，击中后打乱敌人的蓄势。"
+    },
+    "control51": {
+      "id": "control51",
+      "name": "《牵丝御器术》抄本",
+      "price": 8,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。以法器牵制敌手，削弱下一次攻击；须装备法器。"
+    },
+    "edgeMid52": {
+      "id": "edgeMid52",
+      "name": "《锋息剑诀》抄本",
+      "price": 28,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。收束锋息，剑术破甲；无养生条目。"
+    },
+    "edgeLate52": {
+      "id": "edgeLate52",
+      "name": "《凝锋归一诀》抄本",
+      "price": 42,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。把散逸剑气收归一线，伤害稳定，真元消耗较高。"
+    },
+    "bodyMid52": {
+      "id": "bodyMid52",
+      "name": "《石肤养脉功》抄本",
+      "price": 28,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。温养筋骨，偏重气血与硬抗，不提高突破成算。"
+    },
+    "bodyLate52": {
+      "id": "bodyLate52",
+      "name": "《龙虎炼形篇》抄本",
+      "price": 42,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。筋骨与发力同练，守势更稳，近身反击更重。"
+    },
+    "spiritMid52": {
+      "id": "spiritMid52",
+      "name": "《分念御物诀》抄本",
+      "price": 28,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。维持多次精细御器，真元上限略增。"
+    },
+    "spiritLate52": {
+      "id": "spiritLate52",
+      "name": "《回环控器诀》抄本",
+      "price": 42,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。器物回环而不散念，擅长连续牵制。"
+    },
+    "edgeSkillMid52": {
+      "id": "edgeSkillMid52",
+      "name": "《折锋剑势》抄本",
+      "price": 16,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。破甲剑势，需兵器。"
+    },
+    "edgeSkillLate52": {
+      "id": "edgeSkillLate52",
+      "name": "《归一贯锋》抄本",
+      "price": 26,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。集中剑气贯甲，需兵器。"
+    },
+    "bodySkillMid52": {
+      "id": "bodySkillMid52",
+      "name": "《截脉崩劲》抄本",
+      "price": 16,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。近身发劲，打断蓄势并稍作护身。"
+    },
+    "bodySkillLate52": {
+      "id": "bodySkillLate52",
+      "name": "《龙虎震身》抄本",
+      "price": 26,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。以筋骨发劲，重击同时稳住身形。"
+    },
+    "spiritSkillMid52": {
+      "id": "spiritSkillMid52",
+      "name": "《回环御器术》抄本",
+      "price": 16,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。器物折返，削弱反击。"
+    },
+    "spiritSkillLate52": {
+      "id": "spiritSkillLate52",
+      "name": "《分光牵制术》抄本",
+      "price": 26,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。分念牵制，延续两回合。"
+    },
+    "elementBase52": {
+      "id": "elementBase52",
+      "name": "《五行吐纳诀》抄本",
+      "price": 18,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。依五行变化吐纳，术法各有用途，不依灵根名称锁死学习资格。"
+    },
+    "elementMid52": {
+      "id": "elementMid52",
+      "name": "《五气周流诀》抄本",
+      "price": 28,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。五气周流，术法衔接较省真元。"
+    },
+    "elementLate52": {
+      "id": "elementLate52",
+      "name": "《五行归元诀》抄本",
+      "price": 42,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。收束五行气机，灵气变化仍受真元和所备术法限制。"
+    },
+    "metal052": {
+      "id": "metal052",
+      "name": "《金芒术》抄本",
+      "price": 8,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。金行术法：破甲。"
+    },
+    "metal152": {
+      "id": "metal152",
+      "name": "《贯金术》抄本",
+      "price": 16,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。金行术法：破甲。"
+    },
+    "metal252": {
+      "id": "metal252",
+      "name": "《百炼金芒》抄本",
+      "price": 26,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。金行术法：破甲。"
+    },
+    "wood052": {
+      "id": "wood052",
+      "name": "《青藤缚影》抄本",
+      "price": 8,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。木行术法：缠绕削弱。"
+    },
+    "wood152": {
+      "id": "wood152",
+      "name": "《藤络绞缚》抄本",
+      "price": 16,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。木行术法：缠绕削弱。"
+    },
+    "wood252": {
+      "id": "wood252",
+      "name": "《古木盘根》抄本",
+      "price": 26,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。木行术法：缠绕削弱。"
+    },
+    "water052": {
+      "id": "water052",
+      "name": "《寒流术》抄本",
+      "price": 8,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。水行术法：缓冲攻势。"
+    },
+    "water152": {
+      "id": "water152",
+      "name": "《寒潮凝息》抄本",
+      "price": 16,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。水行术法：缓冲攻势。"
+    },
+    "water252": {
+      "id": "water252",
+      "name": "《玄水回澜》抄本",
+      "price": 26,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。水行术法：缓冲攻势。"
+    },
+    "fire052": {
+      "id": "fire052",
+      "name": "《离火术》抄本",
+      "price": 8,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。火行术法：持续灼伤。"
+    },
+    "fire152": {
+      "id": "fire152",
+      "name": "《炎纹连焰》抄本",
+      "price": 16,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。火行术法：持续灼伤。"
+    },
+    "fire252": {
+      "id": "fire252",
+      "name": "《离火燎原》抄本",
+      "price": 26,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。火行术法：持续灼伤。"
+    },
+    "earth052": {
+      "id": "earth052",
+      "name": "《土垣术》抄本",
+      "price": 8,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。土行术法：持续护盾。"
+    },
+    "earth152": {
+      "id": "earth152",
+      "name": "《岩垒镇护》抄本",
+      "price": 16,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。土行术法：持续护盾。"
+    },
+    "earth252": {
+      "id": "earth252",
+      "name": "《磐石镇身》抄本",
+      "price": 26,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。土行术法：持续护盾。"
+    },
+    "conceal52": {
+      "id": "conceal52",
+      "name": "《藏息行气篇》抄本",
+      "price": 18,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。收敛气息，战中身法与撤退得到辅助，不增寿。"
+    },
+    "clear52": {
+      "id": "clear52",
+      "name": "《清心守窍诀》抄本",
+      "price": 28,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。偏重心神稳定与精细运气，无修炼速度与寿元条目。"
+    },
+    "nourish52": {
+      "id": "nourish52",
+      "name": "《回春养脉篇》抄本",
+      "price": 42,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。偏重续气与养生，不提高突破成算。"
+    },
+    "talismanBase52": {
+      "id": "talismanBase52",
+      "name": "《符墨导气篇》抄本",
+      "price": 18,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。温养符墨气机，符箓需实际制作和消耗。"
+    },
+    "talismanMid52": {
+      "id": "talismanMid52",
+      "name": "《百纹定符诀》抄本",
+      "price": 28,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。稳住符纹，增强符箓发挥。"
+    },
+    "talismanLate52": {
+      "id": "talismanLate52",
+      "name": "《灵纹归藏诀》抄本",
+      "price": 42,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。收束复杂符纹，不省去纸墨与制作时间。"
+    },
+    "arrayBase52": {
+      "id": "arrayBase52",
+      "name": "《阵枢理气篇》抄本",
+      "price": 18,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。辨阵眼与阵材，阵法有攻击、防护、困敌和辅助之分。"
+    },
+    "arrayMid52": {
+      "id": "arrayMid52",
+      "name": "《六仪承阵诀》抄本",
+      "price": 28,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。承接阵枢，阵材仍有限。"
+    },
+    "arrayLate52": {
+      "id": "arrayLate52",
+      "name": "《灵枢合阵篇》抄本",
+      "price": 42,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。稳固阵枢，不能凭低阶阵法抬高一地灵脉品阶。"
+    },
+    "petBase52": {
+      "id": "petBase52",
+      "name": "《同息御兽篇》抄本",
+      "price": 18,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。以实际相处建立信任，灵兽不是消耗品。"
+    },
+    "petMid52": {
+      "id": "petMid52",
+      "name": "《灵契养息诀》抄本",
+      "price": 28,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。以稳定照料与灵契协调行动。"
+    },
+    "petLate52": {
+      "id": "petLate52",
+      "name": "《合息通灵篇》抄本",
+      "price": 42,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。灵契更稳，饥饿与伤病仍会影响协同。"
+    },
+    "puppetBase52": {
+      "id": "puppetBase52",
+      "name": "《机枢分念篇》抄本",
+      "price": 18,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。以分念驱动木傀，须有实物与能量。"
+    },
+    "puppetMid52": {
+      "id": "puppetMid52",
+      "name": "《双枢控机诀》抄本",
+      "price": 28,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。控制更稳，材料与维修不可省略。"
+    },
+    "puppetLate52": {
+      "id": "puppetLate52",
+      "name": "《百机守一篇》抄本",
+      "price": 42,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。多枢归一，炼气仍只操纵一具随战傀儡。"
+    },
+    "alchemyBase52": {
+      "id": "alchemyBase52",
+      "name": "《辨药温炉诀》抄本",
+      "price": 18,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。辨药与温炉，丹药须按方炼制。"
+    },
+    "alchemyMid52": {
+      "id": "alchemyMid52",
+      "name": "《三候养炉篇》抄本",
+      "price": 28,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。以三候辨火力，偏恢复与温养。"
+    },
+    "alchemyLate52": {
+      "id": "alchemyLate52",
+      "name": "《丹息归元篇》抄本",
+      "price": 42,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。丹息收束，不凭空成丹。"
+    },
+    "forgeBase52": {
+      "id": "forgeBase52",
+      "name": "《锻火运气篇》抄本",
+      "price": 18,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "黄阶·1层篇",
+      "source": "县中传习书摊、山门传习",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。配合炉火锻打，偏器物与火候。"
+    },
+    "forgeMid52": {
+      "id": "forgeMid52",
+      "name": "《器纹回火诀》抄本",
+      "price": 28,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·4层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。回火定纹，器物仍按材料与炉位制作。"
+    },
+    "forgeLate52": {
+      "id": "forgeLate52",
+      "name": "《百锻凝纹篇》抄本",
+      "price": 42,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "玄阶·8层篇",
+      "source": "本地传习者核验修行经历后出售",
+      "desc": "在行囊阅读收录，再到修行 → 功法研习入门。凝练器纹，不越阶制造高阶法宝。"
+    },
+    "blankPaper52": {
+      "id": "blankPaper52",
+      "name": "符纸",
+      "price": 2,
+      "kind": "材料",
+      "grade": "一阶下品",
+      "desc": "绘符用纸，须与灵墨配合。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "spiritInk52": {
+      "id": "spiritInk52",
+      "name": "灵墨",
+      "price": 3,
+      "kind": "材料",
+      "grade": "一阶下品",
+      "desc": "绘符与标记阵眼的辅材。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "arrayStone52": {
+      "id": "arrayStone52",
+      "name": "阵石",
+      "price": 4,
+      "kind": "材料",
+      "grade": "一阶下品",
+      "desc": "阵眼的承载材料，布阵后随消耗品使用。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "beastFood52": {
+      "id": "beastFood52",
+      "name": "兽粮",
+      "price": 2,
+      "kind": "灵兽用品",
+      "grade": "一阶下品",
+      "desc": "用于喂养与训练；饥饿灵兽不随战。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "firePaper52": {
+      "id": "firePaper52",
+      "name": "赤焰符",
+      "price": 10,
+      "kind": "符箓",
+      "grade": "一阶下品",
+      "desc": "战中消耗一张，造成火伤与两回合灼伤。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "guardPaper52": {
+      "id": "guardPaper52",
+      "name": "金罡符",
+      "price": 14,
+      "kind": "符箓",
+      "grade": "一阶中品",
+      "desc": "战中消耗一张，形成可保留的护盾。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "bindPaper52": {
+      "id": "bindPaper52",
+      "name": "缚灵符",
+      "price": 18,
+      "kind": "符箓",
+      "grade": "一阶上品",
+      "desc": "战中消耗一张，打断蓄势并削弱反击。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "attackArray52": {
+      "id": "attackArray52",
+      "name": "赤芒阵具",
+      "price": 18,
+      "kind": "阵具",
+      "grade": "一阶下品",
+      "desc": "攻击阵，需实际布阵并花真元催动。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "guardArray52": {
+      "id": "guardArray52",
+      "name": "磐石阵具",
+      "price": 18,
+      "kind": "阵具",
+      "grade": "一阶中品",
+      "desc": "防护阵，抵挡进攻，阵力耗尽后失去作用。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "trapArray52": {
+      "id": "trapArray52",
+      "name": "缠风阵具",
+      "price": 20,
+      "kind": "阵具",
+      "grade": "一阶上品",
+      "desc": "困敌阵，干扰蓄势并削弱攻势。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "gatherArray52": {
+      "id": "gatherArray52",
+      "name": "聚息阵具",
+      "price": 16,
+      "kind": "阵具",
+      "grade": "一阶下品",
+      "desc": "辅助聚灵；提高有效修炼产出，不提高灵气门槛资格。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "nourishArray52": {
+      "id": "nourishArray52",
+      "name": "温脉阵具",
+      "price": 16,
+      "kind": "阵具",
+      "grade": "一阶中品",
+      "desc": "辅助休养，额外温养气血并节省休养时间。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "watchArray52": {
+      "id": "watchArray52",
+      "name": "示警阵具",
+      "price": 16,
+      "kind": "阵具",
+      "grade": "一阶上品",
+      "desc": "辅助警戒，降低寻妖时随机事件概率，不跳过剧情。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "woodPuppet52": {
+      "id": "woodPuppet52",
+      "name": "木甲傀儡",
+      "price": 32,
+      "kind": "傀儡",
+      "grade": "一阶下品",
+      "desc": "须装配，花灵石驱动；每次指令磨损机体。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "puppetFrame52": {
+      "id": "puppetFrame52",
+      "name": "铁甲机枢",
+      "price": 28,
+      "kind": "傀儡部件",
+      "grade": "一阶中品",
+      "desc": "用于将木甲傀儡升为铁甲傀儡。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "spiritCore52": {
+      "id": "spiritCore52",
+      "name": "灵纹机核",
+      "price": 42,
+      "kind": "傀儡部件",
+      "grade": "一阶上品",
+      "desc": "用于将铁甲傀儡升为灵纹傀儡。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "breathPill52": {
+      "id": "breathPill52",
+      "name": "回气丹",
+      "price": 12,
+      "kind": "丹药",
+      "grade": "一阶下品",
+      "desc": "战中服用恢复12真元，不直接送修为。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "mendingPill52": {
+      "id": "mendingPill52",
+      "name": "续脉丹",
+      "price": 18,
+      "kind": "丹药",
+      "grade": "一阶中品",
+      "desc": "战中恢复36气血；战外亦能缓解长期伤势。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "clearPill52": {
+      "id": "clearPill52",
+      "name": "清络丹",
+      "price": 24,
+      "kind": "丹药",
+      "grade": "一阶上品",
+      "desc": "战中恢复24气血并清除灼伤与缠绕。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户"
+    },
+    "edgeBlade52": {
+      "id": "edgeBlade52",
+      "name": "青纹剑",
+      "price": 46,
+      "kind": "法器",
+      "grade": "一阶下品",
+      "desc": "可供剑术与御器使用，炼气可实际制造。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户",
+      "slot": "weapon"
+    },
+    "bodyArmor52": {
+      "id": "bodyArmor52",
+      "name": "锁纹护衣",
+      "price": 58,
+      "kind": "法衣",
+      "grade": "一阶中品",
+      "desc": "提高防护，需实际装备。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户",
+      "slot": "armor"
+    },
+    "spiritFocus52": {
+      "id": "spiritFocus52",
+      "name": "分念环",
+      "price": 64,
+      "kind": "法器",
+      "grade": "一阶中品",
+      "desc": "偏重御器与真元上限。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户",
+      "slot": "weapon"
+    },
+    "ringBlade52": {
+      "id": "ringBlade52",
+      "name": "回环灵剑",
+      "price": 96,
+      "kind": "法器",
+      "grade": "一阶上品",
+      "desc": "炼气后期使用的导灵剑，材料与炉位要求较高。",
+      "currency": "stone",
+      "source": "实际购买材料、按谱制作或当地经营商户",
+      "slot": "weapon"
+    },
+    "talismanPatterns52": {
+      "id": "talismanPatterns52",
+      "name": "符箓修行工艺录",
+      "price": 8,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "一阶工艺",
+      "source": "县中工坊、道观传习",
+      "desc": "在行囊阅读，解锁相应工艺；进阶制作仍需修为与传习经历。",
+      "recipes": [
+        "firePaper52",
+        "guardPaper52",
+        "bindPaper52"
+      ]
+    },
+    "arrayPatterns52": {
+      "id": "arrayPatterns52",
+      "name": "阵法修行工艺录",
+      "price": 8,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "一阶工艺",
+      "source": "县中工坊、道观传习",
+      "desc": "在行囊阅读，解锁相应工艺；进阶制作仍需修为与传习经历。",
+      "recipes": [
+        "attackArray52",
+        "guardArray52",
+        "trapArray52",
+        "gatherArray52",
+        "nourishArray52",
+        "watchArray52"
+      ]
+    },
+    "puppetPatterns52": {
+      "id": "puppetPatterns52",
+      "name": "傀儡操持工艺录",
+      "price": 8,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "一阶工艺",
+      "source": "县中工坊、道观传习",
+      "desc": "在行囊阅读，解锁相应工艺；进阶制作仍需修为与传习经历。",
+      "recipes": [
+        "woodPuppet52",
+        "puppetFrame52",
+        "spiritCore52"
+      ]
+    },
+    "alchemyPatterns52": {
+      "id": "alchemyPatterns52",
+      "name": "炼丹养生工艺录",
+      "price": 8,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "一阶工艺",
+      "source": "县中工坊、道观传习",
+      "desc": "在行囊阅读，解锁相应工艺；进阶制作仍需修为与传习经历。",
+      "recipes": [
+        "breathPill52",
+        "mendingPill52",
+        "clearPill52"
+      ]
+    },
+    "forgePatterns52": {
+      "id": "forgePatterns52",
+      "name": "炼器谋生工艺录",
+      "price": 8,
+      "currency": "stone",
+      "kind": "书册",
+      "grade": "一阶工艺",
+      "source": "县中工坊、道观传习",
+      "desc": "在行囊阅读，解锁相应工艺；进阶制作仍需修为与传习经历。",
+      "recipes": [
+        "edgeBlade52",
+        "bodyArmor52",
+        "spiritFocus52",
+        "ringBlade52"
+      ]
+    }
+  },
+  "manuals": {
+    "引气篇": {
+      "id": "manual47_fe585e31",
+      "name": "引气篇",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "坊市残页",
+      "effect": {
+        "absorb": 0.08,
+        "bt": 0.005,
+        "life": 0
+      }
+    },
+    "青云引气诀": {
+      "id": "manual47_66e22f07",
+      "name": "青云引气诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "{观}入门师",
+      "effect": {
+        "absorb": 0.06,
+        "bt": 0.01,
+        "life": 2
+      }
+    },
+    "抱朴守一诀": {
+      "id": "manual47_83c66110",
+      "name": "抱朴守一诀",
+      "kind": "心法",
+      "grade": "地阶",
+      "source": "{观}长老",
+      "effect": {
+        "absorb": 0.12,
+        "bt": 0.02,
+        "life": 5
+      }
+    },
+    "踏雪步": {
+      "id": "manual47_5d65335b",
+      "name": "踏雪步",
+      "kind": "术法",
+      "grade": "黄阶",
+      "source": "坊市奇遇",
+      "effect": {
+        "route": "遁"
+      }
+    },
+    "定风咒": {
+      "id": "manual47_1aeff7f1",
+      "name": "定风咒",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "{观}内门",
+      "effect": {
+        "route": "护"
+      }
+    },
+    "引火诀": {
+      "id": "manual47_ef7cd453",
+      "name": "引火诀",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "奇遇",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "乡野吐纳诀": {
+      "id": "manual47_aeaaf479",
+      "name": "乡野吐纳诀",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "游方修士留下的入门口诀，经乡人抄传，足以引气，后续篇章仍需寻访。",
+      "effect": {
+        "absorb": 0.02,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "青云入门诀": {
+      "id": "manual47_16e1d3fb",
+      "name": "青云入门诀",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "测灵后由观中监院玄诚正式授予，先学调息和守一。",
+      "effect": {
+        "absorb": 0.04,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "家传养元篇": {
+      "id": "manual47_179d88ea",
+      "name": "家传养元篇",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "旧藏与长辈口传补成的基础养元法，完整高阶传承仍然缺失。",
+      "effect": {
+        "absorb": 0.03,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "宗族培元诀": {
+      "id": "manual47_42a3b9cd",
+      "name": "宗族培元诀",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "族中蒙学使用的基础传承，不等于可以随意支用整个家族的产业。",
+      "effect": {
+        "absorb": 0.04,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "藏息养脉法": {
+      "id": "manual47_6a25dc12",
+      "name": "藏息养脉法",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "养育者教下的调息法，依自身血脉修习，不凭空获得完整妖族传承。",
+      "effect": {
+        "absorb": 0.03,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "残页纳气法": {
+      "id": "manual47_114775ad",
+      "name": "残页纳气法",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "逃离血河道统凡界别院时记下的基础纳气口诀，不含夺人修为的秘法。",
+      "effect": {
+        "absorb": 0.03,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "太岳养气诀": {
+      "id": "manual47_5bec998f",
+      "name": "太岳养气诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "太岳宗外山藏经处",
+      "effect": {
+        "absorb": 0.06,
+        "bt": 0.01,
+        "life": 2
+      }
+    },
+    "厚土护身诀": {
+      "id": "manual47_19ca6765",
+      "name": "厚土护身诀",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "太岳宗内门",
+      "effect": {
+        "route": "护"
+      }
+    },
+    "听潮调息诀": {
+      "id": "manual47_8c2f22d3",
+      "name": "听潮调息诀",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "家中船牌所附的调息抄诀",
+      "effect": {
+        "absorb": 0.03,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "涵水养息篇": {
+      "id": "manual47_61ae1b4b",
+      "name": "涵水养息篇",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "岸上亲人与水族来客共同留下的基础养息篇",
+      "effect": {
+        "absorb": 0.03,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "朔风定息法": {
+      "id": "manual47_4329a5c7",
+      "name": "朔风定息法",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "家中旧册与部族口传的基础定息法",
+      "effect": {
+        "absorb": 0.03,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "养锋诀": {
+      "id": "edge51",
+      "name": "养锋诀",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0.04,
+        "bt": 0.003,
+        "life": 0
+      }
+    },
+    "锻骨诀": {
+      "id": "body51",
+      "name": "锻骨诀",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0.025,
+        "bt": 0,
+        "life": 2
+      }
+    },
+    "御器诀": {
+      "id": "spirit51",
+      "name": "御器诀",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0.035,
+        "bt": 0.004,
+        "life": 0
+      }
+    },
+    "定神篇": {
+      "id": "focus51",
+      "name": "定神篇",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0,
+        "bt": 0.0025,
+        "life": 0
+      }
+    },
+    "养元诀": {
+      "id": "restore51",
+      "name": "养元诀",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0.035,
+        "bt": 0,
+        "life": 3
+      }
+    },
+    "缓息诀": {
+      "id": "calm51",
+      "name": "缓息诀",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0.02,
+        "bt": 0,
+        "life": 1
+      }
+    },
+    "点锋剑术": {
+      "id": "sword51",
+      "name": "点锋剑术",
+      "kind": "术法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "震脉掌": {
+      "id": "palm51",
+      "name": "震脉掌",
+      "kind": "术法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "牵丝御器术": {
+      "id": "control51",
+      "name": "牵丝御器术",
+      "kind": "术法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "锋息剑诀": {
+      "id": "edgeMid52",
+      "name": "锋息剑诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.055,
+        "bt": 0.004,
+        "life": 0
+      }
+    },
+    "凝锋归一诀": {
+      "id": "edgeLate52",
+      "name": "凝锋归一诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.075,
+        "bt": 0.006,
+        "life": 0
+      }
+    },
+    "石肤养脉功": {
+      "id": "bodyMid52",
+      "name": "石肤养脉功",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.04,
+        "bt": 0,
+        "life": 3
+      }
+    },
+    "龙虎炼形篇": {
+      "id": "bodyLate52",
+      "name": "龙虎炼形篇",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.055,
+        "bt": 0,
+        "life": 5
+      }
+    },
+    "分念御物诀": {
+      "id": "spiritMid52",
+      "name": "分念御物诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.045,
+        "bt": 0.005,
+        "life": 0
+      }
+    },
+    "回环控器诀": {
+      "id": "spiritLate52",
+      "name": "回环控器诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.065,
+        "bt": 0.008,
+        "life": 0
+      }
+    },
+    "折锋剑势": {
+      "id": "edgeSkillMid52",
+      "name": "折锋剑势",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "归一贯锋": {
+      "id": "edgeSkillLate52",
+      "name": "归一贯锋",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "截脉崩劲": {
+      "id": "bodySkillMid52",
+      "name": "截脉崩劲",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "龙虎震身": {
+      "id": "bodySkillLate52",
+      "name": "龙虎震身",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "回环御器术": {
+      "id": "spiritSkillMid52",
+      "name": "回环御器术",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "分光牵制术": {
+      "id": "spiritSkillLate52",
+      "name": "分光牵制术",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "五行吐纳诀": {
+      "id": "elementBase52",
+      "name": "五行吐纳诀",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0.035,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "五气周流诀": {
+      "id": "elementMid52",
+      "name": "五气周流诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.05,
+        "bt": 0.004,
+        "life": 0
+      }
+    },
+    "五行归元诀": {
+      "id": "elementLate52",
+      "name": "五行归元诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.07,
+        "bt": 0.006,
+        "life": 1
+      }
+    },
+    "金芒术": {
+      "id": "metal052",
+      "name": "金芒术",
+      "kind": "术法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "贯金术": {
+      "id": "metal152",
+      "name": "贯金术",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "百炼金芒": {
+      "id": "metal252",
+      "name": "百炼金芒",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "青藤缚影": {
+      "id": "wood052",
+      "name": "青藤缚影",
+      "kind": "术法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "藤络绞缚": {
+      "id": "wood152",
+      "name": "藤络绞缚",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "古木盘根": {
+      "id": "wood252",
+      "name": "古木盘根",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "寒流术": {
+      "id": "water052",
+      "name": "寒流术",
+      "kind": "术法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "寒潮凝息": {
+      "id": "water152",
+      "name": "寒潮凝息",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "玄水回澜": {
+      "id": "water252",
+      "name": "玄水回澜",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "离火术": {
+      "id": "fire052",
+      "name": "离火术",
+      "kind": "术法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "炎纹连焰": {
+      "id": "fire152",
+      "name": "炎纹连焰",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "离火燎原": {
+      "id": "fire252",
+      "name": "离火燎原",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "土垣术": {
+      "id": "earth052",
+      "name": "土垣术",
+      "kind": "术法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "岩垒镇护": {
+      "id": "earth152",
+      "name": "岩垒镇护",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "磐石镇身": {
+      "id": "earth252",
+      "name": "磐石镇身",
+      "kind": "术法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "route": "攻"
+      }
+    },
+    "藏息行气篇": {
+      "id": "conceal52",
+      "name": "藏息行气篇",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0.015,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "清心守窍诀": {
+      "id": "clear52",
+      "name": "清心守窍诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0,
+        "bt": 0.004,
+        "life": 0
+      }
+    },
+    "回春养脉篇": {
+      "id": "nourish52",
+      "name": "回春养脉篇",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.02,
+        "bt": 0,
+        "life": 4
+      }
+    },
+    "符墨导气篇": {
+      "id": "talismanBase52",
+      "name": "符墨导气篇",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0.02,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "百纹定符诀": {
+      "id": "talismanMid52",
+      "name": "百纹定符诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.035,
+        "bt": 0.002,
+        "life": 0
+      }
+    },
+    "灵纹归藏诀": {
+      "id": "talismanLate52",
+      "name": "灵纹归藏诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.05,
+        "bt": 0.003,
+        "life": 1
+      }
+    },
+    "阵枢理气篇": {
+      "id": "arrayBase52",
+      "name": "阵枢理气篇",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0.02,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "六仪承阵诀": {
+      "id": "arrayMid52",
+      "name": "六仪承阵诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.035,
+        "bt": 0.002,
+        "life": 0
+      }
+    },
+    "灵枢合阵篇": {
+      "id": "arrayLate52",
+      "name": "灵枢合阵篇",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.05,
+        "bt": 0.004,
+        "life": 0
+      }
+    },
+    "同息御兽篇": {
+      "id": "petBase52",
+      "name": "同息御兽篇",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0.015,
+        "bt": 0,
+        "life": 1
+      }
+    },
+    "灵契养息诀": {
+      "id": "petMid52",
+      "name": "灵契养息诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.03,
+        "bt": 0,
+        "life": 3
+      }
+    },
+    "合息通灵篇": {
+      "id": "petLate52",
+      "name": "合息通灵篇",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.045,
+        "bt": 0.002,
+        "life": 4
+      }
+    },
+    "机枢分念篇": {
+      "id": "puppetBase52",
+      "name": "机枢分念篇",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0.015,
+        "bt": 0.002,
+        "life": 0
+      }
+    },
+    "双枢控机诀": {
+      "id": "puppetMid52",
+      "name": "双枢控机诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.03,
+        "bt": 0.004,
+        "life": 0
+      }
+    },
+    "百机守一篇": {
+      "id": "puppetLate52",
+      "name": "百机守一篇",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.045,
+        "bt": 0.006,
+        "life": 0
+      }
+    },
+    "辨药温炉诀": {
+      "id": "alchemyBase52",
+      "name": "辨药温炉诀",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0.015,
+        "bt": 0,
+        "life": 1
+      }
+    },
+    "三候养炉篇": {
+      "id": "alchemyMid52",
+      "name": "三候养炉篇",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.025,
+        "bt": 0,
+        "life": 2
+      }
+    },
+    "丹息归元篇": {
+      "id": "alchemyLate52",
+      "name": "丹息归元篇",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.04,
+        "bt": 0.003,
+        "life": 3
+      }
+    },
+    "锻火运气篇": {
+      "id": "forgeBase52",
+      "name": "锻火运气篇",
+      "kind": "心法",
+      "grade": "黄阶",
+      "source": "县中传习书摊、山门传习",
+      "effect": {
+        "absorb": 0.02,
+        "bt": 0,
+        "life": 0
+      }
+    },
+    "器纹回火诀": {
+      "id": "forgeMid52",
+      "name": "器纹回火诀",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.035,
+        "bt": 0.002,
+        "life": 0
+      }
+    },
+    "百锻凝纹篇": {
+      "id": "forgeLate52",
+      "name": "百锻凝纹篇",
+      "kind": "心法",
+      "grade": "玄阶",
+      "source": "本地传习者核验修行经历后出售",
+      "effect": {
+        "absorb": 0.05,
+        "bt": 0.004,
+        "life": 0
+      }
+    }
+  },
+  "recipes": {
+    "qiPill": {
+      "name": "聚气散",
+      "type": "alchemy",
+      "days": 10,
+      "fee": 3,
+      "materials": {
+        "herb": 2
+      },
+      "skill": 0
+    },
+    "healingPowder": {
+      "name": "养脉散",
+      "type": "alchemy",
+      "days": 7,
+      "fee": 2,
+      "materials": {
+        "herb": 2
+      },
+      "skill": 1
+    },
+    "ironSword": {
+      "name": "青钢短剑",
+      "type": "forge",
+      "days": 6,
+      "fee": 180,
+      "currency": "wen",
+      "materials": {
+        "pigIron47": 3
+      },
+      "skill": 0
+    },
+    "clothArmor": {
+      "name": "青纹护衣",
+      "type": "forge",
+      "days": 18,
+      "fee": 10,
+      "materials": {
+        "ironOre": 2,
+        "herb": 1
+      },
+      "skill": 1
+    },
+    "linenArmor47": {
+      "name": "护身布衣",
+      "type": "forge",
+      "days": 3,
+      "fee": 80,
+      "currency": "wen",
+      "materials": {
+        "linen47": 2
+      },
+      "skill": 0
+    },
+    "spiritBlade": {
+      "name": "引灵剑",
+      "type": "forge",
+      "days": 18,
+      "fee": 12,
+      "currency": "stone",
+      "materials": {
+        "ironOre": 4,
+        "spiritTimber47": 2
+      },
+      "skill": 1
+    },
+    "firePaper52": {
+      "type": "talisman",
+      "stage": 1,
+      "route": "talisman",
+      "days": 3,
+      "fee": 1,
+      "materials": {
+        "blankPaper52": 1,
+        "spiritInk52": 1
+      },
+      "name": "赤焰符",
+      "skill": 0
+    },
+    "guardPaper52": {
+      "type": "talisman",
+      "stage": 4,
+      "route": "talisman",
+      "days": 4,
+      "fee": 2,
+      "materials": {
+        "blankPaper52": 1,
+        "spiritInk52": 2
+      },
+      "name": "金罡符",
+      "skill": 0
+    },
+    "bindPaper52": {
+      "type": "talisman",
+      "stage": 8,
+      "route": "talisman",
+      "days": 5,
+      "fee": 3,
+      "materials": {
+        "blankPaper52": 2,
+        "spiritInk52": 2
+      },
+      "name": "缚灵符",
+      "skill": 0
+    },
+    "attackArray52": {
+      "type": "array",
+      "stage": 1,
+      "route": "array",
+      "days": 5,
+      "fee": 2,
+      "materials": {
+        "arrayStone52": 2,
+        "ironOre": 1
+      },
+      "name": "赤芒阵具",
+      "skill": 0
+    },
+    "guardArray52": {
+      "type": "array",
+      "stage": 4,
+      "route": "array",
+      "days": 5,
+      "fee": 2,
+      "materials": {
+        "arrayStone52": 2,
+        "spiritTimber47": 1
+      },
+      "name": "磐石阵具",
+      "skill": 0
+    },
+    "trapArray52": {
+      "type": "array",
+      "stage": 8,
+      "route": "array",
+      "days": 6,
+      "fee": 3,
+      "materials": {
+        "arrayStone52": 3,
+        "spiritInk52": 1
+      },
+      "name": "缠风阵具",
+      "skill": 0
+    },
+    "gatherArray52": {
+      "type": "array",
+      "stage": 1,
+      "route": "array",
+      "days": 5,
+      "fee": 2,
+      "materials": {
+        "arrayStone52": 2,
+        "herb": 1
+      },
+      "name": "聚息阵具",
+      "skill": 0
+    },
+    "nourishArray52": {
+      "type": "array",
+      "stage": 4,
+      "route": "array",
+      "days": 5,
+      "fee": 2,
+      "materials": {
+        "arrayStone52": 2,
+        "herb": 2
+      },
+      "name": "温脉阵具",
+      "skill": 0
+    },
+    "watchArray52": {
+      "type": "array",
+      "stage": 8,
+      "route": "array",
+      "days": 6,
+      "fee": 3,
+      "materials": {
+        "arrayStone52": 3,
+        "spiritTimber47": 1
+      },
+      "name": "示警阵具",
+      "skill": 0
+    },
+    "woodPuppet52": {
+      "type": "puppet",
+      "stage": 1,
+      "route": "puppet",
+      "days": 10,
+      "fee": 4,
+      "materials": {
+        "spiritTimber47": 3,
+        "ironOre": 2
+      },
+      "name": "木甲傀儡",
+      "skill": 0
+    },
+    "puppetFrame52": {
+      "type": "puppet",
+      "stage": 4,
+      "route": "puppet",
+      "days": 12,
+      "fee": 5,
+      "materials": {
+        "ironOre": 4,
+        "spiritTimber47": 2
+      },
+      "name": "铁甲机枢",
+      "skill": 0
+    },
+    "spiritCore52": {
+      "type": "puppet",
+      "stage": 8,
+      "route": "puppet",
+      "days": 15,
+      "fee": 8,
+      "materials": {
+        "ironOre": 5,
+        "spiritTimber47": 3,
+        "spiritInk52": 1
+      },
+      "name": "灵纹机核",
+      "skill": 0
+    },
+    "breathPill52": {
+      "type": "alchemy",
+      "stage": 1,
+      "route": "alchemy",
+      "days": 5,
+      "fee": 2,
+      "materials": {
+        "herb": 2
+      },
+      "name": "回气丹",
+      "skill": 0
+    },
+    "mendingPill52": {
+      "type": "alchemy",
+      "stage": 4,
+      "route": "alchemy",
+      "days": 7,
+      "fee": 3,
+      "materials": {
+        "herb": 3,
+        "spiritTimber47": 1
+      },
+      "name": "续脉丹",
+      "skill": 0
+    },
+    "clearPill52": {
+      "type": "alchemy",
+      "stage": 8,
+      "route": "alchemy",
+      "days": 9,
+      "fee": 4,
+      "materials": {
+        "herb": 4,
+        "spiritInk52": 1
+      },
+      "name": "清络丹",
+      "skill": 0
+    },
+    "edgeBlade52": {
+      "type": "forge",
+      "stage": 1,
+      "route": "forge",
+      "days": 10,
+      "fee": 5,
+      "materials": {
+        "ironOre": 3,
+        "spiritTimber47": 2
+      },
+      "name": "青纹剑",
+      "skill": 0
+    },
+    "bodyArmor52": {
+      "type": "forge",
+      "stage": 4,
+      "route": "forge",
+      "days": 12,
+      "fee": 7,
+      "materials": {
+        "ironOre": 4,
+        "herb": 2
+      },
+      "name": "锁纹护衣",
+      "skill": 0
+    },
+    "spiritFocus52": {
+      "type": "forge",
+      "stage": 4,
+      "route": "forge",
+      "days": 12,
+      "fee": 7,
+      "materials": {
+        "ironOre": 3,
+        "spiritTimber47": 3
+      },
+      "name": "分念环",
+      "skill": 0
+    },
+    "ringBlade52": {
+      "type": "forge",
+      "stage": 8,
+      "route": "forge",
+      "days": 21,
+      "fee": 12,
+      "materials": {
+        "ironOre": 6,
+        "spiritTimber47": 4,
+        "spiritInk52": 1
+      },
+      "name": "回环灵剑",
+      "skill": 0
+    }
+  },
+  "origins": [
+    "寒门散修",
+    "宗门外门弟子",
+    "没落家族子弟",
+    "世家嫡系",
+    "妖血遗孤",
+    "魔道弃徒",
+    "港口船户",
+    "湖泽水族寄养家庭",
+    "北地部族家庭"
+  ],
+  "birthContexts": [
+    {
+      "id": "daliang-qing",
+      "country": "大梁",
+      "state": "青州",
+      "prefecture": "云安府",
+      "county": "青石县"
+    },
+    {
+      "id": "daliang-yu",
+      "country": "大梁",
+      "state": "豫州",
+      "prefecture": "丰陵府",
+      "county": "洛原县"
+    },
+    {
+      "id": "daliang-yan",
+      "country": "大梁",
+      "state": "兖州",
+      "prefecture": "济川府",
+      "county": "东陵县"
+    },
+    {
+      "id": "beiyuan-yanmen",
+      "country": "北曜国",
+      "state": "冀州",
+      "prefecture": "雁门府",
+      "county": "镇朔县"
+    },
+    {
+      "id": "nanyue-canglan",
+      "country": "南越国",
+      "state": "扬州",
+      "prefecture": "沧澜府",
+      "county": "柳津县"
+    },
+    {
+      "id": "nanyue-jing",
+      "country": "南越国",
+      "state": "荆州",
+      "prefecture": "洞庭府",
+      "county": "云梦县"
+    },
+    {
+      "id": "donghai-hailing",
+      "country": "海陵诸国",
+      "state": "徐州",
+      "prefecture": "海陵府",
+      "county": "临潮县"
+    },
+    {
+      "id": "taiyue-daoguo",
+      "country": "太岳道国",
+      "state": "梁州",
+      "prefecture": "云岫府",
+      "county": "玄溪县"
+    },
+    {
+      "id": "taiyue-yong",
+      "country": "太岳道国",
+      "state": "雍州",
+      "prefecture": "丹崖府",
+      "county": "终南县"
+    }
+  ],
+  "entryDays": {
+    "绝灵根": 120,
+    "五灵根": 90,
+    "四灵根": 70,
+    "三灵根": 45,
+    "双灵根": 20,
+    "变异灵根": 12,
+    "天灵根": 7
+  },
+  "qiRoutes": {
+    "edge": {
+      "name": "剑术修行",
+      "minds": [
+        "养锋诀",
+        "锋息剑诀",
+        "凝锋归一诀"
+      ],
+      "arts": [
+        "点锋剑术",
+        "折锋剑势",
+        "归一贯锋"
+      ],
+      "style": "edge",
+      "materials": "ironOre",
+      "description": "兵器、剑诀与破甲剑势相配。"
+    },
+    "body": {
+      "name": "筋骨近身",
+      "minds": [
+        "锻骨诀",
+        "石肤养脉功",
+        "龙虎炼形篇"
+      ],
+      "arts": [
+        "震脉掌",
+        "截脉崩劲",
+        "龙虎震身"
+      ],
+      "style": "body",
+      "materials": "herb",
+      "description": "气血、守势与近身打断相配，不要求持剑。"
+    },
+    "spirit": {
+      "name": "分念御器",
+      "minds": [
+        "御器诀",
+        "分念御物诀",
+        "回环控器诀"
+      ],
+      "arts": [
+        "牵丝御器术",
+        "回环御器术",
+        "分光牵制术"
+      ],
+      "style": "spirit",
+      "materials": "spiritTimber47",
+      "description": "须有实际法器，以牵制与持续运气取胜。"
+    },
+    "element": {
+      "name": "五行术修",
+      "minds": [
+        "五行吐纳诀",
+        "五气周流诀",
+        "五行归元诀"
+      ],
+      "arts": [
+        "金芒术",
+        "贯金术",
+        "百炼金芒"
+      ],
+      "style": "element",
+      "materials": "herb",
+      "description": "金破甲、木削弱、水缓冲、火灼伤、土护盾；五行都可学，仍受两术法槽限制。"
+    },
+    "talisman": {
+      "name": "符箓修行",
+      "minds": [
+        "符墨导气篇",
+        "百纹定符诀",
+        "灵纹归藏诀"
+      ],
+      "style": "talisman",
+      "craft": "firePaper52",
+      "description": "先学符式、买纸墨、实际绘制，再在战中消耗符箓。"
+    },
+    "array": {
+      "name": "阵法修行",
+      "minds": [
+        "阵枢理气篇",
+        "六仪承阵诀",
+        "灵枢合阵篇"
+      ],
+      "style": "array",
+      "craft": "attackArray52",
+      "description": "攻击、防护、困敌与聚灵、养脉、警戒六类阵法，各有条件。"
+    },
+    "pet": {
+      "name": "灵兽相伴",
+      "minds": [
+        "同息御兽篇",
+        "灵契养息诀",
+        "合息通灵篇"
+      ],
+      "style": "pet",
+      "description": "从照料与救助开始，实际喂养、训练、养伤，再协同作战。"
+    },
+    "puppet": {
+      "name": "傀儡操持",
+      "minds": [
+        "机枢分念篇",
+        "双枢控机诀",
+        "百机守一篇"
+      ],
+      "style": "puppet",
+      "craft": "woodPuppet52",
+      "description": "先制木傀，再驱动、维修和升级；与灵兽各占一个位。"
+    },
+    "alchemy": {
+      "name": "炼丹养生",
+      "minds": [
+        "辨药温炉诀",
+        "三候养炉篇",
+        "丹息归元篇"
+      ],
+      "style": "alchemy",
+      "craft": "breathPill52",
+      "description": "采药、学方、租炉、炼丹、交货与自用形成循环。"
+    },
+    "forge": {
+      "name": "炼器谋生",
+      "minds": [
+        "锻火运气篇",
+        "器纹回火诀",
+        "百锻凝纹篇"
+      ],
+      "style": "forge",
+      "craft": "edgeBlade52",
+      "description": "寻矿灵木、器谱炉位、制作装备和实际委托形成循环。"
+    }
+  }
+}

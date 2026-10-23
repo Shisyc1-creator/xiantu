@@ -1,0 +1,61 @@
+{
+  "version": 38,
+  "checks": {
+    "shop38": 34,
+    "local37": 34,
+    "world36": 41,
+    "regression36": 12
+  },
+  "total": 121,
+  "backup": "版本归档/第三十八批百草铺交接前_20261021_172616",
+  "files": [
+    {
+      "file": "prototype/index.html",
+      "sha256": "c59ebd5abc467dd54a084e93f348adcb1a143a4ca9e1e7a772418281541525fb"
+    },
+    {
+      "file": "tools/sandbox35.js",
+      "sha256": "5dcdd2fdbbb0205f9b012fb163d1270a5dbcb17d10745cb780d18b1cda6f55fb"
+    },
+    {
+      "file": "prototype/assets/sandbox35.js",
+      "sha256": "5dcdd2fdbbb0205f9b012fb163d1270a5dbcb17d10745cb780d18b1cda6f55fb"
+    },
+    {
+      "file": "tools/local37.js",
+      "sha256": "778b4de6f5d55a23e29ad2dcf13535b11f265a62c2fa9923911298c2594c0c98"
+    },
+    {
+      "file": "prototype/assets/local37.js",
+      "sha256": "778b4de6f5d55a23e29ad2dcf13535b11f265a62c2fa9923911298c2594c0c98"
+    },
+    {
+      "file": "tools/shop38.js",
+      "sha256": "90ca4d6bd749c75695b3a0eeeaa8800af30d9ad6e50a5d8365953fbf4c74a140"
+    },
+    {
+      "file": "prototype/assets/shop38.js",
+      "sha256": "90ca4d6bd749c75695b3a0eeeaa8800af30d9ad6e50a5d8365953fbf4c74a140"
+    },
+    {
+      "file": "tools/shop38-check.cjs",
+      "sha256": "aaf92e0b6a8ba06233f5a57e3650b44928dfafd86c20da641d408b45a36878b6"
+    },
+    {
+      "file": "tools/local37-check.cjs",
+      "sha256": "fb3419ac718532ba79d104c2d8e407e2f5ab2a1648d7dfc9abd4c370386e86f5"
+    },
+    {
+      "file": "README.md",
+      "sha256": "ddce906e90fd32aeb20a47c7206e806052ee1d383d66c94e36635784e3c7d79b"
+    },
+    {
+      "file": "版本说明/第三十八批_百草铺交接.md",
+      "sha256": "dde6264bc0dc4033506ad1d5a3be2e900522edd7d5a1e18d14b1a12249ddef26"
+    },
+    {
+      "file": "设定与设计/06_凡界开发统合计划.md",
+      "sha256": "747d79dc7cadf6c2d672f85e3f09644d47f8bd2ca753008826d5729602fc5965"
+    }
+  ]
+}

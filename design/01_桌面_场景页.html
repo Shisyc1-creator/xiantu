@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>仙途 · 场景页（桌面）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3EBDC;color:#1F1A17;font-family:"Noto Serif SC","Songti SC","SimSun",serif;font-size:15px;line-height:1.8;-webkit-font-smoothing:antialiased}
+a{color:#B4321F;text-decoration:none}a:hover{color:#8E2415}
+button{font-family:inherit;cursor:pointer}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border:1px solid #1F1A17;background:#FAF5EA;color:#1F1A17;font-size:14px;letter-spacing:.04em}
+.btn:hover{background:#1F1A17;color:#FAF5EA}
+.btn-ghost{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid #C9B99A;background:transparent;color:#4A4036;font-size:14px;letter-spacing:.04em}
+.btn-ghost:hover{border-color:#1F1A17;color:#1F1A17}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border:1px solid #B4321F;background:#B4321F;color:#FAF5EA;font-size:14px;letter-spacing:.06em}
+.btn-primary:hover{background:#8E2415;border-color:#8E2415}
+.tag{display:inline-block;padding:1px 8px;border:1px solid #C9B99A;color:#4A4036;font-size:12px;line-height:1.7;letter-spacing:.08em}
+.seal{display:inline-block;padding:2px 7px;border:1.5px solid #B4321F;color:#B4321F;font-size:12px;line-height:1.5;letter-spacing:.14em;font-weight:600}
+.nav-item{display:flex;align-items:center;min-height:48px;padding:0 20px;border:0;border-left:3px solid transparent;background:transparent;text-align:left;font-size:16px;color:#4A4036;letter-spacing:.1em;width:100%}
+.nav-item:hover{color:#1F1A17;background:#EDE3CF}
+.nav-item.on{color:#1F1A17;border-left-color:#B4321F;background:#FAF5EA;font-weight:600}
+.person{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:64px;padding:12px 18px;border:1px solid #C9B99A;background:#FAF5EA;text-align:left;color:#1F1A17}
+.person:hover{border-color:#1F1A17}
+.person.on{border-color:#B4321F;box-shadow:inset 3px 0 0 #B4321F}
+.notice{border:1px solid #C9B99A;background:#FAF5EA;padding:20px 22px 22px}
+.notice h3{margin:0 0 12px;font-size:18px;letter-spacing:.12em;font-weight:700;display:flex;align-items:center;gap:10px}
+.notice h3::after{content:"";flex:1;height:1px;background:#C9B99A}
+.kv{display:grid;grid-template-columns:auto 1fr;column-gap:14px;row-gap:2px;font-size:14px}
+.kv dt{color:#7A6F62;letter-spacing:.06em}.kv dd{margin:0;color:#1F1A17}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:96px;min-height:56px;border:0;background:transparent;color:#7A6F62;font-size:15px;letter-spacing:.2em;position:relative}
+.tab.on{color:#B4321F;font-weight:700}
+.tab.on::after{content:"";position:absolute;left:28px;right:28px;bottom:6px;height:2px;background:#B4321F}
+.muted{color:#7A6F62}
+@media (max-width:900px){.side{flex-direction:row!important;overflow-x:auto}.nav-item{border-left:0;border-bottom:3px solid transparent;white-space:nowrap}.nav-item.on{border-bottom-color:#B4321F}}
+</style>
+</head>
+<body>
+<div style="min-height:100vh;display:flex;flex-direction:column;background:#F3EBDC;background-image:radial-gradient(ellipse 60% 50% at 100% 0%,rgba(63,122,94,.10),transparent 70%),radial-gradient(ellipse 50% 40% at 0% 100%,rgba(180,50,31,.06),transparent 70%)">
+
+  <!-- 顶栏 -->
+  <header style="border-bottom:1px solid #1F1A17;background:rgba(250,245,234,.6)">
+    <div style="max-width:1360px;margin:0 auto;padding:18px 32px 14px;display:flex;align-items:flex-end;gap:36px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-family:'Ma Shan Zheng','Noto Serif SC',serif;font-size:44px;line-height:1;color:#1F1A17;letter-spacing:.08em">仙途</div>
+        <div style="writing-mode:vertical-rl;font-size:11px;letter-spacing:.3em;color:#FAF5EA;background:#B4321F;padding:6px 3px;line-height:1">修行纪</div>
+      </div>
+      <div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+          <div style="font-size:26px;font-weight:700;letter-spacing:.12em">沈行舟</div>
+          <span class="tag">寒门散修</span>
+          <span class="tag">四灵根</span>
+          <span class="muted" style="font-size:13px;margin-left:4px">大梁（暂名）· 青州 · 云安府 · 青石县</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <span style="font-size:14px;letter-spacing:.14em;font-weight:600">炼气一</span>
+          <div style="flex:1 1 200px;max-width:380px;height:6px;background:#DCCFB4;position:relative">
+            <div style="position:absolute;left:0;top:0;bottom:0;width:0%;background:#3F7A5E"></div>
+          </div>
+          <span class="muted" style="font-size:13px;font-variant-numeric:tabular-nums">0 / 123</span>
+        </div>
+      </div>
+      <dl style="display:flex;gap:32px;margin:0;text-align:right">
+        <div><dt class="muted" style="font-size:12px;letter-spacing:.2em">年龄</dt><dd style="margin:0;font-size:28px;line-height:1.2;font-weight:600;font-variant-numeric:tabular-nums">8</dd></div>
+        <div><dt class="muted" style="font-size:12px;letter-spacing:.2em">寿元</dt><dd style="margin:0;font-size:28px;line-height:1.2;font-weight:600;font-variant-numeric:tabular-nums">100</dd></div>
+        <div><dt class="muted" style="font-size:12px;letter-spacing:.2em">灵石</dt><dd style="margin:0;font-size:28px;line-height:1.2;font-weight:700;color:#B4321F;font-variant-numeric:tabular-nums">3000</dd></div>
+      </dl>
+    </div>
+  </header>
+
+  <!-- 主体 -->
+  <main style="flex:1;max-width:1360px;width:100%;margin:0 auto;padding:28px 32px 40px;box-sizing:border-box;display:flex;flex-direction:column;gap:22px">
+
+    <!-- 地点标题 -->
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;border-bottom:1px solid #C9B99A;padding-bottom:14px">
+      <div>
+        <div class="muted" style="font-size:13px;letter-spacing:.12em">璇玑三百一十二年 · 二月初一</div>
+        <h1 style="margin:4px 0 0;font-size:34px;font-weight:700;letter-spacing:.14em;line-height:1.3">行走 <span style="color:#B4321F;font-weight:400;margin:0 6px">·</span> 青石县</h1>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn-ghost" type="button">山河地图</button>
+        <button class="btn-ghost" type="button">本地委托</button>
+        <span class="seal" style="align-self:center">灵气 0.7</span>
+      </div>
+    </div>
+
+    <!-- 三栏 -->
+    <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+
+      <!-- 房间导航 -->
+      <nav class="side" aria-label="房间" style="flex:0 0 176px;display:flex;flex-direction:column;border:1px solid #C9B99A;background:#EDE3CF">
+        <button class="nav-item" type="button">入口</button>
+        <button class="nav-item on" type="button">商街</button>
+        <button class="nav-item" type="button">炉坊</button>
+        <button class="nav-item" type="button">牙行</button>
+      </nav>
+
+      <!-- 房间内容 -->
+      <section style="flex:999 1 480px;min-width:0;display:flex;flex-direction:column;gap:20px">
+        <div>
+          <h2 style="margin:0;font-size:24px;font-weight:700;letter-spacing:.14em">商街</h2>
+          <p style="margin:6px 0 0;color:#4A4036">货物由商铺和摊主经营。选中一位商人，查看他收什么、卖什么。</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" type="button">做短工<span class="muted" style="font-weight:400">· 30 日</span></button>
+          <button class="btn-ghost" type="button">赴「县学失火」· 1 月内</button>
+          <button class="btn-ghost" type="button">赴「客栈闲话」· 3 月内</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="muted" style="font-size:13px;letter-spacing:.16em;display:flex;align-items:center;gap:10px">眼前的人<span style="flex:1;height:1px;background:#DCCFB4"></span></div>
+          <button class="person on" type="button">
+            <span style="display:flex;flex-direction:column;gap:2px">
+              <span style="font-size:19px;font-weight:700;letter-spacing:.1em">王青禾</span>
+              <span class="muted" style="font-size:13px">百草铺掌柜 · 已接掌药铺</span>
+            </span>
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B4321F" stroke-width="1.6"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <button class="person" type="button">
+            <span style="display:flex;flex-direction:column;gap:2px">
+              <span style="font-size:19px;font-weight:700;letter-spacing:.1em">孙芸</span>
+              <span class="muted" style="font-size:13px">本地药商 · 有意接盘</span>
+            </span>
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7A6F62" stroke-width="1.6"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- 右栏告示 -->
+      <aside style="flex:1 1 320px;max-width:420px;min-width:0;display:flex;flex-direction:column;gap:18px">
+        <section class="notice">
+          <h3>百草铺往来账</h3>
+          <dl class="kv" style="margin:0 0 12px">
+            <dt>状态</dt><dd>营业 · 王青禾经营</dd>
+            <dt>钱匣</dt><dd style="font-variant-numeric:tabular-nums">302 灵石</dd>
+            <dt>寄售未结</dt><dd style="font-variant-numeric:tabular-nums">30 灵石</dd>
+            <dt>待还垫款</dt><dd style="font-variant-numeric:tabular-nums">0 灵石</dd>
+            <dt>往来</dt><dd>柳丹师丹药寄售；白船主渡口供货</dd>
+          </dl>
+          <p style="margin:0 0 14px;font-size:14px;color:#4A4036">王掌柜已故，停业清账三十日。王青禾核清铺账后接掌，续接库存、欠款、运药约定及未到期的供药折价。</p>
+          <button class="btn" type="button">赠资周转<span class="muted" style="font-weight:400">· 1 日 / 15 灵石</span></button>
+        </section>
+        <section class="notice">
+          <h3>青石药讯<span class="seal" style="margin-left:auto">急</span></h3>
+          <p style="margin:0 0 14px;font-size:14px;color:#4A4036">连雨阻了山路，县中仍缺青叶草 <strong style="color:#B4321F">18</strong> 株。百草铺存药告急，柳丹师减供养脉散，药价上涨。</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn-primary" type="button">供药 6 株 · 1 日 / 15 灵石</button>
+            <button class="btn" type="button">赠药 6 株 · 1 日</button>
+            <button class="btn-ghost" type="button">急价供药 6 株 · 38 灵石 · 伤交情</button>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <!-- 底栏 -->
+  <nav aria-label="主导航" style="border-top:1px solid #1F1A17;background:#FAF5EA">
+    <div style="max-width:1360px;margin:0 auto;padding:4px 32px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
+      <button class="tab" type="button">修行</button>
+      <button class="tab on" type="button">场景</button>
+      <button class="tab" type="button">行囊</button>
+      <button class="tab" type="button">家园</button>
+      <button class="tab" type="button">人物</button>
+    </div>
+  </nav>
+</div>
+</body>
+</html>

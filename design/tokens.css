@@ -1,0 +1,74 @@
+/* 《仙途》界面重设计 · 设计变量
+   方向：宣纸、墨、朱砂。详见同目录 README.md。
+   用法：在 visual39.css 开头 @import url('tokens.css')，或整段粘贴。 */
+
+:root {
+  /* 底 */
+  --paper: #F3EBDC;        /* 页面底，暖米宣纸 */
+  --paper-2: #FAF5EA;      /* 卡片、面板、按钮底 */
+  --paper-3: #EDE3CF;      /* 侧栏、次级区域底 */
+
+  /* 墨 */
+  --ink: #1F1A17;          /* 正文、标题、主边框 */
+  --ink-2: #4A4036;        /* 次要文字、说明 */
+  --ink-3: #7A6F62;        /* 弱化文字、标签、单位。对 --paper 4.6:1 */
+
+  /* 线 */
+  --line: #C9B99A;         /* 卡片、按钮默认边 */
+  --line-2: #DCCFB4;       /* 分隔线、进度条底 */
+
+  /* 朱砂：唯一强调色 */
+  --vermilion: #B4321F;    /* 选中边、关键数字、印章、主按钮。对 --paper 6.1:1 */
+  --vermilion-dark: #8E2415;
+
+  /* 青绿：只管进度条与成功状态 */
+  --jade: #3F7A5E;
+
+  /* 深色封面（仅创角页左栏） */
+  --ink-bg: #1F1A17;
+  --ink-bg-text: #FAF5EA;
+  --ink-bg-dim: #DCCFB4;
+
+  /* 字 */
+  --font-body: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --font-brand: "Ma Shan Zheng", "Noto Serif SC", serif;
+  --fs-body: 15px;
+  --lh-body: 1.8;
+  --fs-h1: 34px;           /* 场景页标题 */
+  --fs-h2: 24px;           /* 房间名 */
+  --fs-h3: 18px;           /* 告示卡标题 */
+  --fs-name: 26px;         /* 顶栏角色名 */
+  --fs-stat: 28px;         /* 顶栏年龄/寿元/灵石 */
+  --fs-label: 13px;        /* 小节标签、日期 */
+  --fs-tag: 12px;          /* 标签、印章 */
+  --ls-title: .14em;
+  --ls-label: .16em;
+
+  /* 形 */
+  --radius: 0;
+  --border: 1px solid var(--line);
+  --border-strong: 1px solid var(--ink);
+  --border-selected: 1.5px solid var(--vermilion);
+  --touch: 44px;           /* 按钮最小高度 */
+
+  /* 距 */
+  --gap-s: 8px;
+  --gap-m: 14px;
+  --gap-l: 22px;
+  --pad-card: 20px 22px;
+  --pad-btn: 0 18px;
+  --frame-max: 1360px;
+  --gutter: 32px;
+}
+
+/* 印章式标签，现版没有对应组件，新建即可 */
+.seal {
+  display: inline-block;
+  padding: 2px 7px;
+  border: 1.5px solid var(--vermilion);
+  color: var(--vermilion);
+  font-size: var(--fs-tag);
+  line-height: 1.5;
+  letter-spacing: var(--ls-label);
+  font-weight: 600;
+}

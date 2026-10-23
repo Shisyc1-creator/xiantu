@@ -1,0 +1,200 @@
+{
+  "date": "2026-10-22",
+  "version": "第四十二批·场景互动与修行录版",
+  "backup": "版本归档/第四十二批场景互动前_20261022_143500",
+  "checks": {
+    "interaction": 30,
+    "homesModes": 32,
+    "economyHelp": 29,
+    "shop38": 34,
+    "local37": 34,
+    "world36": 41,
+    "world36Regression": 12,
+    "visual": 113,
+    "total": 325
+  },
+  "sourceMatchesPublished": {
+    "interaction42.js": true,
+    "interaction42.css": true,
+    "sandbox35.js": true,
+    "world36.js": true,
+    "local37.js": true,
+    "shop38.js": true,
+    "help40.js": true,
+    "homes41.js": true,
+    "modes41.js": true,
+    "homes41.css": true,
+    "economy40.js": true
+  },
+  "evidence": ".screenshots/batch42/",
+  "playerSaveAccessed": false,
+  "limitations": [
+    "县城与六出身地点样例、基础话题，非所有区域长篇剧情",
+    "拍卖仍为旧E012，A1县域/A2府城待下一阶段",
+    "D2实际模式差异尚未完成",
+    "构造状态与旧格式样本，未验收真实玩家旧档",
+    "手机视口模拟，非真机或九境平衡测试"
+  ],
+  "files": [
+    {
+      "path": "prototype/index.html",
+      "bytes": 450150,
+      "sha256": "072651fccabf8b62dcb6fc86e218d69d7a82b4e1f1387b79bfa75b48572326c1"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7076,
+      "sha256": "6f650e09b1f92c57ab410c633129fa9a002997c0b08b7e95cc4b5ec886115b75"
+    },
+    {
+      "path": "设定与设计/06_凡界开发统合计划.md",
+      "bytes": 34597,
+      "sha256": "1de2d1dedffeaf8d6d3368fbd3ba85b3740823931d2807b18bf485f8a20efe48"
+    },
+    {
+      "path": "设定与设计/07_双模式与开发进度清单.md",
+      "bytes": 16767,
+      "sha256": "7dcec567d36727966047fa7a115f5b3b76aa41c9425f7b7f0c761f9fa083b446"
+    },
+    {
+      "path": "设定与设计/08_场景互动与拍卖补全计划.md",
+      "bytes": 8935,
+      "sha256": "b5ca4053c9d7f17bd2a6317f5328e1cc9f0dda7cdb646c4f96889b989be4c8ca"
+    },
+    {
+      "path": "版本说明/第四十二批_场景互动与修行录.md",
+      "bytes": 5492,
+      "sha256": "330545c3ce2ef9413fc52a619f69aa90e7417d4e2e8095891c9dbb060f7450df"
+    },
+    {
+      "path": "tools/interaction42.js",
+      "bytes": 18206,
+      "sha256": "e788fd3a9ce4b33b6c6448b9024fcb0b02e2471a1f21fe859d56262ef2527af8"
+    },
+    {
+      "path": "tools/interaction42.css",
+      "bytes": 4468,
+      "sha256": "f829f64002a9905808e2b0314e4173eb60304de10e0728090ca4db184ef992df"
+    },
+    {
+      "path": "tools/sandbox35.js",
+      "bytes": 48461,
+      "sha256": "aa193859add11eef5d1a389e8fe2450c0934626130c070bd7e8866fc4bd39046"
+    },
+    {
+      "path": "tools/world36.js",
+      "bytes": 35720,
+      "sha256": "050cad0ea5a705f8da2c429c81eb9736864e7a1db4ac4f61077237e53cab02f3"
+    },
+    {
+      "path": "tools/local37.js",
+      "bytes": 13810,
+      "sha256": "9f1b7986221d31db9187a969b3dd8679be24ccf8e488ee807b483de1cf1a8d45"
+    },
+    {
+      "path": "tools/shop38.js",
+      "bytes": 14625,
+      "sha256": "422b8607f04649256a45c0a1d619c25ea08dc87183765f6a32e2421bb237b2f5"
+    },
+    {
+      "path": "tools/help40.js",
+      "bytes": 10789,
+      "sha256": "539ba9a12ea939e6d8b66a290a9f70dfadc8f3b0eb17458eccdc9091daad1008"
+    },
+    {
+      "path": "tools/homes41.js",
+      "bytes": 10378,
+      "sha256": "903c2e521862026d27e58a93a4f33b1624f2f6b6a7cef0418b37f541b376714e"
+    },
+    {
+      "path": "tools/modes41.js",
+      "bytes": 6919,
+      "sha256": "ff2aba47b7d51f477927bf4351d5bba7f8bedf15b75ffd7f334ae3e94a0ceabb"
+    },
+    {
+      "path": "tools/homes41.css",
+      "bytes": 1015,
+      "sha256": "6b47a3594a4e62a62f3f84863466b6dfb5e48be5223eed509786fb62faadb9e3"
+    },
+    {
+      "path": "tools/economy40.js",
+      "bytes": 4263,
+      "sha256": "949f97571209df8535a1e3c4a6cf93377845ae7eb0baa45e5c2b8eeae308a898"
+    },
+    {
+      "path": "prototype/assets/interaction42.js",
+      "bytes": 18206,
+      "sha256": "e788fd3a9ce4b33b6c6448b9024fcb0b02e2471a1f21fe859d56262ef2527af8"
+    },
+    {
+      "path": "prototype/assets/interaction42.css",
+      "bytes": 4468,
+      "sha256": "f829f64002a9905808e2b0314e4173eb60304de10e0728090ca4db184ef992df"
+    },
+    {
+      "path": "prototype/assets/sandbox35.js",
+      "bytes": 48461,
+      "sha256": "aa193859add11eef5d1a389e8fe2450c0934626130c070bd7e8866fc4bd39046"
+    },
+    {
+      "path": "prototype/assets/world36.js",
+      "bytes": 35720,
+      "sha256": "050cad0ea5a705f8da2c429c81eb9736864e7a1db4ac4f61077237e53cab02f3"
+    },
+    {
+      "path": "prototype/assets/local37.js",
+      "bytes": 13810,
+      "sha256": "9f1b7986221d31db9187a969b3dd8679be24ccf8e488ee807b483de1cf1a8d45"
+    },
+    {
+      "path": "prototype/assets/shop38.js",
+      "bytes": 14625,
+      "sha256": "422b8607f04649256a45c0a1d619c25ea08dc87183765f6a32e2421bb237b2f5"
+    },
+    {
+      "path": "prototype/assets/help40.js",
+      "bytes": 10789,
+      "sha256": "539ba9a12ea939e6d8b66a290a9f70dfadc8f3b0eb17458eccdc9091daad1008"
+    },
+    {
+      "path": "prototype/assets/homes41.js",
+      "bytes": 10378,
+      "sha256": "903c2e521862026d27e58a93a4f33b1624f2f6b6a7cef0418b37f541b376714e"
+    },
+    {
+      "path": "prototype/assets/modes41.js",
+      "bytes": 6919,
+      "sha256": "ff2aba47b7d51f477927bf4351d5bba7f8bedf15b75ffd7f334ae3e94a0ceabb"
+    },
+    {
+      "path": "prototype/assets/homes41.css",
+      "bytes": 1015,
+      "sha256": "6b47a3594a4e62a62f3f84863466b6dfb5e48be5223eed509786fb62faadb9e3"
+    },
+    {
+      "path": "prototype/assets/economy40.js",
+      "bytes": 4263,
+      "sha256": "949f97571209df8535a1e3c4a6cf93377845ae7eb0baa45e5c2b8eeae308a898"
+    },
+    {
+      "path": "tools/interaction42-check.cjs",
+      "bytes": 14561,
+      "sha256": "a2bff263a1d1ce9b5f3dad8506029e07ae4633e49932be8fe70d110425ec4863"
+    },
+    {
+      "path": "tools/visual42-check.cjs",
+      "bytes": 15317,
+      "sha256": "cdd17dc9a54222e082f975af4a715f954651f8f66b9a53c931961a7a90989c59"
+    },
+    {
+      "path": "tools/world36-check.cjs",
+      "bytes": 14080,
+      "sha256": "5b1c8cc3ca2faf9259d36d91fbbfde15c1d85c8bb13b58ba198c0d060b820686"
+    },
+    {
+      "path": "tools/shop38-check.cjs",
+      "bytes": 15104,
+      "sha256": "23229b80a501b1060d5d6a548028fe4d03a28447a2d22b623dc42b3ae182fed1"
+    }
+  ]
+}
