@@ -108,6 +108,18 @@ async function inherit(page){
      await page.reload();await staff(page);await page.locator('[data-sb="selectWorker"][data-arg="lin"]').click();
      assert.equal(await page.evaluate(()=>XTSandbox.state().staff.length),1);
      assert((await page.locator('#scene').innerText()).includes('年龄 未核定'));
+     assert.equal(await page.evaluate(()=>XTWorld36.age(XTWorld36.get('lin'))),null);
+     const personPanel=await page.evaluate(()=>{XTWorld36.relation('lin');return XTWorld36.actorPanel('lin');});
+     assert(personPanel.includes('年龄未核定')&&!personPanel.includes('NaN'));
+     await page.evaluate(()=>{
+      const w=XTWorld36.world();globalThis.beforeUnknownHeir55=w.playerId;
+      w.people.unknownChild55={id:'unknownChild55',name:'待核后人',realm:0,layer:1,root:'五灵根',birth:null,life:100,alive:true,place:'county',room:'home',sex:'男',parents:[w.playerId,'N04'],source:'受控缺日期旧档'};
+      w.children.push('unknownChild55');G.mode='dead';openInherit();
+     });
+     assert.equal(await page.locator('[data-sb="r36:inherit"][data-arg="unknownChild55"]').count(),0);
+     await page.evaluate(()=>XTSandbox.dispatch('r36:inherit','unknownChild55'));
+     assert.equal(await page.evaluate(()=>G.world36.playerId),await page.evaluate(()=>beforeUnknownHeir55));
+
     });
     await check('unrelated new game has no previous estate employees',async()=>{
      await page.evaluate(()=>newGame('新来客','寒门散修','男'));

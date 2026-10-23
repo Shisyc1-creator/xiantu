@@ -88,7 +88,7 @@ function registerFamily(){
   }
  }
 }
-function age(n){return Math.max(0,Math.floor((S.now()-n.birth)/YEAR));}
+function age(n){return Number.isFinite(n?.birth)?Math.max(0,Math.floor((S.now()-n.birth)/YEAR)):null;}
 function alive(n){return !!n&&n.alive!==false&&(!Number.isFinite(n.birth)||!Number.isFinite(n.life)||age(n)<n.life);}
 function get(id){return world()?.people[npcKey(id)];}
 function relation(id,create=true){
@@ -161,6 +161,7 @@ function bondReasons(id,type){
  const n=get(id),r=relation(id),w=world();if(!n||!r)return '尚不相识。';
  if(!alive(n))return '对方已经不在人世。';
  if(!present(id))return '需要当面提出。';
+ if(!Number.isFinite(age(n)))return '这位人物的出生日期尚未核定，不能确认年龄。';
  if(G.age<18||age(n)<18)return '双方成年后，才能作出这项终身约定。';
  if(isKin(id))return '亲属关系不适用这项约定。';
  if(S.state().staff.some(s=>s.id===id))return '先解除雇佣关系，不能以雇主身份要求私人终身承诺。';
@@ -195,7 +196,7 @@ function actorPanel(id){
  if(['mentor','N01','taiyue'].includes(id)&&n.realm>realmOf())buttons+=B('拜师','r36:mentor',id);
  if(G.age>=18&&age(n)>=18&&r?.trust>=20&&!isKin(id)&&!r.bonds.includes('道侣')&&!r.bonds.includes('结义'))buttons+=r.courting?B('道侣之约','r36:partner',id):B('表达心意','r36:court',id)+B('结拜','r36:oath',id);
  if(r?.bonds.includes('道侣'))buttons+=B('安排家庭生活','r36:family',id)+B('解除道侣之约','r36:separate',id);
- const known=r?`<br>出身：${html(n.root)} · ${age(n)}岁 / 寿限${n.life}`:'';
+ const known=r?`<br>出身：${html(n.root)} · ${Number.isFinite(age(n))?age(n)+'岁':'年龄未核定'} / 寿限${n.life}`:'';
  const realm=n.realm<0?'凡人':stat(n.realm)+(n.realm===0?' '+n.layer+'层':['','初','中','后','圆满'][n.layer]||'');
  const history=r?.history.slice(0,3).map(x=>'<br>· '+html(x.text)).join('')||'';
  return C(n.name,`${html(n.role||'当地人')} · ${realm}${known}<br>${html(n.goal||'各有自己的生活')}<br>${view}${r?.bonds.length?'<br>羁绊：'+r.bonds.join('、'):''}${history}`,buttons);
@@ -258,7 +259,7 @@ function interact(type,id){
   if(w.partnerId!==id)return;act(1,'social',()=>{r.bonds=r.bonds.filter(x=>x!=='道侣');r.bonds.push('旧侣');w.partnerId=null;n.partnerId=null;r.courting=null;remember(id,'当面解除道侣之约，旧日经历保留。','');});return;
  }
  if(type==='family'){
-  if(w.partnerId!==id||!alive(n)||G.age<18||age(n)<18)return;
+  if(w.partnerId!==id||!alive(n)||!Number.isFinite(age(n))||G.age<18||age(n)<18)return;
   if(w.birthPlan)return toastReason('已有家庭安排，尚未到期。');
   if(G.sex===n.sex)return toastReason('当前只实现有实际父母来源的生育；收养与其他家庭路径后续补充，不生成匿名孩子。');
   if(r.trust<75)return toastReason('对方希望关系更稳定之后，再共同安排家庭。');
@@ -301,7 +302,7 @@ function dispatch(action,arg){
  interact(type,arg);return true;
 }
 function inherit(id){
- if(G.mode!=='dead')return;const w=world(),n=w.people[id];if(!n||!alive(n)||age(n)<8||!w.children.includes(id))return;
+ if(G.mode!=='dead')return;const w=world(),n=w.people[id];if(!n||!alive(n)||!Number.isFinite(age(n))||age(n)<8||!w.children.includes(id))return;
  const oldG=G,estate=JSON.parse(JSON.stringify(w)),childAge=age(n),t=G.t,month=G.month,day=G.day;
  estate.people[w.playerId]={id:w.playerId,name:G.name,realm:realmOf(),layer:G.layer,root:G.root,birth:S.now()-G.age*YEAR,life:G.lifespan,alive:false,place:G.place,room:'square',source:'上一代玩家'};
  const ancestors=(G.ancestors||[]).concat([{name:G.name,root:G.root,realm:G.realm,layer:G.layer,age:G.age,origin:G.origin,arts:Object.keys(G.arts||{}),master:G.master,place:G.place}]);

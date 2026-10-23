@@ -154,3 +154,26 @@ test('real missing birth stays unknown across rendering, time and save restore',
  assert.match(game.run("document.getElementById('scene').innerHTML"),/年龄 未核定/);
  assert.equal(game.run("XTWorld36.get('lin').alive"),true);
 });
+
+test('unknown person age remains null and the person panel never shows NaN',()=>{
+ const game=fixture();hire(game);
+ game.run("delete XTWorld36.get('lin').birth;XTSandbox.state().staff[0].born=null;XTWorld36.sync();XTWorld36.relation('lin');");
+ assert.equal(game.run("XTWorld36.age(XTWorld36.get('lin'))"),null);
+ const panel=game.run("XTWorld36.actorPanel('lin')");assert.match(panel,/年龄未核定/);assert.doesNotMatch(panel,/NaN|undefined岁/);
+});
+
+test('unknown child birth cannot bypass the minimum inheritance age',()=>{
+ const game=fixture();
+ game.run("globalThis.playerBefore55=G.world36.playerId;const family55=XTWorld36.world();family55.people.unknownChild55={id:'unknownChild55',name:'待核后人',realm:0,layer:1,root:'五灵根',birth:null,life:100,alive:true,place:'county',room:'home',sex:'男',parents:[family55.playerId,'N04'],source:'缺日期旧档受控测试'};family55.children.push('unknownChild55');G.mode='dead';XTSandbox.dispatch('r36:inherit','unknownChild55');");
+ assert.equal(game.run('G.world36.playerId'),game.run('playerBefore55'));
+ assert.equal(game.run('G.mode'),'dead');
+ assert(Number.isFinite(game.run('G.age')));
+});
+
+test('unknown adult status cannot create a personal bond or family plan',()=>{
+ const game=fixture();
+ game.run("G.age=25;G.sex='男';G.place='temple';XTSandbox.state().roomAt='temple';XTSandbox.state().room='hall';XTWorld36.get('N04').birth=null;XTWorld36.sync();const relation55=XTWorld36.relation('N04');relation55.trust=relation55.affinity=relation55.respect=100;relation55.history=[{text:'过往一'},{text:'过往二'},{text:'过往三'}];XTSandbox.dispatch('r36:court','N04');");
+ assert(!game.run("XTWorld36.relation('N04').courting"));
+ game.run("G.world36.partnerId='N04';XTWorld36.get('N04').partnerId=G.world36.playerId;XTSandbox.dispatch('r36:family','N04');");
+ assert(!game.run('G.world36.birthPlan'));
+});
