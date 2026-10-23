@@ -4,9 +4,9 @@ on:
     paths:
       - 'prototype/**'
       - 'tools/staff53*'
+      - 'tools/build-review-bundle.py'
+      - 'tools/test_review_bundle.py'
       - '.github/workflows/staff-browser.yml'
-  push:
-    branches: ['game/staff-continuity-20261024']
   workflow_dispatch:
 permissions:
   contents: read
@@ -16,6 +16,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -23,6 +25,8 @@ jobs:
         run: npm install --no-save --ignore-scripts playwright@1.62.1
       - name: Install isolated Chromium
         run: npx playwright install --with-deps chromium
+      - name: Check bundle guards
+        run: python -m unittest discover -s tools -p test_review_bundle.py -v
       - name: Check game logic
         run: node --test tools/staff53-check.cjs
       - name: Check real desktop and mobile browser
@@ -34,3 +38,12 @@ jobs:
           path: .screenshots/staff53/
           include-hidden-files: true
           if-no-files-found: ignore
+      - name: Build complete review bundle
+        run: python tools/build-review-bundle.py --commit "$REVIEW_COMMIT"
+        env:
+          REVIEW_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: xiantu-review-bundle
+          path: .artifacts/xiantu-review.zip
+          if-no-files-found: error
