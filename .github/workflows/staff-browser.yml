@@ -4,6 +4,8 @@ on:
     paths:
       - 'prototype/**'
       - 'tools/staff53*'
+      - 'tools/world36-check.cjs'
+      - 'tools/world36-regression.cjs'
       - 'tools/build-review-bundle.py'
       - 'tools/test_review_bundle.py'
       - '.github/workflows/staff-browser.yml'
@@ -38,6 +40,10 @@ jobs:
           path: .screenshots/staff53/
           include-hidden-files: true
           if-no-files-found: ignore
+      - name: Check existing world and relationship regressions
+        run: |
+          node tools/world36-check.cjs
+          node tools/world36-regression.cjs
       - name: Build complete review bundle
         run: python tools/build-review-bundle.py --commit "$REVIEW_COMMIT"
         env:

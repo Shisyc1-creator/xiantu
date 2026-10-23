@@ -1,10 +1,10 @@
 const fs=require('fs'),path=require('path'),assert=require('assert');
-const {pathToFileURL}=require('url');const {chromium}=require('C:/Users/EDY/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const {pathToFileURL}=require('url');const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'.screenshots/batch36');fs.mkdirSync(out,{recursive:true});
-(async()=>{const browser=await chromium.launch({channel:'msedge',headless:true});const results=[],errors=[],failed=[];
+(async()=>{const browser=await chromium.launch({channel:process.env.XT_BROWSER_CHANNEL||undefined,headless:true});const results=[],errors=[],failed=[];
 try{
 const page=await browser.newPage({viewport:{width:1440,height:1000}});page.on('pageerror',e=>errors.push(e.message));page.on('requestfailed',r=>failed.push(r.url()));
-await page.goto(pathToFileURL(path.join(root,'prototype/index.html')).href);await page.evaluate(()=>{globalThis.legacyChild47=function(i){if(G.mode==='child'){const c=G.origin==='妖血遗孤'?XTBackground47.contexts.find(c=>XTBackground47.visibleOriginVariants(G.origin,c).some(v=>v.i===i)):XTBackground47.contexts[0];G.birthContext=JSON.parse(JSON.stringify(c));G.fate=genFate();}return chooseChild(i);};});
+await page.goto(pathToFileURL(path.join(root,'prototype/index.html')).href+'?developer=1');await page.evaluate(()=>{globalThis.legacyChild47=function(i){if(G.mode==='child'){const c=G.origin==='妖血遗孤'?XTBackground47.contexts.find(c=>XTBackground47.visibleOriginVariants(G.origin,c).some(v=>v.i===i)):XTBackground47.contexts[0];G.birthContext=JSON.parse(JSON.stringify(c));G.fate=genFate();}return chooseChild(i);};});
 await page.evaluate(()=>{
 newGame('沈行舟','寒门散修','男');legacyChild47(0);XTOpening46.chooseTimeline(8,8);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();G.mode='idle';G.lastResult=null;G.stones=3000;G.inventory.herb=120;G.inventory.ironOre=60;render();
 globalThis.fixture36=JSON.stringify(G);tryEvent=()=>null;meetLive=()=>null;
