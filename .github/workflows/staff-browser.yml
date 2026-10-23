@@ -1,0 +1,36 @@
+name: Staff continuity browser checks
+on:
+  pull_request:
+    paths:
+      - 'prototype/**'
+      - 'tools/staff53*'
+      - '.github/workflows/staff-browser.yml'
+  push:
+    branches: ['game/staff-continuity-20261024']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned test runtime
+        run: npm install --no-save --ignore-scripts playwright@1.62.1
+      - name: Install isolated Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Check game logic
+        run: node --test tools/staff53-check.cjs
+      - name: Check real desktop and mobile browser
+        run: node tools/staff53-browser-check.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: staff-browser-results
+          path: .screenshots/staff53/
+          include-hidden-files: true
+          if-no-files-found: ignore
