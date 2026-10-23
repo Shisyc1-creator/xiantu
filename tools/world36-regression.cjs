@@ -8,7 +8,9 @@ const page=await browser.newPage();page.on('pageerror',e=>errors.push(e.message)
  if(!G.opening46?.childhood)throw Error('current childhood fixture missing');
  for(let step=0;step<4;step++)XTOpening46.chooseChildhood(XTOpening46.childhoodToken(),0);
  for(let step=0;step<4;step++)XTOpening46.dispatch(XTOpening46.token(),step%2);
- beginCultivation();if(G.mode!=='idle')throw Error('current opening did not finish');
+ beginCultivation();if(G.entry47?.status!=='complete')throw Error('current entry did not complete');
+ if(G.mode==='result')document.getElementById('contBtn').click();
+ if(G.mode!=='idle')throw Error('current opening did not finish');
 };});
 await page.evaluate(()=>{start36('寒门散修');G.mode='idle';G.lastResult=null;G.stones=3000;G.inventory={herb:12,ironOre:12};tryEvent=()=>null;meetLive=()=>null;globalThis.reset36r=JSON.stringify(G);globalThis.fresh36r=()=>{restore(reset36r);G.mode='idle';G.lastResult=null;};globalThis.room36r=(room)=>{G.place='county';const d=XTSandbox.state();d.roomAt='county';d.room=room;XTWorld36.sync();XTSandbox.go('scene');};});
 async function check(name,fn){assert(await page.evaluate(fn),name);checks.push(name);console.log('PASS '+name);}

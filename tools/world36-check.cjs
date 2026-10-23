@@ -10,7 +10,9 @@ await page.goto(pathToFileURL(path.join(root,'prototype/index.html')).href+'?dev
  if(!G.opening46?.childhood)throw Error('current childhood fixture missing');
  for(let step=0;step<4;step++)XTOpening46.chooseChildhood(XTOpening46.childhoodToken(),0);
  for(let step=0;step<4;step++)XTOpening46.dispatch(XTOpening46.token(),step%2);
- beginCultivation();if(G.mode!=='idle')throw Error('current opening did not finish');
+ beginCultivation();if(G.entry47?.status!=='complete')throw Error('current entry did not complete');
+ if(G.mode==='result')document.getElementById('contBtn').click();
+ if(G.mode!=='idle')throw Error('current opening did not finish');
 };});
 await page.evaluate(()=>{
 start36('寒门散修');G.mode='idle';G.lastResult=null;G.stones=3000;G.inventory.herb=120;G.inventory.ironOre=60;render();
