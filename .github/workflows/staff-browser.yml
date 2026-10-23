@@ -1,0 +1,55 @@
+name: Staff continuity browser checks
+on:
+  pull_request:
+    paths:
+      - 'prototype/**'
+      - 'tools/staff53*'
+      - 'tools/world36-check.cjs'
+      - 'tools/world36-regression.cjs'
+      - 'tools/build-review-bundle.py'
+      - 'tools/test_review_bundle.py'
+      - '.github/workflows/staff-browser.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned test runtime
+        run: npm install --no-save --ignore-scripts playwright@1.62.1
+      - name: Install isolated Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Check bundle guards
+        run: python -m unittest discover -s tools -p test_review_bundle.py -v
+      - name: Check game logic
+        run: node --test tools/staff53-check.cjs
+      - name: Check real desktop and mobile browser
+        run: node tools/staff53-browser-check.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: staff-browser-results
+          path: .screenshots/staff53/
+          include-hidden-files: true
+          if-no-files-found: ignore
+      - name: Check existing world and relationship regressions
+        run: |
+          node tools/world36-check.cjs
+          node tools/world36-regression.cjs
+      - name: Build complete review bundle
+        run: python tools/build-review-bundle.py --commit "$REVIEW_COMMIT"
+        env:
+          REVIEW_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: xiantu-review-bundle
+          path: .artifacts/xiantu-review.zip
+          if-no-files-found: error
