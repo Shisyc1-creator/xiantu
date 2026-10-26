@@ -5,7 +5,7 @@ const {pathToFileURL} = require('node:url');
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE || (process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES ? path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES,'playwright') : 'playwright'));
 
 (async()=>{
- const browser=await chromium.launch({channel:'msedge',headless:true});
+ const browser=await chromium.launch({...(process.env.PLAYWRIGHT_EXECUTABLE_PATH?{executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH,args:['--no-sandbox','--disable-dev-shm-usage']}:process.env.PLAYWRIGHT_CHANNEL?{channel:process.env.PLAYWRIGHT_CHANNEL}:process.platform==='win32'?{channel:'msedge'}:{}),headless:true});
  const output=path.resolve(__dirname,'../outputs/ui-preview');fs.mkdirSync(output,{recursive:true});
  let count=0;
  try {
@@ -95,3 +95,4 @@ const {chromium} = require(process.env.PLAYWRIGHT_MODULE || (process.env.CODEX_P
   console.log(`${count} layout/isolation checks passed`);
  } finally {await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
+
