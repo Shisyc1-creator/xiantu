@@ -90,3 +90,10 @@
 专项验证：`node tools/save-r1-check.cjs` 7 项；配置 Playwright 模块后 `node tools/save-r1-browser-check.cjs` 7 项真实 Edge 检查，包含独立开发存档、故障注入、刷新恢复与 390px 手机尺寸实际存档按钮点击，无页面错误。Playwright 可通过 `PLAYWRIGHT_MODULE` 或 `CODEX_PRIMARY_RUNTIME_NODE_MODULES` 指定，未配置时使用项目依赖。
 
 完整旧回归未通过：经济检查在第 13 项后于商店 dispatch 出现栈溢出，未修改的电脑基线同样复现；拍卖旧检查在等待 `u46:enter` 时超时。本批未修复这两项既有检查/入口问题，不能据此宣称经济、拍卖或全套回归通过。普通玩家存档、实际手机设备及远端完整玩法仍未验证。改动在原草稿分支待审，未合并或部署。
+
+
+## 经济与拍卖旧回归修复（2026-10-26）
+
+上一条 R1 记录中的两个既有失败现已完成定位与专项复验：未测灵或尚无角色时，通用 dispatch 会再次进入跳过忙碌标记的 observe 回调，造成无限递归；现仅对已测灵角色包裹行动观察器，源码与发布副本一致。旧经济/拍卖测试仍走已过时的固定八岁初始化，未完成当前童年与入门，导致入场按钮缺失；测试现通过公共 `current-opening-fixture.cjs` 完成真实童年、测灵和入门结果，并使用独立 `developer=1` 自动/手动存档键。未修改成长年龄、资质概率或玩法数值。
+
+验证：`node tools/dispatch-r2-check.cjs` 2 项（修复前已红测复现）；`node tools/economy40-check.cjs` 29 项；`node tools/auction43-check.cjs` 30 项；R1 的逻辑 7 项、真实浏览器 7 项复跑通过。经济/拍卖均包含桌面与 390px 手机尺寸检查，拍卖包含实际入场、举牌、刷新恢复与钱物回滚，无页面错误。Playwright 路径通过 `PLAYWRIGHT_MODULE` / `CODEX_PRIMARY_RUNTIME_NODE_MODULES` 或项目依赖提供。本批未声称其余旧测试全部通过，未验证手机真机；原草稿 PR 保持未合并、未部署。
