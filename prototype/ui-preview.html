@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>仙途 · 游历与家业</title>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>仙途 · 全界面交互样板</title>
 <style>
 :root{--paper:#f4efe3;--white:#fcf9ef;--ink:#233e3d;--muted:#7d8477;--line:#d6d3c1;--red:#a34b38;--gold:#a08a52;--serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC","SimSun",serif}
 *{box-sizing:border-box}
@@ -376,4 +376,8 @@ document.addEventListener('input',e=>{if(e.target.id==='staff-search'){state.que
 document.addEventListener('submit',e=>{if(e.target.id!=='proposal-form')return;e.preventDefault();const form=new FormData(e.target),draft={person:state.person,topic:form.get('topic').trim(),note:form.get('note').trim()};if(!draft.topic||!draft.note){toast('请写下拟议内容和具体安排。');return;}state.proposals[state.person]=draft;state.detail='staff';renderDetail();$('#details').focus();toast('已留作本页草稿，尚未提交或扣除资源。');});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDetail();return;}if(e.key==='Tab'&&document.body.classList.contains('detail-open')){const focusable=[...$('#details').querySelectorAll('button:not(:disabled),input,textarea,select,summary')];if(!focusable.length)return;const first=focusable[0],last=focusable.at(-1);if(e.shiftKey&&(document.activeElement===first||document.activeElement===$('#details'))){e.preventDefault();last.focus();}else if(!e.shiftKey&&(document.activeElement===last||document.activeElement===$('#details'))){e.preventDefault();first.focus();}}});
 window.addEventListener('resize',()=>{if(innerWidth>900){document.body.classList.remove('detail-open');$('#main').inert=false;document.querySelector('.bottom-nav').inert=false;document.querySelector('.sidebar').inert=false;$('#details').removeAttribute('role');$('#details').removeAttribute('aria-modal');}});render();
-</script></body></html>
+</script><link rel="stylesheet" href="ui-preview/ui-shell.css">
+<script src="ui-preview/route-registry.js"></script>
+<script src="ui-preview/ui-shell.js"></script>
+</body></html>
+
