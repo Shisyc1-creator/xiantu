@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>仙途 · 游历与家业</title>
+<style>
+:root{--paper:#f4efe3;--white:#fcf9ef;--ink:#233e3d;--muted:#7d8477;--line:#d6d3c1;--red:#a34b38;--gold:#a08a52;--serif:"Noto Serif CJK SC","Source Han Serif SC","Songti SC","SimSun",serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.65 "Microsoft YaHei",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;color:inherit}
+button:disabled{cursor:not-allowed;opacity:.5}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--red);outline-offset:4px}
+button{min-height:44px}
+h1,h2,h3,h4,p{margin:0}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500}
+button svg{width:21px;height:21px;flex:none}
+svg{max-width:100%}
+.app{display:grid;grid-template-columns:156px minmax(0,1fr) 310px;min-height:100dvh}
+.sidebar{background:#213c3b;color:#dedecd;padding:34px 20px;display:flex;flex-direction:column;position:sticky;top:0;height:100dvh;border-right:1px solid #c6bb90}
+.brand{font:42px var(--serif);letter-spacing:.18em;text-align:center}
+.brand small{display:block;font:10px/2 sans-serif;letter-spacing:.32em;color:#c8bc91;margin-top:10px}
+.brand:after{content:"";display:block;height:1px;background:#d4c49644;margin:28px 0}
+.primary{display:grid;gap:10px}
+.primary button{background:none;border:0;color:#c9d2c5;display:flex;align-items:center;gap:14px;padding:13px 12px;text-align:left;font-size:16px;letter-spacing:.14em}
+.primary button.active{background:#ffffff0c;color:#f2d8a4;border-left:2px solid #c4a56b}
+.primary .coming{font-size:13px;letter-spacing:.15em;padding:16px 14px;color:#c9d2c56b}
+.side-end{margin-top:auto;text-align:center;color:#a8b5aa;font-size:11px}
+.seal{display:inline-grid;place-content:center;border:1px solid var(--red);outline:1px solid var(--red);outline-offset:3px;color:var(--red);font:20px/1.15 var(--serif);width:42px;height:46px;transform:rotate(-4deg);margin-bottom:15px}
+.side-end .seal{color:#c99076;border-color:#c99076;outline-color:#c99076}
+.main{min-width:0;padding:0 32px 32px;background:radial-gradient(ellipse at 20% 10%,#fff8dc55,transparent 60%)}
+.topbar{height:84px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:15px;color:var(--muted);font-size:12px}
+.crumb{letter-spacing:.08em}
+.top-actions{display:flex;align-items:center;gap:16px}
+.text-btn{border:0;background:none;padding:8px 0;font-size:12px}
+.weather{color:#5d7066}
+.eyebrow{font-size:10px;letter-spacing:.25em;color:var(--gold);text-transform:uppercase}
+.page-title{display:flex;align-items:flex-end;justify-content:space-between;margin:26px 0 20px;gap:16px}
+.page-title h1{font-size:32px;letter-spacing:.1em;margin-top:4px;line-height:1.4}
+.page-title p{font-size:12px;color:var(--muted)}
+.character{display:flex;gap:10px;align-items:center;font-size:12px;color:#62766b}
+.char-mark{width:36px;height:36px;border:1px solid #b9c1ac;border-radius:50%;display:grid;place-content:center;font:20px var(--serif)}
+.hero{height:330px;position:relative;overflow:hidden;background:#cdd5c3;isolation:isolate;border:1px solid #bebc9e}
+.hero:before{content:"";position:absolute;inset:0;background:url('assets/art/immortal-dawn-v1.webp') center 55%/cover;z-index:-2}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#183e3be0 0%,#1f484760 46%,#20474400 90%),linear-gradient(0deg,#173e3bd9,transparent 38%);z-index:-1}
+.hero-copy{padding:30px;color:#f9f3dc;max-width:65%}
+.hero-copy .kicker{font-size:11px;letter-spacing:.2em;color:#d5c79a;display:flex;align-items:center;gap:8px}
+.hero-copy .kicker:before{content:"";width:20px;height:1px;background:#c1b383}
+.hero h2{font-size:40px;letter-spacing:.13em;line-height:1.3;margin:12px 0}
+.hero-copy p{font-size:12px;line-height:1.9;color:#e3e9d5;max-width:24em}
+.scene-name{position:absolute;right:22px;top:26px;writing-mode:vertical-rl;color:#eee6c9;font:16px/2 var(--serif);letter-spacing:.22em}
+.hero-footer{position:absolute;left:24px;bottom:22px;right:24px;display:flex;justify-content:space-between;align-items:center;gap:12px;color:#e1e7d9;font-size:11px}
+.primary-btn{border:1px solid #906841;background:var(--red);color:#fff5df;padding:10px 18px;letter-spacing:.06em;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:44px}
+.primary-btn:hover{background:#8d3c2d}
+.plain-btn{background:transparent;border:1px solid #bbbfae;padding:9px 16px;min-height:44px}
+.plain-btn:hover{background:#e9e8d9}
+.white-btn{color:#efe7cb;border-color:#e2d9ad6b;background:#24444066}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:26px 0 13px;gap:12px}
+.section-head h2{font-size:19px;letter-spacing:.08em}
+.section-head small{font-size:11px;color:var(--muted)}
+.locations{display:flex;gap:0;border-bottom:1px solid var(--line);margin-top:10px}
+.locations button{flex:1;min-width:0;background:none;border:0;border-bottom:2px solid transparent;padding:12px 4px;color:var(--muted);font-size:13px}
+.locations button.active{border-color:var(--ink);color:var(--ink)}
+.locations button:before{content:"◇";margin-right:8px;color:var(--gold)}
+.locations button.active:before{content:"◆"}
+.scene-note{padding:17px 0;color:#6d786a;font:14px/1.9 var(--serif);border-bottom:1px solid var(--line)}
+.people{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.person-row{display:flex;align-items:center;gap:15px;min-width:0;width:100%;padding:17px 0;background:none;border:0;border-bottom:1px solid var(--line);text-align:left}
+.person-row:hover .person-name{color:var(--red)}
+.portrait{flex:0 0 58px;width:58px;height:65px;background:linear-gradient(140deg,#dce0d0,#e9dfc3);border-radius:45% 45% 4% 4%;position:relative;overflow:hidden;border:1px solid #c5c7b5}
+.portrait svg{position:absolute;inset:0;width:100%;height:100%}
+.person-name{font:18px var(--serif);letter-spacing:.08em}
+.person-row small{display:block;font-size:11px;color:var(--muted);margin-top:5px}
+.person-row .arrow{margin-left:auto;color:var(--gold);font-size:20px}
+.person-row .words{min-width:0}
+.person-row .words small{overflow-wrap:anywhere}
+.notice{margin:22px 0 0;border-left:2px solid var(--gold);padding:0 0 0 13px;font-size:12px;color:#6f796c}
+.notice strong{font-weight:500;color:var(--ink);display:block;margin-bottom:3px}
+.detail{background:#eae9dc;border-left:1px solid var(--line);padding:28px 23px;position:sticky;top:0;height:100dvh;overflow:auto;min-width:0}
+.detail-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #c9ceba;padding-bottom:16px;margin-bottom:23px;gap:10px}
+.detail-head small{letter-spacing:.18em;color:var(--muted);font-size:10px}
+.icon-btn{border:0;background:none;min-width:44px;min-height:44px;display:grid;place-content:center;font-size:22px}
+.detail h2{font-size:27px;letter-spacing:.1em}
+.detail .sub{color:var(--muted);font-size:12px;margin:7px 0 20px}
+.detail-art{height:136px;position:relative;margin:0 0 23px;background:linear-gradient(0deg,#eaeadcdd,#eaeadc55),url('assets/art/immortal-dawn-v1.webp') 60% 55%/cover;border-bottom:1px solid #bfc4b1}
+.detail-art .seal{position:absolute;right:18px;top:25px}
+.detail h3{font-size:16px;margin:22px 0 12px}
+.detail p{font-size:12px;line-height:1.9;color:#657265}
+.detail .dialogue{font:16px/1.9 var(--serif);color:#3a554f;padding:18px 0;border-top:1px solid #c8ceba;border-bottom:1px solid #c8ceba;margin:20px 0}
+.detail-actions{display:grid;gap:9px;margin-top:22px}
+.tag{display:inline-block;border:1px solid #bfc6b0;padding:2px 7px;font-size:10px;color:#65735f;letter-spacing:.04em}
+.timeline{padding:0 0 0 14px;list-style:none;border-left:1px solid #b5bda9;margin:15px 0}
+.timeline li{position:relative;margin:0 0 20px;font-size:12px;color:#7a8374}
+.timeline li:before{content:"";position:absolute;left:-18px;top:7px;width:7px;height:7px;border:1px solid #87947b;background:var(--paper);border-radius:50%}
+.timeline li.current{color:var(--ink)}
+.timeline li.current:before{background:var(--red);border-color:var(--red)}
+.timeline small{display:block;font-size:10px;margin-top:5px;color:var(--muted)}
+.kv{display:grid;grid-template-columns:66px 1fr;font-size:12px;gap:9px;margin:18px 0}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.estate-hero{height:275px;background:#d8ddcc;border:1px solid #bfc3a9;position:relative;overflow:hidden}
+.estate-hero:before{content:"";position:absolute;inset:0;background:url('assets/art/immortal-dawn-v1.webp') center/cover;opacity:.14}
+.estate-hero>svg{width:100%;height:100%;position:absolute;inset:0}
+.estate-caption{position:absolute;left:24px;top:20px}
+.estate-caption p{font-size:11px;color:#69806c}
+.estate-caption h2{font-size:27px;letter-spacing:.13em}
+.estate-stamp{position:absolute;right:21px;bottom:16px;color:#8b967c;font:11px var(--serif);writing-mode:vertical-rl;letter-spacing:.13em}
+.hotspot{position:absolute;min-width:70px;background:#f9f5e5e8;border:1px solid #9ba98b;padding:5px 12px;font-size:12px;box-shadow:0 4px 8px #3a513d12}
+.hotspot:before{content:"◇";font-size:10px;margin-right:6px;color:var(--red)}
+.home-tabs{display:flex;border-bottom:1px solid var(--line);gap:24px;margin-top:13px}
+.home-tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:12px 3px;min-width:58px}
+.home-tabs button.active{border-color:var(--ink)}
+.staff-tools{display:flex;gap:12px;align-items:center;margin:19px 0 4px}
+.search{display:flex;align-items:center;gap:7px;border-bottom:1px solid #aeb9a5;flex:1;min-width:0}
+.search span{color:#819079;font-size:22px}
+.search input{width:100%;min-width:0;border:0;background:transparent;padding:11px 0;outline-offset:1px;color:var(--ink);font-size:12px}
+select{border:1px solid #c0c8b5;background:#f5f2e7;color:var(--ink);min-height:44px;max-width:46%;padding:0 9px;font-size:12px}
+.staff-list .person-row{padding:18px 0}
+.staff-list .person-row .words{flex:1}
+.staff-list .chips{display:flex;gap:7px;margin-top:8px}
+.work-state{font-size:11px;text-align:right;color:#7c876f;flex:none}
+.work-state i{display:block;font-size:10px;font-style:normal;color:#a39774;margin-top:4px}
+.roster-head{font-size:10px;color:var(--muted);display:flex;justify-content:space-between;padding:18px 0 7px;letter-spacing:.12em}
+.empty{padding:26px 0;color:var(--muted);font-size:13px}
+.property-list{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}
+.property-item{padding:18px 0;border-bottom:1px solid var(--line)}
+.property-item h3{font-size:17px;margin-bottom:5px}
+.property-item p{font-size:12px;color:var(--muted);margin-bottom:12px}
+.schedule{display:flex;gap:3px;height:7px;margin:12px 0 9px}
+.schedule span:first-child{background:#506d63;flex:3}
+.schedule span:nth-child(2){background:#a7966d;flex:2}
+.schedule span:last-child{background:#cbd1bd;flex:2}
+.legend{font-size:10px!important;word-spacing:6px}
+.edit-field{display:block;margin:15px 0;font-size:12px}
+.edit-field input,.edit-field textarea{display:block;margin-top:6px;width:100%;border:1px solid #b9c2ac;background:#f6f4e9;color:var(--ink);padding:10px;min-height:44px}
+.edit-field textarea{height:95px;resize:vertical}
+.saved-note{background:#dbe2ce;padding:12px;font-size:12px;color:#496047;margin-top:15px}
+.backdrop{display:none}
+.bottom-nav{display:none}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#244340;color:#f4f0df;padding:13px 22px;z-index:50;max-width:calc(100% - 28px);box-shadow:0 5px 25px #213c3b22;font-size:12px;pointer-events:none}
+.toast:empty{display:none}
+.demo-mode{font-size:10px;color:var(--muted);border:1px solid var(--line);padding:3px 7px}
+.mobile-brand{display:none}
+.back-btn{font-size:12px;border:0;background:none;color:var(--muted);padding:4px 0;min-height:44px}
+.top-note{font-size:10px;color:var(--muted);margin:17px 0 0}
+.detail .ink-rule{height:1px;background:#bbc4ae;margin:20px 0}
+.intro-copy{font:15px/2 var(--serif);color:#5e7364}
+.alt-owner{display:flex;gap:8px;align-items:center}
+.alt-owner button{font-size:11px}
+.form-label{font-size:11px;color:var(--muted)}
+
+@media(min-width:1600px){.app{grid-template-columns:180px minmax(0,1fr) 350px}
+.main{padding-left:52px;padding-right:52px}
+.hero{height:400px}
+.detail{padding:36px 30px}
+.hero h2{font-size:48px}
+}
+
+@media(max-width:1100px) and (min-width:761px){.app{grid-template-columns:108px minmax(0,1fr) 270px}
+.sidebar{padding:28px 12px}
+.brand{font-size:32px}
+.primary button{padding:12px 8px;font-size:14px;gap:8px}
+.main{padding:0 20px 25px}
+.detail{padding:23px 18px}
+.hero{height:290px}
+.hero h2{font-size:32px}
+.hero-copy{padding:24px;max-width:80%}
+.hero-copy p{max-width:18em}
+.people{gap:14px}
+.portrait{width:46px;flex-basis:46px;height:55px}
+.person-row{gap:10px}
+.person-name{font-size:16px}
+.hero-footer{left:20px;right:20px}
+.hero-footer>span{display:none}
+.work-state{display:none}
+}
+
+@media(max-width:900px){.app{grid-template-columns:108px minmax(0,1fr)}
+.detail{display:none}
+.detail-open .detail{display:block;position:fixed;right:0;top:0;bottom:0;width:min(420px,90vw);height:100dvh;z-index:40;box-shadow:-15px 0 70px #18352e30}
+.detail-open .backdrop{display:block;position:fixed;inset:0;z-index:39;background:#142f2b66}
+.detail-open{overflow:hidden}
+.main{padding:0 26px 30px}
+.sidebar{padding:28px 12px}
+.brand{font-size:32px}
+.primary button{font-size:14px;padding:12px 8px;gap:8px}
+}
+
+@media(max-width:760px){.app{display:block;min-height:100dvh}
+.sidebar{display:none}
+.main{padding:0 20px calc(100px + env(safe-area-inset-bottom));}
+.topbar{height:65px;font-size:11px}
+.mobile-brand{display:block;font:24px var(--serif);color:var(--ink);letter-spacing:.15em}
+.crumb{display:none}
+.weather{font-size:10px}
+.top-actions{gap:13px}
+.top-actions .demo-mode{display:none}
+.page-title{margin:22px 0 17px;align-items:center}
+.page-title h1{font-size:28px}
+.page-title p{font-size:11px}
+.character{font-size:10px}
+.char-mark{width:30px;height:30px;font-size:17px}
+.character small{display:none}
+.eyebrow{font-size:9px}
+.hero{height:335px;margin-left:-20px;margin-right:-20px;border-left:0;border-right:0}
+.hero:before{background-position:64% 54%}
+.hero:after{background:linear-gradient(90deg,#173d3be8,#24463f55 80%),linear-gradient(0deg,#143a38c9,transparent 44%)}
+.hero-copy{padding:29px 25px;max-width:82%}
+.hero-copy .kicker{font-size:10px}
+.hero h2{font-size:34px;margin:15px 0}
+.hero-copy p{font-size:12px;max-width:20em}
+.scene-name{right:18px;top:35px;font-size:13px}
+.hero-footer{left:25px;right:25px;bottom:23px}
+.hero-footer>span{font-size:10px;max-width:100px;text-align:right}
+.primary-btn{padding:10px 17px;font-size:12px}
+.scene-note{font-size:13px;line-height:1.85}
+.section-head{margin-top:22px}
+.section-head h2{font-size:18px}
+.section-head small{font-size:10px}
+.people{grid-template-columns:1fr;gap:0}
+.person-row{padding:16px 0}
+.person-name{font-size:18px}
+.portrait{width:52px;flex-basis:52px;height:58px}
+.people .person-row:nth-child(2){border-bottom:1px solid var(--line)}
+.bottom-nav{display:flex;align-items:center;justify-content:space-around;position:fixed;bottom:0;left:0;right:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));height:calc(72px + env(safe-area-inset-bottom));background:#f8f5eaf2;border-top:1px solid #c8ccba;z-index:20;backdrop-filter:blur(12px)}
+.bottom-nav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;min-width:88px;min-height:52px;color:#87917b;letter-spacing:.14em}
+.bottom-nav button.active{color:var(--red)}
+.bottom-nav button.active:after{content:"";width:3px;height:3px;background:var(--red);border-radius:50%;position:absolute;bottom:8px}
+.bottom-nav .nav-divider{height:27px;border-left:1px solid var(--line)}
+.bottom-nav .sample-label{font:10px/1.6 var(--serif);letter-spacing:.12em;color:#a0a58e}
+.detail-open .detail{width:100%;height:calc(100dvh - 20px);top:20px;padding:17px 23px 36px;border:0;border-radius:12px 12px 0 0;box-shadow:0 -10px 40px #1d342c3b;overscroll-behavior:contain}
+.detail-open .detail:before{content:"";display:block;width:36px;height:3px;background:#aab69e;margin:0 auto 6px;border-radius:5px}
+.detail-head{position:sticky;top:-17px;background:#eae9dc;z-index:2;margin-bottom:19px}
+.detail-art{height:125px}
+.toast{bottom:86px;text-align:center;min-width:230px}
+.estate-hero{height:255px;margin-left:-20px;margin-right:-20px;border-left:0;border-right:0}
+.estate-caption{left:22px;top:17px}
+.estate-caption h2{font-size:25px}
+.estate-caption p{font-size:10px}
+.hotspot{font-size:11px;padding:5px 9px;min-width:60px}
+.estate-stamp{right:13px;font-size:10px}
+.home-tabs{margin-top:10px;gap:27px}
+.staff-tools{gap:10px}
+.staff-tools select{max-width:42%;font-size:11px;padding:0 6px}
+.staff-list .chips{gap:4px}
+.tag{font-size:9px;padding:1px 5px}
+.work-state{font-size:10px;max-width:72px}
+.work-state i{font-size:9px}
+.staff-list .person-row{gap:12px}
+.property-list{grid-template-columns:1fr}
+.alt-owner{flex-wrap:wrap;gap:1px}
+.alt-owner>span{display:none}
+.alt-owner button{font-size:10px;padding:5px 9px}
+.top-note{font-size:10px}
+.detail .primary-btn,.detail .plain-btn{min-height:46px}
+.detail h2{font-size:27px}
+}
+
+@media(prefers-reduced-motion:no-preference){button{transition:background .18s,color .18s}
+.detail-open .detail{animation:reveal .22s ease-out}
+@keyframes reveal{from{opacity:.3;transform:translateY(20px)}
+to{opacity:1;transform:none}
+}
+}
+
+
+/* Small type is reserved for decorative labels. */
+.scene-note{font-size:15px}
+.notice{font-size:13px}
+.top-note{font-size:12px}
+.person-row small{font-size:12px}
+.detail p{font-size:14px}
+.detail .sub{font-size:13px}
+.detail .kv{font-size:13px}
+.timeline li{font-size:13px}
+.timeline small{font-size:12px}
+.property-item p{font-size:13px}
+.roster-head{font-size:12px}
+.work-state i{font-size:11px}
+.detail .legend{font-size:12px!important}
+.detail .form-label{font-size:12px}
+.edit-field{font-size:13px}
+.tag{font-size:11px}
+.staff-list .chips{flex-wrap:wrap}
+.detail-art .portrait{position:absolute;bottom:0;left:18px;transform:scale(1.35);transform-origin:bottom left;border:0;background:none}
+
+@media(max-width:760px){.scene-note{font-size:14px}
+.person-row small{font-size:12px}
+.notice{font-size:13px}
+.section-head small{font-size:12px}
+.top-note{font-size:12px}
+.detail p{font-size:14px}
+.tag{font-size:10px}
+.work-state{max-width:76px;font-size:12px}
+.work-state i{font-size:10px;line-height:1.6}
+.roster-head{font-size:11px}
+.property-item p{font-size:13px}
+.detail .sub{font-size:13px}
+.detail .form-label{font-size:12px}
+}
+
+</style></head><body>
+<div class="app"><aside class="sidebar" aria-label="主导航"><div class="brand">仙途<small>一 念 入 山 河</small></div><nav class="primary"><button data-nav="travel" data-testid="nav-travel" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m2 19 6-12 4 7 4-11 6 16H2Z"/><path d="m5 13 3 2 2-2m4-5 2 2 2-2"/></svg>游历</button><button data-nav="estate" data-testid="nav-estate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m2 10 10-7 10 7M5 10v11h14V10M10 21v-7h4v7M8 10h8"/></svg>家业</button><div class="coming">修行 · 行囊</div><div class="coming">人物 · 见闻</div></nav><div class="side-end"><span class="seal">山<br>行</span><p>山河长在，故人有约。</p><p style="margin-top:15px;opacity:.6">界面交互样板</p></div></aside>
+<main class="main" id="main"><header class="topbar"><span class="mobile-brand">仙途</span><span class="crumb" id="crumb">大梁 · 青州 · 云安府</span><div class="top-actions"><span class="weather">◌ 晴　巳时</span><span class="demo-mode">演示卷</span><button class="text-btn" data-action="help">样板说明 ↗</button></div></header><div id="page"></div></main>
+<div class="backdrop" data-action="close" aria-hidden="true"></div><aside class="detail" id="details" tabindex="-1" aria-label="情境详情"><div id="detail-content"></div></aside></div>
+<nav class="bottom-nav" aria-label="移动主导航"><button data-nav="travel" data-testid="nav-travel" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m2 19 6-12 4 7 4-11 6 16H2Z"/></svg>游历</button><span class="nav-divider"></span><span class="sample-label">山河有迹<br>人间有约</span><span class="nav-divider"></span><button data-nav="estate" data-testid="nav-estate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m2 10 10-7 10 7M5 10v11h14V10M10 21v-7h4v7"/></svg>家业</button></nav><div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+'use strict';
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const state={page:'travel',scene:'street',homeTab:'staff',filter:'all',query:'',owner:'沈行舟',detail:'location',person:null,tracking:false,proposals:{}};let lastFocus=null,toastTimer;
+const scenes={street:{title:'商街烟火',name:'青石县 · 商街',quote:'巷口新茶初沸，檐下幌子轻摇。往来的脚步声里，藏着这座县城的消息。',desc:'城外是修行，城里也是。停一停脚步，听听故人的近况。',people:['wang','liu']},forge:{title:'炉火未歇',name:'青石县 · 炉坊',quote:'炭火映红了砧台，石师傅正替人修补旧剑。炉边的柳丹师收起扇子，向你点头。',desc:'一寸炉火，炼人间百器。寻访工匠，问一件称手的器物。',people:['shi','liu']},ferry:{title:'渡口听潮',name:'青石县 · 河埠',quote:'白船主靠在系船石旁，看商队卸下一篓新药。江上风来，带着远方的水汽。',desc:'水路连着故乡与远方。此行去处，且听船家细说。',people:['bai','wang']}};
+const people={wang:{name:'王掌柜',role:'百草铺东家',mark:'药',line:'你来得正好。新到的草药已理齐，若不急着赶路，坐下喝碗茶？',topic:'药铺近况',reply:'药材得看来处。上游的船路恢复些了，眼下这批青叶草，都是逐包验过的。'},liu:{name:'柳丹师',role:'炉坊丹师',mark:'丹',line:'一炉药的火候，急不得。你若想学，我先讲药性，再谈炉火。',topic:'请教炼丹',reply:'学丹先识药。知道为何用这味，再动手，才不会只会照抄丹方。'},shi:{name:'石师傅',role:'铁器铺匠人',mark:'器',line:'旧剑带来看看。能修的就修，用惯的东西，总有些难舍。',topic:'谈谈器物',reply:'器物有自己的脾性，修行人也一样。挑一把握得稳的剑，比光看品阶有用。'},bai:{name:'白船主',role:'白水渡船家',mark:'渡',line:'风向还好。今儿不急着开船，先把这几篓药稳稳送上岸。',topic:'打听水路',reply:'河道通了，渡镇就会热闹起来。真要动身，也得先看会期、路程和船位。'},lin:{name:'林修',role:'采集与药圃',mark:'林',relation:'月俸雇佣',motive:'安稳谋生，留出自修时间',realm:'炼气四层',line:'这趟采集已经交回仓中。手头事办完，我想在院里静坐一会儿。'},han:{name:'韩铸',role:'器物制作',mark:'韩',relation:'月俸雇佣',motive:'打磨手艺，寻合用的器谱',realm:'炼气四层',line:'先把约好的器物做好。若有好器谱，我也愿与你一同琢磨。'},qiao:{name:'巧娘',role:'家宅管事',mark:'巧',relation:'自愿襄助 · 演示',motive:'与旧主相识，愿照看家业',realm:'凡人',line:'院里的人和事，我都熟。换了当家人，往后怎么相处，总要先说清楚。'}};
+const offers={wang:{place:'百草铺',item:'青叶草',kind:'药材',seal:'百<br>草',desc:'一包新到的草药，已注明来处与用途。正式交易将沿用现有库存、物价与钱物校验。',note:'叶色新青，气息平和。'},shi:{place:'铁器铺',item:'青钢短剑',kind:'器物',seal:'百<br>工',desc:'石师傅搁下新磨的短剑，细说剑身与护手的做工。正式买卖仍由原器物库存和灵石账目结算。',note:'寒光敛于剑脊，锋口干净利落。'},liu:{place:'炉坊丹柜',item:'聚气散',kind:'丹药',seal:'丹<br>炉',desc:'柳丹师取出一包聚气散，先交代用途，再叮嘱如何收存。本页只看陈列，不改变正式丹药库存。',note:'药香清浅，纸封上记着开炉的日子。'},bai:{place:'渡口水路',item:'白水渡航路',kind:'航路',seal:'江<br>渡',desc:'白船主摊开河道图，说起风向、会期与沿途靠泊处。正式动身仍须遵循原有道路、路程和准入规则。',note:'顺水有顺水的时辰，远行先问归处。',route:true}};
+function portrait(id){
+ const looks={wang:{robe:'#6b6346',hair:'#7b7c68',skin:'#c5ae87',shape:'merchant'},liu:{robe:'#657b78',hair:'#293e38',skin:'#dbc9a5',shape:'woman'},shi:{robe:'#586674',hair:'#72786c',skin:'#b49c79',shape:'smith'},bai:{robe:'#5d736d',hair:'#444e3e',skin:'#bb9f75',shape:'boat'},lin:{robe:'#526e58',hair:'#304039',skin:'#ceba94',shape:'young'},han:{robe:'#865d44',hair:'#3e4235',skin:'#bca27a',shape:'craft'},qiao:{robe:'#80665f',hair:'#53594b',skin:'#d2bd99',shape:'woman'}};
+ const l=looks[id],woman=l.shape==='woman';
+ const hair=woman?`<ellipse cx="29" cy="14" rx="9" ry="9" fill="${l.hair}"/><path d="M16 31Q13 10 29 11Q45 11 42 32L37 20Q25 24 19 20L19 35Z" fill="${l.hair}"/><path d="m20 12 22-3" stroke="${id==='qiao'?'#c4c4aa':'#bda267'}" stroke-width="2"/>`:l.shape==='merchant'?`<path d="M15 22 18 10Q29 4 40 10L43 23Z" fill="#4c5643"/><path d="M16 19h27" stroke="#ab9d6b"/><path d="m23 36 6 4 7-4-3 13-5 5-5-9" fill="${l.hair}"/>`:l.shape==='boat'?`<path d="M6 22 28 5 52 22Q29 27 6 22" fill="#9b9565"/><path d="m13 19 15-11 18 12M28 8v16" stroke="#64735b" fill="none"/><path d="m21 36 8 4 9-4-5 10-6 2z" fill="${l.hair}"/>`:l.shape==='craft'?`<path d="M17 25q-2-17 13-18 14 1 13 19l-7-11-16 4z" fill="${l.hair}"/><path d="m17 18 26-1" stroke="#9d7559" stroke-width="5"/>`:l.shape==='smith'?`<path d="M16 29q-2-10 3-14l1 14m18-1 1-13q7 8 3 16" fill="${l.hair}"/><path d="m22 36 7 3 8-3-4 10h-8z" fill="${l.hair}"/>`:`<path d="M17 29Q12 10 28 9q16-2 15 19l-8-13-15 5z" fill="${l.hair}"/><ellipse cx="31" cy="9" rx="6" ry="4" fill="${l.hair}"/><path d="m27 7 12 4" stroke="#b8aa79" stroke-width="2"/>`;
+ return `<span class="portrait" aria-hidden="true"><svg viewBox="0 0 58 65"><path d="${woman?'M8 65Q9 47 24 42h10q14 4 16 23':'M5 65q3-20 18-24h13q16 5 18 24'}" fill="${l.robe}"/><path d="m20 45 9 12 9-12-5 20H22z" fill="#e6dfc9"/><path d="m18 47 10 14m11-14-9 18" stroke="#b9b8a0" fill="none"/><ellipse cx="29" cy="28" rx="${woman?10:11}" ry="14" fill="${l.skin}"/>${hair}<path d="m22 29 4-1m6 0 4 1m-8 5h3m-5 4h7" fill="none" stroke="#77795d" stroke-width=".8"/>${woman?'<path d="m18 34 1 4m20-4-1 4" stroke="#bda570" stroke-width="1.5"/>':''}</svg></span>`;
+}
+function personRow(id,staff=false){const p=people[id];return `<button class="person-row" data-action="${staff?'staff':'person'}" data-person="${id}" data-testid="${staff?'staff-detail':'travel-npc'}">${portrait(id)}<span class="words"><span class="person-name">${p.name}</span><small>${p.role}${staff?' · '+p.realm:''}</small>${staff?`<span class="chips"><span class="tag">${p.relation}</span><span class="tag">${id==='lin'?'采集已交付':id==='han'?'器室当值':'照看院落'}</span></span>`:''}</span>${staff?`<span class="work-state">${id==='lin'?'余暇吐纳':id==='han'?'打磨器物':'料理日常'}<i>${id==='lin'?'想留些静修时日':id==='han'?'想寻一卷器谱':'顾念旧日情分'}</i></span>`:'<span class="arrow">↗</span>'}</button>`;}
+function heading(eye,title,sub,estate=false){return `<div class="page-title"><div><div class="eyebrow">${eye}</div><h1>${title}</h1><p>${sub}</p></div>${estate?`<div class="alt-owner"><span class="form-label">当前当家</span><button class="plain-btn" data-action="heir" data-testid="heir-toggle">${state.owner} ⇄</button></div>`:'<div class="character"><span class="char-mark">沈</span><span>沈行舟<br><small>炼气 · 行走此间</small></span></div>'}</div>`;}
+function travel(){const s=scenes[state.scene];return heading('WANDER THE MORTAL REALM','游历人间','山河之间，每一次相逢都留下痕迹。')+`<section class="hero" data-testid="travel-scene"><div class="hero-copy"><div class="kicker">青石县志 · 当地见闻</div><h2>${s.title}</h2><p>${s.desc}</p></div><span class="scene-name">山色入城　人间有约</span><div class="hero-footer"><button class="primary-btn" data-action="look">寻访此间人物 <span>↗</span></button><span>当前所在<br>${s.name}</span></div></section><nav class="locations" aria-label="演示场景">${[['street','商街'],['forge','炉坊'],['ferry','渡口']].map(([id,n])=>`<button data-action="scene" data-scene="${id}" class="${state.scene===id?'active':''}" aria-pressed="${state.scene===id}">${n}</button>`).join('')}</nav><p class="scene-note">${s.quote}</p><div class="section-head"><h2>此间相逢</h2><small>当面往来 · 先识其人</small></div><div class="people" id="travel-people">${s.people.map(id=>personRow(id)).join('')}</div><div class="notice"><strong>${state.tracking?'正在追踪 · 旧约回执':'行路有记 · 旧约回执'}</strong>${state.tracking?'下一步：在商街找到王掌柜，问一问药铺的凭据。':'有一封回执，正等你到商街问一声。'} <button class="text-btn" data-action="track">${state.tracking?'查看下一步':'查看线索'} →</button></div><p class="top-note">场景切换用于演示入口层级，不推进日期或改变正式道路。</p>`;}
+function courtyard(){return `<section class="estate-hero" aria-label="院落示意图"><svg viewBox="0 0 800 290" aria-hidden="true"><defs><pattern id="tiles" width="22" height="15" patternUnits="userSpaceOnUse"><path d="M0 0h22M11 0v15" fill="none" stroke="#405d52" stroke-width=".5" opacity=".3"/></pattern></defs><path d="M100 270 250 84 648 109 738 260Z" fill="#d4d8bc"/><path d="m222 170 202-80 240 89-202 92z" fill="#e9e5cf" stroke="#afbaa1"/><path d="m226 170 190 77 242-69m-242 69 5-91" fill="none" stroke="#b9bfa5" stroke-dasharray="4 6"/><path d="m315 115 111-47 120 48-118 47z" fill="#3f5b50"/><path d="m315 115 113 48 118-47-22 28-97 42-99-43z" fill="#687b64"/><path d="m337 147 91 39 95-40v35l-95 40-91-37z" fill="#b6b994"/><path d="m375 166 26 11v25l-26-11m73-7 28-12v26l-28 12" fill="#6b7960"/><path d="m210 198 75-33 70 30-76 34z" fill="#435e51"/><path d="m221 208 58 24 65-28v39l-65 29-58-26z" fill="#b6b692"/><path d="m522 210 75-34 69 30-73 35z" fill="#435e51"/><path d="m534 220 59 24 61-28v35l-62 28-58-25z" fill="#aeb490"/><path d="m363 252 64-28 70 27-65 29z" fill="#c1c9a7"/><path d="m361 259 70 28 67-29" fill="none" stroke="#8b9e7c" stroke-width="3"/><path d="m377 249 15-5m1 12 16-6m5 12 16-6m6-17 17 6m-7 2 17 6" stroke="#8ea079" stroke-width="4"/><path d="m580 142 27 10m-13-20v40m57 19 28 10m-14-20v42" stroke="#6d855c" stroke-width="4"/><g fill="#7c946a" opacity=".7"><ellipse cx="591" cy="132" rx="20" ry="29"/><ellipse cx="664" cy="177" rx="21" ry="27"/><ellipse cx="179" cy="217" rx="19" ry="26"/></g><path d="M0 278q180-24 300 5t500-10" fill="none" stroke="#99ac92" stroke-width="2"/>
+<g fill="none" stroke-linejoin="round">
+ <path d="M217 167 218 152 305 117M553 131l108 41v17M221 248l56 24m378-21-63 28" stroke="#899d7c" stroke-width="5"/>
+ <path d="m214 153 91-38m249 13 111 44" stroke="#4b6a59" stroke-width="3"/>
+ <path d="m229 159 67-28m270 8 83 33" stroke="#c0c7a6" stroke-width="4"/>
+ <path d="M307 114q28 6 117-54 95 59 130 53l-12 13q-55-9-117-45-68 40-110 46Z" fill="#425e52" stroke="#314d43" stroke-width="2"/>
+ <path d="M321 119q49-14 104-47 59 35 115 48m-107-44-4 48m-14-43-13 46m0-39-23 48m72-47 14 46m-2-38 25 45m-98-31-32 43m138-24 29 28" stroke="#83927c" stroke-width="1"/>
+ <path d="m316 126 113 46 115-45" stroke="#2b493e" stroke-width="5"/>
+ <path d="m340 149 1 35m34-21v36m39-19v35m33-33v28m34-42v29m35-43v29" stroke="#7a7553" stroke-width="4"/>
+ <path d="m342 183 84 35 91-38" stroke="#6b7f65" stroke-width="3"/>
+ <path d="m399 173 22 9v29l-22-9Zm43 12 24-10v27l-24 10Z" fill="#6d7860" stroke="#d2cfaa"/>
+ <path d="m406 177v26m8-22v26m35-24v23m9-27v24m-60-14 23 10m22-8 23-10" stroke="#b3b58d" stroke-width="1"/>
+ <path d="m351 153 25 11v22l-25-11Zm130 14 24-10v21l-24 10Z" fill="#89967a" stroke="#d1d1ac"/>
+ <path d="m358 156v22m9-18v22m116-9 20-9m-12-3v23m-140-20 24 10" stroke="#526b55"/>
+ <path d="M199 196q18 5 85-39 48 27 80 33l-12 12q-33-9-68-29-40 24-77 34Z" fill="#415d50" stroke="#344e42" stroke-width="2"/>
+ <path d="m218 198 67-33 62 31m-67-29-8 36m-7-29-19 32m52-33 17 30m-7-23 24 21" stroke="#819079"/>
+ <path d="m222 213v32m24-22v31m33-22v37m29-50v36m29-48v36" stroke="#777451" stroke-width="3"/>
+ <path d="m252 233 19 8v24l-19-9Zm43-5 21-9v18l-21 9Z" fill="#65775d" stroke="#d4d0ad"/>
+ <path d="m259 237v22m42-31v14m8-18v15m-14-8 21-9" stroke="#aeb28c"/>
+ <path d="M513 208q20 3 83-39 48 24 78 29l-9 13q-33-8-68-27-37 23-76 33Z" fill="#415d50" stroke="#344e42" stroke-width="2"/>
+ <path d="m528 210 69-34 62 29m-67-27-9 36m-6-30-20 33m54-32 16 27m-6-21 24 20" stroke="#819079"/>
+ <path d="m538 224 1 30m25-20v31m29-21v34m27-47v33m26-44v32" stroke="#7a7752" stroke-width="3"/>
+ <path d="m547 229 18 7v16l-18-7Zm55 13 22-10v20l-22 10Z" fill="#65775d" stroke="#d2d0a9"/>
+ <path d="m555 232v16m53-9v21m7-25v21" stroke="#adb28a"/>
+ <path d="m421 222 6 6-14 6-5-6z m-17 12 9 4-14 6-8-4z m-16 11 10 4-14 7-9-5z m-18 12 12 4-15 8-11-6z" fill="#c5ccb4" stroke="#a5b396"/>
+ <path d="m307 243 25-11 8 4-24 12z m197-7 22-10 11 5-22 10z" fill="#bdc8ac" stroke="#9cad8e"/>
+ <path d="m579 170 9-17 12-5-1 19m59 42-2-25 10-16 10 5m-501 58 4-26 9-10" stroke="#617f59" stroke-width="2"/>
+ <path d="m328 140 5 7 7-2m172-2 4-9 7 2" stroke="#9da685"/>
+ <path d="m218 245 61 27 18-7m359-15-63 28-16-7" stroke="#728a68" stroke-width="3"/>
+</g></svg><div class="estate-caption"><p>青石县 · 河畔旧居</p><h2>一方小院</h2></div><button class="hotspot" style="left:48%;top:41%" data-action="property" data-property="hall">正堂</button><button class="hotspot" style="left:26%;top:69%" data-action="property" data-property="forge">器室</button><button class="hotspot" style="left:68%;top:66%" data-action="property" data-property="garden">药圃</button><span class="estate-stamp">院落示意 · 非正式地图</span></section>`;}
+function estate(){return heading('A HOME AMONG THE MOUNTAINS','家业有续','留一处灯火，容几位故人。',true)+courtyard()+`<nav class="home-tabs" aria-label="家业内容"><button data-action="home-tab" data-tab="estate" class="${state.homeTab==='estate'?'active':''}">院落产业</button><button data-action="home-tab" data-tab="staff" data-testid="estate-staff-tab" class="${state.homeTab==='staff'?'active':''}">往来人手</button></nav>${state.homeTab==='staff'?`<div class="staff-tools"><label class="search"><span aria-hidden="true">⌕</span><input data-testid="staff-search" id="staff-search" aria-label="搜索人手" placeholder="寻姓名、岗位或所求" value="${esc(state.query)}"></label><select aria-label="按关系来源筛选" id="staff-filter"><option value="all" ${state.filter==='all'?'selected':''}>全部关系</option><option value="paid" ${state.filter==='paid'?'selected':''}>月俸雇佣</option><option value="voluntary" ${state.filter==='voluntary'?'selected':''}>自愿襄助</option></select></div><div class="roster-head"><span>先看其人，再谈其事</span><span>各有所求</span></div><div class="staff-list" id="staff-list">${staffRows()}</div><div class="notice"><strong>各有所求，各有其约</strong>受雇者按约做事，事毕安排自己的修行。传授、指导与供资，另说具体约定。</div>`:`<div class="property-list">${[['hall','正堂','会客、交接与家业往来。'],['forge','器室','韩铸正在照料炉火与器物。'],['garden','药圃','本季的草木，已有专人照看。'],['store','仓房','交付的物资在此核对。']].map(([id,n,t])=>`<div class="property-item"><h3>${n}</h3><p>${t}</p><button class="text-btn" data-action="property" data-property="${id}">入内看看 ↗</button></div>`).join('')}</div>`}<p class="top-note">展示的是演示人物与约定草稿，不是正式契约或培养规则。</p>`;}
+function staffRows(){const ids=['lin','han','qiao'].filter(id=>{const p=people[id];return (state.filter==='all'||(state.filter==='paid'?id!=='qiao':id==='qiao'))&&(!state.query||(p.name+p.role+p.motive).includes(state.query));});return ids.length?ids.map(id=>personRow(id,true)).join(''):'<p class="empty">这页名册中暂未找到此人。换个姓名或关系试试。</p>';}
+function render(){const active=document.activeElement?.id;$('#page').innerHTML=state.page==='travel'?travel():estate();document.querySelectorAll('[data-nav]').forEach(b=>{b.classList.toggle('active',b.dataset.nav===state.page);b.setAttribute('aria-current',b.dataset.nav===state.page?'page':'false');});$('#crumb').textContent=state.page==='travel'?'大梁 · 青州 · 云安府':'青石县 · 河畔小院';renderDetail();if(active&&$('#'+active))$('#'+active).focus();}
+function detailHead(label){return `<div class="detail-head"><small>${label}</small><button class="icon-btn" data-action="close" data-testid="detail-close" aria-label="返回，关闭详情">×</button></div>`;}
+function renderDetail(){let out=detailHead('此 间 见 闻');if(state.detail==='help'){out+=`<div class="eyebrow">INTERACTION STUDY</div><h2>这一卷，试行</h2><p class="sub">游历场景 / 家业人手</p><div class="detail-art"><span class="seal">试<br>行</span></div><p>这是独立交互样板，所有人物、场景与草稿只在本页演示。页面刷新后回到初始样子，不连接正常角色或玩家存档。</p><h3>这一版可以试什么</h3><p>切换商街、炉坊与渡口，点人物交谈；回家业查看院落，搜索人手，再写一份可撤回的培养约定草稿。</p><h3>实现说明</h3><p>参考 Framework7 的桌面分栏与手机详情层，当前使用无依赖语义 HTML，未实际接入 Framework7。人手按关系来源、具体岗位和培养安排分别展示；时间条不是固定工时或修炼倍率，列表中的巧娘为自愿襄助关系演示，不改动正式人物设定。</p><div class="detail-actions"><button class="plain-btn" data-action="close">合上此卷</button></div>`;}
+else if(state.detail==='person'){const p=people[state.person];out+=`<div class="eyebrow">AN ENCOUNTER</div><h2>${p.name}</h2><p class="sub">${p.role} · ${scenes[state.scene].name}</p><div class="detail-art">${portrait(state.person)}<span class="seal">相<br>逢</span></div><p class="dialogue">“${p.line}”</p><h3>当面往来</h3><p>先听近况，再谈事情。对话是入口，不把人物藏进一串菜单。</p><div class="detail-actions"><button class="primary-btn" data-action="talk">${p.topic} ↗</button><button class="plain-btn" data-action="shop">${state.person==='bai'?'看看航路':state.person==='wang'?'看看药铺':state.person==='shi'?'看看器物':'看看丹药'}</button></div>`;}
+else if(state.detail==='talk'){const p=people[state.person];out+=`<button class="back-btn" data-action="person" data-person="${state.person}">← 返回 ${p.name}</button><h2>${p.topic}</h2><p class="sub">${p.name} · 当面闲谈</p><p class="dialogue">“${p.reply}”</p><p>你记下这番话，留待下次走动时再问。此处只演示对话呈现，不推进正式时间。</p><div class="detail-actions"><button class="plain-btn" data-action="person" data-person="${state.person}">回到人物</button><button class="primary-btn" data-action="track">看看正在追踪的旧约</button></div>`;}
+else if(state.detail==='shop'){out+=shopDetail();}
+else if(state.detail==='item'){out+=itemDetail();}
+else if(state.detail==='staff'){out+=staffDetail();}
+else if(state.detail==='proposal'){out+=proposalForm();}
+else if(state.detail==='property'){const p={hall:['正堂','来人相见，旧约交接。在这里谈人情，也把约定记清。'],forge:['器室','韩铸把制器与修补放在这里。做完约定的事务，再安排自己的修炼。'],garden:['药圃','院里草木按时照料。收获与消耗仍须由真实玩法记录。'],store:['仓房','已交付的物资有来处、有去处。正式仓库与制作功能将在之后适配。']}[state.property||'hall'];out+=`<div class="eyebrow">WITHIN THE COURTYARD</div><h2>${p[0]}</h2><p class="sub">河畔小院 · 院落入口演示</p><div class="detail-art"><span class="seal">家<br>业</span></div><p class="dialogue">${p[1]}</p><div class="detail-actions"><button class="primary-btn" data-action="go-staff">看看往来人手 ↗</button><button class="plain-btn" data-action="close">回到院中</button></div>`;}
+else if(state.detail==='track'){out+=`<div class="eyebrow">A THREAD TO FOLLOW</div><h2>旧约回执</h2><p class="sub">线索演示 · 不发放奖励</p><p class="dialogue">一纸旧凭据，连着几位故人的往来。</p><ol class="timeline"><li class="current">商街 · 王掌柜<small>问一问药铺的凭据</small></li><li>河埠 · 船货来处<small>后续步骤在正式事件中推进</small></li><li>原处交代<small>核对后结清，不重复领物</small></li></ol><div class="detail-actions"><button class="primary-btn" data-action="find-wang">到商街看人物 ↗</button><button class="plain-btn" data-action="toggle-track">${state.tracking?'取消这条演示追踪':'追踪这条线索'}</button></div>`;}else{out+=`<div class="eyebrow">${state.page==='travel'?'THE PLACE YOU STAND':'PEOPLE MAKE A HOME'}</div><h2>${state.page==='travel'?'行路有记':'故人有约'}</h2><p class="sub">${state.page==='travel'?scenes[state.scene].name:'河畔小院 · '+state.owner+'当家'}</p><div class="detail-art"><span class="seal">${state.page==='travel'?'行<br>迹':'续<br>灯'}</span></div><p class="intro-copy">${state.page==='travel'?'远处有山河，眼前有故人。先看看此地，再决定这一程如何走。':'一处家业，留住的不只是器物。每个人为何而来、在做何事、想如何修行，都应看得清楚。'}</p><h3>${state.page==='travel'?'这一程':'此间的人与事'}</h3><ol class="timeline"><li class="current">${state.page==='travel'?'你在青石县':'家业照常运转'}<small>${state.page==='travel'?'从场景找到具体人物':'关系来源与岗位分开看'}</small></li><li>${state.page==='travel'?'向故人问一声':'各有修行与所求'}<small>${state.page==='travel'?'交谈、商店、追踪逐层进入':'普通工作之外，自行安排余暇'}</small></li></ol><div class="detail-actions"><button class="plain-btn" data-action="${state.page==='travel'?'track':'go-staff'}">${state.page==='travel'?'查看当前线索':'翻开人手名册'} →</button></div>`;}$('#detail-content').innerHTML=out;}
+
+function shopDetail(){const o=offers[state.person];return `<button class="back-btn" data-action="person" data-person="${state.person}">← 返回人物</button><h2>${o.place}</h2><p class="sub">${o.route?'航路问讯':'柜前陈列'} · ${people[state.person].name}</p><div class="detail-art"><span class="seal">${o.seal}</span></div><h3>${o.item}</h3><p>${o.desc}</p><div class="detail-actions"><button class="plain-btn" data-action="item">${o.route?'查看航路说明':'查看物品说明'}</button>${o.route?'':'<button class="primary-btn" disabled title="交互样板不连接钱物结算">交易未接入 · 仅看陈列</button>'}</div><p style="margin-top:12px">${o.route?'此处只问路，不跳转或推进正式行程。':'本页不扣款、不改库存。'}</p>`;}
+function itemDetail(){const o=offers[state.person];return `<button class="back-btn" data-action="shop">← 返回${o.route?'水路问讯':'柜前'}</button><h2>${o.item}</h2><p class="sub">${o.kind} · ${o.route?'问路示例':'陈列示例'}</p><p class="dialogue">${o.note}</p><p>${o.desc}</p>`;}
+
+function staffDetail(){const id=state.person,p=people[id],isHeir=state.owner!=='沈行舟';return `<div class="eyebrow">PEOPLE OF THE ESTATE</div><h2>${p.name}</h2><p class="sub">${p.realm} · 河畔小院</p><div class="detail-art">${portrait(id)}<span class="seal">其<br>人</span></div><dl class="kv"><dt>因何而来</dt><dd>${p.relation}</dd><dt>在做何事</dt><dd>${p.role}</dd><dt>心中所求</dt><dd>${p.motive}</dd></dl><p class="dialogue">“${isHeir?(id==='qiao'?'我因旧日情分留下。换了当家人，愿先听听你的打算。':'产业里的差事仍照原约做。你的境界高低，不改变我们谈好的事情。'):p.line}”</p><h3>履约与自己的时间</h3><p>${id==='lin'?'采集已经交付，当前余暇自行吐纳。':id==='han'?'先完成当前制器委托，剩余时间由本人安排。':'日常家务按约照料，私人去留另谈情分。'}</p><div class="schedule" aria-label="事务、修行、休息时间示意，非固定比例"><span></span><span></span><span></span></div><p class="legend">■ 约定事务　<span style="color:#a7966d">■</span> 自行修炼　<span style="color:#a5af97">■</span> 休息往来</p><p style="font-size:12px">事务之外，修行与日常起居也各有安排。</p><h3>培养另有具体约定</h3><p>传授什么、由谁指导、使用何处场地，先与本人谈清楚，再论资源。</p>${state.proposals[id]?`<div class="saved-note"><strong>草稿已留在本页</strong><br>${esc(state.proposals[id].topic)}<br>${esc(state.proposals[id].note)}<br>尚未提交正式约定，不产生费用或倍率。</div>`:''}<div class="detail-actions"><button class="primary-btn" data-action="proposal">${state.proposals[id]?'修改培养草稿':'写一份培养约定草稿'} ↗</button>${state.proposals[id]?'<button class="plain-btn" data-action="withdraw" data-testid="proposal-cancel">撤回这份草稿</button>':''}<button class="plain-btn" data-action="employment">看履约与关系说明</button></div>`;}
+function proposalForm(){const p=people[state.person],draft=state.proposals[state.person]||null;return `<button class="back-btn" data-action="staff" data-person="${state.person}">← 返回 ${p.name}</button><div class="eyebrow">CULTIVATION PROPOSAL</div><h2>谈一份新约</h2><p class="sub">${p.name} · 培养草稿</p><p>普通工作与自行修行照旧。这里单独记下拟议的传授或帮助，尚不代表对方已经接受。</p><form id="proposal-form"><label class="edit-field">拟传授 / 指导的内容<input name="topic" required maxlength="60" placeholder="例如：与韩铸一同研读器谱" value="${esc(draft?.topic||'')}" aria-label="培养内容"></label><label class="edit-field">场地、资源与双方意愿<textarea name="note" required maxlength="240" placeholder="先写清楚提供什么、如何安排，再与本人协商。" aria-label="培养约定说明">${esc(draft?.note||'')}</textarea></label><p class="form-label">本页不预设培养费用、速度或忠诚收益。</p><div class="detail-actions"><button class="primary-btn" type="submit" data-testid="proposal-save">留作草稿</button><button class="plain-btn" type="button" data-action="cancel-proposal" data-testid="proposal-cancel">暂不写，返回人物</button></div></form>`;}
+function openDetail(type,person){if(!$('#details').contains(document.activeElement))lastFocus=document.activeElement;if(person)state.person=person;state.detail=type;renderDetail();if(innerWidth<=900){document.body.classList.add('detail-open');$('#details').setAttribute('role','dialog');$('#details').setAttribute('aria-modal','true');$('#main').inert=true;document.querySelector('.bottom-nav').inert=true;document.querySelector('.sidebar').inert=true;}$('#details').focus();}
+function closeDetail(){document.body.classList.remove('detail-open');$('#details').removeAttribute('role');$('#details').removeAttribute('aria-modal');$('#main').inert=false;document.querySelector('.bottom-nav').inert=false;document.querySelector('.sidebar').inert=false;state.detail='location';renderDetail();if(lastFocus?.isConnected)lastFocus.focus();}
+function toast(text){clearTimeout(toastTimer);$('#toast').textContent=text;toastTimer=setTimeout(()=>$('#toast').textContent='',3800);}
+function navigate(page){closeDetail();state.page=page;state.detail='location';render();window.scrollTo({top:0,behavior:'instant'});}
+document.addEventListener('click',event=>{const button=event.target.closest('[data-action],[data-nav]');if(!button||button.disabled)return;if(button.dataset.nav){navigate(button.dataset.nav);return;}const a=button.dataset.action,id=button.dataset.person;
+ if(a==='close')closeDetail();else if(a==='help')openDetail('help');else if(a==='scene'){state.scene=button.dataset.scene;state.detail='location';render();toast('演示场景已切换，不改变正式道路或日期。');}else if(a==='look'){openDetail('person',scenes[state.scene].people[0]);}else if(a==='person'||a==='staff')openDetail(a,id);else if(['talk','shop','item','proposal'].includes(a))openDetail(a);else if(a==='track')openDetail('track');else if(a==='toggle-track'){state.tracking=!state.tracking;renderDetail();$('#page').innerHTML=state.page==='travel'?travel():estate();toast(state.tracking?'已添加演示追踪。':'已取消演示追踪。');}else if(a==='find-wang'){navigate('travel');state.scene='street';render();openDetail('person','wang');}else if(a==='home-tab'){state.homeTab=button.dataset.tab;render();}else if(a==='property'){state.property=button.dataset.property;openDetail('property');}else if(a==='go-staff'){navigate('estate');state.homeTab='staff';render();}else if(a==='heir'){state.owner=state.owner==='沈行舟'?'沈承行':'沈行舟';render();toast('已切换演示当家人。去看看同一人物的不同关系回应。');}else if(a==='withdraw'){delete state.proposals[state.person];renderDetail();toast('草稿已撤回，正式约定未发生变化。');}else if(a==='cancel-proposal'){openDetail('staff',state.person);toast('返回人物，未新建草稿。');}else if(a==='employment'){toast(state.person==='qiao'?'自愿襄助出于旧日情分；私人意愿需另谈，不等于产业雇佣。':'月俸雇佣按事务履约；换代不因境界高低自动解除，也不在样板强制重签。');}});
+document.addEventListener('input',e=>{if(e.target.id==='staff-search'){state.query=e.target.value;$('#staff-list').innerHTML=staffRows();}});document.addEventListener('change',e=>{if(e.target.id==='staff-filter'){state.filter=e.target.value;$('#staff-list').innerHTML=staffRows();}});
+document.addEventListener('submit',e=>{if(e.target.id!=='proposal-form')return;e.preventDefault();const form=new FormData(e.target),draft={person:state.person,topic:form.get('topic').trim(),note:form.get('note').trim()};if(!draft.topic||!draft.note){toast('请写下拟议内容和具体安排。');return;}state.proposals[state.person]=draft;state.detail='staff';renderDetail();$('#details').focus();toast('已留作本页草稿，尚未提交或扣除资源。');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDetail();return;}if(e.key==='Tab'&&document.body.classList.contains('detail-open')){const focusable=[...$('#details').querySelectorAll('button:not(:disabled),input,textarea,select,summary')];if(!focusable.length)return;const first=focusable[0],last=focusable.at(-1);if(e.shiftKey&&(document.activeElement===first||document.activeElement===$('#details'))){e.preventDefault();last.focus();}else if(!e.shiftKey&&(document.activeElement===last||document.activeElement===$('#details'))){e.preventDefault();first.focus();}}});
+window.addEventListener('resize',()=>{if(innerWidth>900){document.body.classList.remove('detail-open');$('#main').inert=false;document.querySelector('.bottom-nav').inert=false;document.querySelector('.sidebar').inert=false;$('#details').removeAttribute('role');$('#details').removeAttribute('aria-modal');}});render();
+</script></body></html>
