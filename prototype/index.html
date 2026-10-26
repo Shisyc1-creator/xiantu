@@ -2937,7 +2937,15 @@ const SAVE_KEY = DEV_SESSION47?'xiantu_developer47_v1':'xiuxian_slice_v1';
 /* 存储：localStorage 可能被浏览器/内嵌预览禁用，禁了就退成内存，至少能玩一局 */
 const MEM = {};
 function sGet(k){ try{ return window.localStorage.getItem(k); }catch(e){ return (k in MEM)?MEM[k]:null; } }
-function sSet(k,v){ try{ window.localStorage.setItem(k,v); }catch(e){ MEM[k]=String(v); } }
+function sSet(k,v){
+  const value=String(v);
+  try{
+    window.localStorage.setItem(k,value);
+    if(window.localStorage.getItem(k)!==value) return false;
+    delete MEM[k];
+    return true;
+  }catch(e){ MEM[k]=value; return false; }
+}
 function sDel(k){ try{ window.localStorage.removeItem(k); }catch(e){ delete MEM[k]; } }
 let G = null;
 
@@ -5849,8 +5857,22 @@ function toast(msg){
 const SLOT_KEY=DEV_SESSION47?'xiantu_developer47_slots_v1':'xiuxian_slots_v1';
 const SLOT_LABEL={1:'卷 一',2:'卷 二',3:'卷 三'};
 
+function saveWarning(failed){
+  let warning=document.getElementById('save-warning-r1');
+  if(!failed){ if(warning)warning.remove(); return; }
+  if(warning)return;
+  warning=document.createElement('div');warning.id='save-warning-r1';
+  warning.setAttribute('role','alert');
+  warning.style='position:sticky;top:0;z-index:1000;padding:12px;background:#542b23;color:#fff;text-align:center';
+  warning.textContent='自动存档失败：当前进度尚未确认写入。请勿关闭或刷新页面；检查浏览器存储空间后重试存档。';
+  document.body.prepend(warning);
+}
 function save(){
-  try{ if(G)stoneAccount(G); if(readUIPrefs().autosave!==false) sSet(SAVE_KEY, JSON.stringify(G)); }catch(e){}
+  if(!G || readUIPrefs().autosave===false)return null;
+  let ok=false;
+  try{ stoneAccount(G); ok=sSet(SAVE_KEY, JSON.stringify(G))===true; }catch(e){}
+  saveWarning(!ok);
+  return ok;
 }
 
 function restore(str){
@@ -5919,14 +5941,31 @@ function readSlots(){
     return (o&&typeof o==='object')?o:{};
   }catch(e){ return {}; }
 }
-function writeSlots(o){ try{ sSet(SLOT_KEY, JSON.stringify(o)); }catch(e){} }
+function writeSlots(o){ try{ return sSet(SLOT_KEY, JSON.stringify(o))===true; }catch(e){return false;} }
+function durableSlots(){
+  const raw=window.localStorage.getItem(SLOT_KEY);
+  const slots=raw?JSON.parse(raw):{};
+  if(!slots||typeof slots!=='object'||Array.isArray(slots))throw Error('Invalid slots');
+  return slots;
+}
+function deleteSlot(n){
+  try{const slots=durableSlots();delete slots['s'+n];if(writeSlots(slots))return true;}catch(e){}
+  toast('删除存档失败，请检查浏览器存储空间后重试。');
+  return false;
+}
 
 function saveToSlot(n){
-  if(!G) return;
-  stoneAccount(G);
-  const slots=readSlots();
-  slots['s'+n]={ ts:Date.now(), d:JSON.stringify(G) };
-  writeSlots(slots);
+  if(!G) return false;
+  let ok=false;
+  try{
+    stoneAccount(G);
+    // Read durable slots directly: a read failure must not overwrite unread old slots.
+    const slots=durableSlots();
+    slots['s'+n]={ ts:Date.now(), d:JSON.stringify(G) };
+    ok=writeSlots(slots);
+  }catch(e){}
+  if(!ok)toast('手动存档失败：未确认写入，请保留当前页面并检查浏览器存储空间后重试。');
+  return ok;
 }
 function slotData(n){
   const s=readSlots()['s'+n];
@@ -5990,7 +6029,7 @@ function openSaves(){
       if(act==='save'){
         const old=slotData(n);
         if(old && !confirm('「'+SLOT_LABEL[n]+'」已有旧档，覆去重写？')) return;
-        saveToSlot(n);
+        if(!saveToSlot(n))return;
         openSaves();
       }else if(act==='load'||act==='loadauto'){
         const raw = act==='loadauto' ? sGet(SAVE_KEY) : readSlots()['s'+n].d;
@@ -6005,7 +6044,8 @@ function openSaves(){
         }
       }else if(act==='del'){
         if(!confirm('把「'+SLOT_LABEL[n]+'」烧掉？')) return;
-        const slots=readSlots(); delete slots['s'+n]; writeSlots(slots); openSaves();
+        if(!deleteSlot(n))return;
+        openSaves();
       }
     };
   });
@@ -6014,7 +6054,7 @@ function openSaves(){
   const t=document.getElementById('svTitle');
   if(t) t.onclick=()=>{
     ov.classList.add('hidden');
-    save();
+    if(save()===false)return;
     G=null;
     showStart();
   };
