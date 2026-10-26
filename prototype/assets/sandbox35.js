@@ -345,8 +345,8 @@ function tick(){
    if(Number.isFinite(w.born)&&Number.isFinite(w.life)&&t-w.born>=w.life*360){log(w.name+'寿尽，离开了人世。');d.staff=d.staff.filter(x=>x!==w);continue;}
    if(!ownedHome()){if(w.job){w.job=null;log('租期已满，'+w.name+'的工作中止。');}continue;}
    if(t>=w.nextWage){
-     const count=Math.floor((t-w.nextWage)/30)+1,each=money(w.wage),affordable=Math.min(count,Math.floor(G.stones/each));
-     stoneChange(G,-(affordable*each),'地方交易与经营');w.nextWage+=count*30;w.arrears=affordable===count?0:(w.arrears||0)+(count-affordable);
+     const count=Math.floor((t-w.nextWage)/30)+1,each=money(w.wage),owed=(w.arrears||0)+count,affordable=Math.min(owed,Math.floor(G.stones/each));
+     stoneChange(G,-(affordable*each),'地方交易与经营');w.nextWage+=count*30;w.arrears=owed-affordable;
      if(w.arrears){w.job=null;log(w.name+'未收到月俸，暂停工作。');}
      if(w.arrears>=3){log(w.name+'因欠薪三月离去。');d.staff=d.staff.filter(x=>x!==w);continue;}
    }
