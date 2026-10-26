@@ -411,7 +411,7 @@ function renderGuide(){
 }
 function go(tab,sub=''){V.tab=tab;V.sub=sub;V.page=0;V.detail=null;closeMainOverlay();render();}
 function dispatch(action,arg){
- if(window.XTInteraction42&&!XTInteraction42.busy)return XTInteraction42.observe(action,arg,()=>dispatch(action,arg));
+ if(G?.root&&window.XTInteraction42&&!XTInteraction42.busy)return XTInteraction42.observe(action,arg,()=>dispatch(action,arg));
  if(window.XTChildhood49?.dispatch(action,arg))return;
  if(window.XTBackground47?.dispatch(action,arg))return;
  if(window.XTContent47?.dispatch(action,arg))return;
