@@ -14,7 +14,7 @@ const required=['travel.scene','travel.map','travel.quests','travel.auction','tr
 for(const id of required)assert(registry.byId[id],`missing known interface family: ${id}`);
 console.log(`PASS registry: ${routes.length} unique routes, known interface families and navigation references`);
 (async()=>{
- const browser=await chromium.launch({channel:'msedge',headless:true});let checks=0;
+ const browser=await chromium.launch({...(process.env.PLAYWRIGHT_EXECUTABLE_PATH?{executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH,args:['--no-sandbox','--disable-dev-shm-usage']}:process.env.PLAYWRIGHT_CHANNEL?{channel:process.env.PLAYWRIGHT_CHANNEL}:process.platform==='win32'?{channel:'msedge'}:{}),headless:true});let checks=0;
  try{
   for(const viewport of [{width:1440,height:1000},{width:390,height:844},{width:768,height:1024}]){
    const context=await browser.newContext({viewport});
@@ -66,7 +66,14 @@ console.log(`PASS registry: ${routes.length} unique routes, known interface fami
    assert(!await page.locator('#details').innerText().then(s=>s.includes('undefined')),'missing person reply');
    await page.keyboard.press('Escape');await atlas('self.settings');await page.locator('#shell-font').selectOption('large');
    assert(await page.locator('body').evaluate(el=>el.classList.contains('shell-large')),'font option did not apply');
-   for(const id of ['cult.practice','bag.items','estate.staff','self.profile','travel.scene']){await atlas(id);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`large text overflow ${id}`);}
+   for(const id of ['cult.practice','bag.items','estate.staff','self.profile','travel.scene']){
+    await atlas(id);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`large text overflow ${id}`);
+    const group=id.split('.')[0];
+    for(const nav of ['.primary','.bottom-nav']){
+     assert.equal(await page.locator(`${nav} [data-nav].active`).count(),1,`multiple selected tabs: ${nav} ${id}`);
+     assert.equal(await page.locator(`${nav} [data-nav].active`).getAttribute('data-nav'),group,`wrong selected tab: ${nav} ${id}`);
+    }
+   }
    await atlas('bag.items');await page.screenshot({path:path.join(output,`bag-large-${viewport.width}.png`),fullPage:true});
    assert.deepEqual(errors,[],`runtime errors ${viewport.width}`);assert.deepEqual(network,[],`external requests ${viewport.width}`);
    assert(await page.evaluate(()=>window.__storageAccess.length===0),`storage access ${viewport.width}`);
@@ -75,3 +82,4 @@ console.log(`PASS registry: ${routes.length} unique routes, known interface fami
   console.log(`${checks} route/viewport checks passed`);
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
+
