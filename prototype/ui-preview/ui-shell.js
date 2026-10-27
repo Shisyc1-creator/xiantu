@@ -19,7 +19,21 @@ function installNav(){
  for(const el of document.querySelectorAll('.primary,.bottom-nav'))el.innerHTML=Object.entries(R.groups).filter(([id])=>R.defaults[id]).map(([id,name])=>`<button data-nav="${id}" data-testid="nav-${id}">${navIcon(id)}${name}</button>`).join('');
  const tools=document.createElement('div');tools.className='shell-utility';tools.innerHTML=btn('界面总览','overview','','text-btn');document.querySelector('.top-actions').prepend(tools);
 }
-function subnav(group){return `<nav class="shell-subnav" aria-label="${R.groups[group]}二级导航">${R.routes.filter(r=>r.group===group&&r.kind==='view'&&r.status!=='planned').map(r=>`<button data-shell="route" data-id="${r.id}" data-route="${r.id}" data-testid="route-${r.id}" aria-current="${r.id===current?'page':'false'}">${r.title}</button>`).join('')}</nav>`;}
+const sections={travel:[['scene','游历'],['map','地图'],['quests','事项'],['events','见闻']],cult:[['practice','修炼'],['arts','功法'],['battle','斗法'],['routes','传习'],['crafting','百艺']],bag:[['items','行囊']],estate:[['home','院落产业'],['staff','人手'],['warehouse','仓库']],self:[['profile','人物'],['relations','关系'],['sect','宗门'],['lineage','家族']]};
+function subnav(group){return `<nav class="shell-subnav" aria-label="${R.groups[group]}二级导航">${(sections[group]||[]).map(([id,title])=>{const full=group+'.'+id;return `<button data-shell="route" data-id="${full}" aria-current="${full===current?'page':'false'}">${title}</button>`;}).join('')}</nav>`;}
+const groupedLinks={
+ 'travel.scene':[['商街与药铺',['travel.trade','travel.medicine-news']],['炉坊与工匠',['travel.craft','travel.workshop']],['牙行',['travel.recruit','travel.property-offers']],['拍卖场',['travel.auction','travel.auction-hall']]],
+ 'cult.practice':[['修炼安排',['cult.retreat','cult.breakthrough']],['护路与传习',['cult.guide','cult.supplies']]],
+ 'cult.arts':[['所修功法',['cult.spells','cult.loadout','cult.study-shop']]],
+ 'cult.battle':[['斗法记录',['cult.battle-record']]],
+ 'cult.crafting':[['修行技艺',['cult.arrays','cult.pets','cult.puppets']]],
+ 'bag.items':[['行囊分类',['bag.equipment','bag.books','bag.medicine','bag.materials']]],
+ 'estate.home':[['院落与产业',['estate.facilities','estate.property','estate.residence']]],
+ 'self.profile':[['生平与账目',['self.history','self.ledger']],['其他',['self.saves','self.settings','self.help']]],
+ 'self.lineage':[['家业接续',['self.inherit']]]
+};
+function groupedPanel(){const groups=groupedLinks[current]||[];if(!groups.length)return '';return `<section class="shell-list"><h2>在此可办</h2>${groups.map(([title,ids])=>`<details class="shell-setting"><summary>${title}</summary><div class="shell-actions">${ids.map(id=>route(R.byId[id].title,id)).join('')}</div></details>`).join('')}</section>`;}
+
 function headingFor(r,desc){return `<div class="shell-breadcrumb">${btn('← 返回来源','back','','text-btn')}<span>${R.groups[r.group]||'界面总览'} / ${r.title}</span></div><header class="route-heading"><div class="eyebrow">A PATH THROUGH XIANTU</div><h1>${r.title}</h1><p>${desc}</p></header>`;}
 function routeInfo(){return R.byId[current];}
 function saveView(){
@@ -129,7 +143,7 @@ render=function(){
  const r=routeInfo();
  if(current==='travel.scene'||current==='estate.staff'||current==='estate.home'){base.render();$('#page').insertAdjacentHTML('afterbegin',subnav(r.group)+`<div class="shell-breadcrumb">${btn('← 返回来源','back','','text-btn')}</div>`);}
  else{$('#page').innerHTML=current==='overview'?overview():subnav(r.group)+headingFor(r,'界面与操作样板，沿已有玩法寻找入口。')+customPage(r)+'<div class="shell-result-note" id="shell-feedback" role="status" hidden></div>';renderDetail();}
- document.querySelectorAll('[data-nav]').forEach(b=>{const active=b.dataset.nav===(r?.group||state.page);b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false');});
+ $('#page').insertAdjacentHTML('beforeend',groupedPanel());document.querySelectorAll('[data-nav]').forEach(b=>{const active=b.dataset.nav===(r?.group||state.page);b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false');});
  if(r)$('#crumb').textContent=(R.groups[r.group]||'独立状态')+' · '+r.title;
  document.body.classList.toggle('shell-compact',memory.compact);document.body.classList.toggle('shell-large',memory.font==='large');
 };
