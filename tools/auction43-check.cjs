@@ -1,10 +1,10 @@
 const fs=require('fs'),path=require('path'),assert=require('assert');
-const {pathToFileURL}=require('url');const {chromium}=require('C:/Users/EDY/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const {pathToFileURL}=require('url');const {chromium}=require(process.env.PLAYWRIGHT_MODULE||(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES?path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES,'playwright'):'playwright'));
 const out=path.resolve(__dirname,'../.screenshots/batch43');fs.mkdirSync(out,{recursive:true});
 (async()=>{const browser=await chromium.launch({channel:'msedge',headless:true}),checks=[],errors=[];
-try{const page=await browser.newPage({viewport:{width:1440,height:1000}});page.on('pageerror',e=>errors.push(e.message));await page.goto(pathToFileURL(path.resolve(__dirname,'../prototype/index.html')).href);await page.evaluate(()=>{globalThis.legacyChild47=function(i){if(G.mode==='child'){const c=G.origin==='妖血遗孤'?XTBackground47.contexts.find(c=>XTBackground47.visibleOriginVariants(G.origin,c).some(v=>v.i===i)):XTBackground47.contexts[0];G.birthContext=JSON.parse(JSON.stringify(c));G.fate=genFate();}return chooseChild(i);};});
+try{const page=await browser.newPage({viewport:{width:1440,height:1000}});page.on('pageerror',e=>errors.push(e.message));await page.goto(pathToFileURL(path.resolve(__dirname,'../prototype/index.html')).href+'?developer=1');await require('./current-opening-fixture.cjs')(page);
 await page.evaluate(()=>{
- newGame('沈行舟','寒门散修','男');legacyChild47(0);XTOpening46.chooseTimeline(8,8);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();G.mode='idle';G.lastResult=null;stoneSet(G,1000,'测试');G.inventory={};tryEvent=()=>null;meetLive=()=>null;tryRoadEvent=()=>null;G.place='county';XTSandbox.state().roomAt='county';XTSandbox.state().room='shops';XTWorld36.sync();XTSandbox.go('scene');globalThis.fixture43=JSON.stringify(G);
+ startCurrentOpening('寒门散修');G.mode='idle';G.lastResult=null;stoneSet(G,1000,'测试');G.inventory={};tryEvent=()=>null;meetLive=()=>null;tryRoadEvent=()=>null;G.place='county';XTSandbox.state().roomAt='county';XTSandbox.state().room='shops';XTWorld36.sync();XTSandbox.go('scene');globalThis.fixture43=JSON.stringify(G);
  globalThis.reset43=()=>{G=JSON.parse(fixture43);XTSandbox.state().room='auction43';XTSandbox.view.tab='scene';render();};
  globalThis.act43=(a)=>{if(XTSandbox.state().room==='auction43'&&!XTScene46.isInside('auction43'))XTSandbox.dispatch('u46:enter');return XTSandbox.dispatch('a43:'+a,XTAuction43.token());};
  globalThis.total43=()=>{const a=XTAuction43.state();return G.stones+a.house.cash+Object.values(a.buyers).reduce((n,b)=>n+b.cash,0)+(XTAuction43.lot()?.hold||0);};
@@ -51,7 +51,8 @@ await check('流拍后再开场只用剩余库存，人物预算不补满',()=>{
 await page.evaluate(()=>{reset43();act43('open');act43('bid');globalThis.reload43=JSON.stringify(G.auction43);});
 const reloadState=await page.evaluate(()=>reload43);await page.reload();await page.evaluate(()=>{XTSandbox.go('scene');});
 assert.equal(await page.evaluate(()=>JSON.stringify(G.auction43)),reloadState);checks.push('真实页面刷新恢复同一届报价和押款，不重复扣钱');
-await page.evaluate(()=>{newGame('沈行舟','寒门散修','男');legacyChild47(0);XTOpening46.chooseTimeline(8,8);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();G.mode='idle';G.lastResult=null;stoneSet(G,1000,'测试');G.place='county';XTSandbox.state().roomAt='county';XTSandbox.state().room='auction43';XTSandbox.view.tab='scene';XTSandbox.dispatch('u46:enter');XTAuction43.dispatch('a43:open');});
+await require('./current-opening-fixture.cjs')(page);
+await page.evaluate(()=>{startCurrentOpening('寒门散修');G.mode='idle';G.lastResult=null;stoneSet(G,1000,'测试');G.place='county';XTSandbox.state().roomAt='county';XTSandbox.state().room='auction43';XTSandbox.view.tab='scene';XTSandbox.dispatch('u46:enter');XTAuction43.dispatch('a43:open');});
 await page.setViewportSize({width:390,height:844});await page.locator('[data-sb="a43:bid"]').click();
 await check('手机真实点击举牌、输入与落槌可操作且无横向溢出',()=>G.stones===976&&document.querySelector('#auction-price43')&&document.documentElement.scrollWidth<=innerWidth);
 await page.screenshot({path:path.join(out,'mobile-auction.png'),fullPage:true});

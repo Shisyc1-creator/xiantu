@@ -1,15 +1,15 @@
 const fs=require('fs'),path=require('path'),assert=require('assert');
 const {pathToFileURL}=require('url');
-const {chromium}=require('C:/Users/EDY/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES?path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES,'playwright'):'playwright'));
 const root=path.resolve(__dirname,'..'),out=path.join(root,'.screenshots/batch40');fs.mkdirSync(out,{recursive:true});
 (async()=>{
  const browser=await chromium.launch({channel:'msedge',headless:true}),results=[],errors=[],failed=[];
  try{
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
   page.on('pageerror',e=>errors.push(e.message));page.on('requestfailed',r=>failed.push(r.url()));
-  await page.goto(pathToFileURL(path.join(root,'prototype/index.html')).href);await page.evaluate(()=>{globalThis.legacyChild47=function(i){if(G.mode==='child'){const c=G.origin==='妖血遗孤'?XTBackground47.contexts.find(c=>XTBackground47.visibleOriginVariants(G.origin,c).some(v=>v.i===i)):XTBackground47.contexts[0];G.birthContext=JSON.parse(JSON.stringify(c));G.fate=genFate();}return chooseChild(i);};});
+  await page.goto(pathToFileURL(path.join(root,'prototype/index.html')).href+'?developer=1');await require('./current-opening-fixture.cjs')(page);
   await page.evaluate(()=>{
-   newGame('沈行舟','寒门散修','男');legacyChild47(0);XTOpening46.chooseTimeline(8,8);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();G.mode='idle';G.lastResult=null;
+   startCurrentOpening('寒门散修');G.mode='idle';G.lastResult=null;
    tryEvent=()=>null;meetLive=()=>null;G.stones=3000;G.inventory={herb:36};render();
    globalThis.fixture40=JSON.stringify(G);
    globalThis.reset40=()=>{G=JSON.parse(fixture40);};
@@ -38,7 +38,7 @@ const root=path.resolve(__dirname,'..'),out=path.join(root,'.screenshots/batch40
   await check('已选择模式可查询规则且不影响账户',()=>{reset40();return XTEconomy40.rule(G).id==='standard'&&!document.querySelector('[data-difficulty]');});
   await check('个人四成继承保留份额中的未满一枚权益',()=>{const old={stones:11.75},next={stones:0};stoneAccount(old);stoneInherit(next,old);return next.stones===4&&next.wallet40.pendingN==='7'&&next.wallet40.pendingD==='10';});
   await check('真实后人接续保留难度版本且每代救援记录独立',()=>{reset40();G.stones=3011;stoneAccrue(G,3,4,'应计工钱');const w=XTWorld36.world(),id='child40_test';w.people[id]={id,name:'沈承舟',sex:'男',realm:0,layer:1,root:'五灵根',birth:XTSandbox.now()-10*360,life:100,place:'county',room:'residence36',alive:true,source:'测试登记后人',parents:[w.playerId]};w.children.push(id);G.rescue40.used=true;G.mode='dead';XTSandbox.dispatch('r36:inherit',id);return G.mode==='idle'&&G.stones===1204&&G.wallet40.pendingN==='7'&&G.wallet40.pendingD==='10'&&G.difficulty.id==='standard'&&G.rescue40.generation===2&&!G.rescue40.used;});
-  await check('六种主身份均能建档恢复并保持账目',()=>{for(const origin of Object.keys(XTWorld36.starts)){newGame('沈行舟',origin,'男');legacyChild47(0);XTOpening46.chooseTimeline(8,8);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();stoneAccrue(G,2,7,'应计工钱');const raw=JSON.stringify(G),amount=G.stones;if(!restore(raw)||G.stones!==amount||G.wallet40.pendingN!=='2'||G.wallet40.pendingD!=='7'||G.difficulty.id!=='standard')return false;}return true;});
+  await check('六种主身份均能建档恢复并保持账目',()=>{for(const origin of Object.keys(XTWorld36.starts)){startCurrentOpening(origin);stoneAccrue(G,2,7,'应计工钱');const raw=JSON.stringify(G),amount=G.stones;if(!restore(raw)||G.stones!==amount||G.wallet40.pendingN!=='2'||G.wallet40.pendingD!=='7'||G.difficulty.id!=='standard')return false;}return true;});
   await check('帮助通过人物设置进入并有八类条目',()=>{reset40();XTSandbox.go('self','settings');XTSandbox.dispatch('guide');return document.querySelectorAll('[data-help40]').length===8&&document.querySelector('#helpSearch40');});
   await page.locator('#helpSearch40').fill('月俸');
   await check('关键词搜索跨分类且无关条目不显示',()=>document.querySelector('#helpResults40').textContent.includes('委派与月俸')&&!document.querySelector('#helpResults40').textContent.includes('起步与突破'));
