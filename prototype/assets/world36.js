@@ -319,10 +319,21 @@ openInherit=function(){
  document.getElementById('overlay').classList.remove('hidden');md.querySelectorAll('[data-sb]').forEach(b=>b.onclick=()=>dispatch(b.dataset.sb,b.dataset.arg));document.getElementById('inheritClose36').onclick=closeMainOverlay;
 };
 // Retire the relationship-generating and identity-changing shortcuts.
-const retired=['E005','E006','E013','E017','E018','E025','E033','E035','E043','E058','E059','E060','E061'];
+const retired=['H03','H04','H09','E005','E006','E013','E017','E018','E025','E033','E035','E043','E058','E059','E060','E061'];
 for(const e of EVENTS){if(retired.includes(e.id)){e.retired36=true;e.cond=()=>false;}}
-applyOption=function(ev,i){if(ev?.retired36){toastReason('此旧事件已停用。请找到具体人物，当面互动。');return null;}return base.applyOption(ev,i);};
-startEvent=function(ev){if(ev?.retired36){G.mode='idle';G.curEvent=null;saveRender();return;}base.startEvent(ev);};
+// Legacy household scripts assume adult agency; unbound births, marriages and debts stay retired.
+const adultHousehold=new Set(['H01','H02','H05','H07','H08']);
+for(const e of EVENTS)if(adultHousehold.has(e.id)){
+ const before=e.cond;e.cond=s=>Number.isFinite(s.age)&&s.age>=18&&(!before||before(s));
+}
+function eventBlocked(ev){
+ const current=EVENTS.find(e=>e.id===ev?.id)||ev;
+ if(!current||current.retired36)return true;
+ if(adultHousehold.has(current.id))return !current.cond(G)||(current.once&&G.eventsDone[current.id])||(G.evtCd[current.id]||0)>G.age;
+ return false;
+}
+applyOption=function(ev,i){if(eventBlocked(ev)){toastReason('这件事已不适用，未扣除钱物。');return null;}return base.applyOption(ev,i);};
+startEvent=function(ev){if(eventBlocked(ev)){G.mode='idle';G.curEvent=null;saveRender();return;}base.startEvent(ev);};
 const labour=EVENTS.find(e=>e.id==='E002');
 if(labour){
  labour.text='邻村灵田需要看护，每年报酬四十灵石。工钱按实际经过的日子结算，期间仍要安排自己的生活。';
