@@ -415,6 +415,7 @@ function renderGuide(){
 }
 function go(tab,sub=''){V.tab=tab;V.sub=sub;V.page=0;V.detail=null;closeMainOverlay();render();}
 function dispatch(action,arg){
+ if(action?.startsWith('e60:')&&window.XTEvents60){window.XTSandbox.dispatch(action,arg);return;}
  if(action?.startsWith('s54:')&&window.XTStaff54){window.XTStaff54.dispatch(action.slice(4),arg);return;}
  if(G?.root&&window.XTInteraction42&&!XTInteraction42.busy)return XTInteraction42.observe(action,arg,()=>dispatch(action,arg));
  if(window.XTChildhood49?.dispatch(action,arg))return;
