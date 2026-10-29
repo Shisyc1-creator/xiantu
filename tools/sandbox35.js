@@ -254,7 +254,7 @@ function propertyPanel(){
  const d=data(),p=d.property;
  if(!p||!ownedHome())return note(p?'原租屋已到期。到青石县牙行续租或置业。':'尚无个人经营产业。已有住处可在上方查看；租院或置产请到青石县牙行。')+btn('查看所在场景','backScene');
  return card(({rental:'租住小院',courtyard:'自有宅院',cave:'自有洞府'})[p.type],`${esc(placeName(p.place))} · 可容 ${homeSize()} 名雇员${p.expires?' · 余 '+Math.max(0,p.expires-now())+' 日租期':' · 永久产权'}${p.type==='cave'?'<br>附属灵脉浓度2.1，进入自家院落后修炼产出 +15%。':''}<br>${atHome()?'你已在产业所在地区。':'你不在当地，需要先沿地图赶来。'}`,
-   btn('进入院落','enterHome','',!atHome())+(p.expires?btn('续租一年 · '+money(30)+'灵石','renew','',G.stones<money(30)):''));
+   btn('进入院落','enterHome','',!atHome())+(p.expires?btn('续租一年 · '+XTContent47.coinText(XTContent47.estateRenewal(p).fee,p.currency||'stone'),'renew','',XTContent47.funds(p.currency||'stone')<XTContent47.estateRenewal(p).fee):''));
 }
 function renderHome(){
  const d=data(),sub=V.sub||'overview';let body='';
@@ -276,20 +276,21 @@ function offers(kind){
 }
 function renderOffers(){
  if(!physicalActor('broker')){V.tab='scene';renderRooms();return;}
- let body='';
- if(V.tab==='propertyOffers')for(const [id,title,price,extra]of [['rental','租住小院',30,'一年租期，容两人，可修建作坊。'],['courtyard','购买宅院',180,'永久产权，容四人。'],['cave','置办洞府',600,'筑基后可购，容六人。']])body+=card(title,`${money(price)} 灵石 · ${extra}`,btn('签约 · 1日','buyProperty',id,!!data().property&&ownedHome()&&(data().property.type===id||id==='rental')));
- else for(const [id,r]of Object.entries(recruits))body+=card(r.name+' · '+r.title,`安置费 ${money(r.fee)} 灵石，含首月食宿。月俸 ${money(r.wage)} 灵石。${r.realm>=0?'按既定报酬与住处签约，不要求雇主境界高于本人。':'负责采购、药圃与家务。'}`,btn('招募 · 1日','hire',id,data().staff.some(w=>w.id===id)));
+ const C=XTContent47;let body='';
+ if(V.tab==='propertyOffers')for(const [id,title,extra]of [['rental','租住小院','一年租期，容两人，可修建作坊。'],['courtyard','购买宅院','永久产权，容四人。'],['cave','置办洞府','筑基后可购，容六人。']]){const q=C.propertyQuote(id);body+=card(title,C.coinText(q.fee,q.currency)+' · '+extra,btn('签约 · 1日','buyProperty',id,!!data().property&&ownedHome()&&(data().property.type===id||id==='rental')));}
+ else for(const [id,r]of Object.entries(recruits)){const q=C.recruitQuote(id,r),debt=window.XTStaff54?.debtOf(id);body+=card(r.name+' · '+r.title,'安置费 '+C.coinText(q.fee,q.currency)+'，含首月食宿。月俸 '+C.coinText(q.wage,q.currency)+'。'+(r.realm>=0?'按既定报酬与住处签约，不要求雇主境界高于本人。':'负责采购、药圃与家务。'),debt?btn('结清旧欠薪 · '+C.coinText(debt,XTStaff54.debtCurrency(id)),'s54:payFormer',id):btn('招募 · 1日','hire',id,data().staff.some(w=>w.id===id)));}
  page(V.tab==='propertyOffers'?'何经纪 · 宅院契约':'何经纪 · 招募人手',body+btn('返回牙行','backScene'));
 }
 function buyProperty(type){
  if(!physicalActor('broker')||!canAct())return;
- const fee={rental:30,courtyard:180,cave:600}[type];if(!fee)return;
+ const C=XTContent47,q=C.propertyQuote(type);if(!q)return;
  const d=data();if(d.property&&ownedHome()&&d.property.type===type)return;
  if(type==='rental'&&ownedHome())return notify('已有产业，可在家园续租。');
  if(type==='cave'&&realmOf()<1)return notify('洞府契约需筑基修为。');
- if(G.stones<money(fee))return notify('灵石不足。');
- stoneChange(G,-(money(fee)),'地方交易与经营');act(1,'contract',()=>{d.property={type,place:'county',expires:type==='rental'?now()+360:null,rooms:d.property?.rooms||{}};log('在青石县签下'+({rental:'小院租契',courtyard:'宅院地契',cave:'洞府地契'})[type]+'。');});
+ if(C.funds(q.currency)<q.fee)return notify((q.currency==='wen'?'凡钱':'灵石')+'不足。');
+ C.atomic(()=>act(1,'contract',()=>{if(!physicalActor('broker')||C.funds(q.currency)<q.fee)return;C.debit(q.currency,q.fee,'签订'+({rental:'租院',courtyard:'宅院',cave:'洞府'})[type]+'契约');data().property={type,place:'county',currency:q.currency,renewalAmount:type==='rental'?q.fee:null,expires:type==='rental'?now()+360:null,rooms:d.property?.rooms||{}};log('签下'+({rental:'小院租契',courtyard:'宅院地契',cave:'洞府地契'})[type]+'，付'+C.coinText(q.fee,q.currency)+'。');}));
 }
+
 function build(id){
  if(!atHome()||!canAct()||data().property.rooms[id])return;
  const fee={alchemy:60,forge:70,garden:45}[id];if(!fee||G.stones<money(fee))return notify('灵石不足。');
@@ -299,12 +300,14 @@ function build(id){
 function hire(id){
  if(!physicalActor('broker')||!canAct())return;
  const d=data(),r=recruits[id];if(!r||d.staff.some(w=>w.id===id))return;
- const born=d.roster[id]?.born??now()-20*360;
- if(now()-born>=r.life*360)return notify('这位故人已经寿尽，不能重新招募。');
+ if(window.XTStaff54?.debtOf(id))return notify('须先结清本人旧欠薪，才能重新商议招募。');
+ const person=window.XTWorld36?.get(id),born=person?.birth??d.roster[id]?.born??now()-20*360;
+ if(person?.alive===false||now()-born>=(person?.life??r.life)*360)return notify('这位故人已经寿尽，不能重新招募。');
  if(!ownedHome()||d.staff.length>=homeSize())return notify('需要有效产业与空余住处。');
- if(G.stones<money(r.fee))return notify('安置费不足。');
- stoneChange(G,-(money(r.fee)),'地方交易与经营');act(1,'hire',()=>{d.roster[id]={born};d.staff.push({id,name:r.name,realm:r.realm,wage:r.wage,nextWage:now()+30,born,life:r.life,job:null});log(r.name+'前来效力，首月食宿已结清。');});
+ const C=XTContent47,q=C.recruitQuote(id,r);if(C.funds(q.currency)<q.fee)return notify('安置费不足，需'+C.coinText(q.fee,q.currency)+'。');
+ C.atomic(()=>act(1,'hire',()=>{const n=window.XTWorld36?.get(id);if(!physicalActor('broker')||!ownedHome()||d.staff.length>=homeSize()||d.staff.some(w=>w.id===id)||n?.alive===false||now()-born>=(n?.life??r.life)*360||C.funds(q.currency)<q.fee)return;C.debit(q.currency,q.fee,r.name+'安置费');d.roster[id]={born};d.staff.push({id,name:r.name,realm:n?.realm??r.realm,currency:q.currency,wage:q.wage,wageFixed:q.wage,nextWage:now()+30,born,life:n?.life??r.life,job:null});log(r.name+'前来效力，付安置费'+C.coinText(q.fee,q.currency)+'，首月食宿已结清。');}));
 }
+
 const jobs={purchase:{name:'采购草药',days:30,fee:8,output:{herb:3}},garden:{name:'照料药圃',days:30,fee:1,output:{herb:2}},gather:{name:'外出采集',days:30,fee:2,output:{herb:4}},alchemy:{name:'代炼聚气散',days:10,fee:3,materials:{herb:2},output:{qiPill:1}},forge:{name:'代制青钢短剑',days:15,fee:8,materials:{ironOre:3},output:{ironSword:1}}};
 function staffDetails(w){
  const person=window.XTWorld36?.get(w.id),t=now();
@@ -314,7 +317,7 @@ function staffDetails(w){
  const life=Number.isFinite(w.life)?w.life+'岁':'未核定';
  const pay=Number.isFinite(w.nextWage)?(w.nextWage<=t?'已到期':Math.ceil(w.nextWage-t)+'日后'):'未核定';
  const arrears=Number.isFinite(w.arrears)?w.arrears:0;
- return `产业雇佣 · 年龄 ${age} · 寿限 ${life}。<br>月俸 ${money(w.wage)} 灵石 · 下次发薪 ${pay} · 欠薪 ${arrears}个月。<br>`;
+ return `产业雇佣 · 年龄 ${age} · 寿限 ${life}。<br>月俸 ${XTContent47.coinText(XTContent47.staffWage(w),w.currency||'stone')} · 下次发薪 ${pay} · 欠薪 ${arrears}个月。<br>`;
 }
 function renderStaff(){
  const d=data();
@@ -322,11 +325,11 @@ function renderStaff(){
  const detail=selected?card(selected.name+' · 委派',staffDetails(selected)+(selected.job?`正在${jobs[selected.job.type].name}，还需 ${Math.max(0,selected.job.due-now())} 日。`:'选择一项工作，产出送往仓库。代工耗材从仓库扣除，月俸另计。'),
  (selected.job?btn('取消工作（耗材不退）','cancelJob',selected.id):Object.entries(jobs).map(([id,j])=>btn(j.name+' · '+j.days+'日 / '+money(j.fee)+'灵石','assign',selected.id+':'+id,!ownedHome())).join(''))+btn('遣散','dismiss',selected.id)):'';
  return note(`已招募 ${d.staff.length}/${homeSize()} 人。欠薪三月会离去。`)+
- (d.staff.map(w=>`<div class="sb-item"><div><b>${w.name} · ${w.realm<0?'凡人':(REALM_NAMES[w.realm]||'修士')}</b><small>月俸 ${money(w.wage)} 灵石 · ${w.job?jobs[w.job.type].name:'待命'}</small></div>${btn('安排','selectWorker',w.id)}</div>`).join('')||note('还没有人手。到县城牙行招募。'))+detail;
+ (d.staff.map(w=>`<div class="sb-item"><div><b>${w.name} · ${w.realm<0?'凡人':(REALM_NAMES[w.realm]||'修士')}</b><small>月俸 ${XTContent47.coinText(XTContent47.staffWage(w),w.currency||'stone')} · ${w.contract?.status==='pending'?'聘约待确认':w.training?'修行培养 · 余'+Math.max(0,w.training.end-now())+'日':w.job?jobs[w.job.type].name:'待命'}</small></div>${btn('安排','selectWorker',w.id)}</div>`).join('')||note('还没有人手。到县城牙行招募。'))+detail;
 }
 function assign(arg){
  if(!canAct())return;
- const [id,type]=arg.split(':'),d=data(),w=d.staff.find(w=>w.id===id),j=jobs[type];if(!w||!j||w.job)return;
+ const [id,type]=arg.split(':'),d=data(),w=d.staff.find(w=>w.id===id),j=jobs[type];if(!w||!j||w.job||w.training||w.contract?.kind==='personal'&&w.contract.status==='pending')return;
  if(!ownedHome())return notify('产业已经到期，先续租。');
  const p=d.property;
  if(type==='garden'&&!p.rooms.garden)return notify('需要先修建药圃。');
@@ -340,15 +343,16 @@ function assign(arg){
 }
 function tick(){
  if(!G?.sandbox35)return;
- const d=data(),t=now();
+ const d=data(),t=now();if(!window.XTContent47)return;
+ window.XTStaff54?.tick();
  for(const w of [...d.staff]){
    if(Number.isFinite(w.born)&&Number.isFinite(w.life)&&t-w.born>=w.life*360){log(w.name+'寿尽，离开了人世。');d.staff=d.staff.filter(x=>x!==w);continue;}
    if(!ownedHome()){if(w.job){w.job=null;log('租期已满，'+w.name+'的工作中止。');}continue;}
    if(t>=w.nextWage){
-     const count=Math.floor((t-w.nextWage)/30)+1,each=money(w.wage),owed=(w.arrears||0)+count,affordable=Math.min(owed,Math.floor(G.stones/each));
-     stoneChange(G,-(affordable*each),'地方交易与经营');w.nextWage+=count*30;w.arrears=owed-affordable;
-     if(w.arrears){w.job=null;log(w.name+'未收到月俸，暂停工作。');}
-     if(w.arrears>=3){log(w.name+'因欠薪三月离去。');d.staff=d.staff.filter(x=>x!==w);continue;}
+     const C=XTContent47,currency=w.currency||'stone',count=Math.floor((t-w.nextWage)/30)+1,each=C.staffWage(w),owed=(w.arrears||0)+count,affordable=Math.min(owed,Math.floor(C.funds(currency)/each));
+     C.debit(currency,affordable*each,w.name+'月俸');w.nextWage+=count*30;w.arrears=owed-affordable;
+     if(w.arrears){window.XTStaff54?.stop(w,'欠薪暂停');w.job=null;log(w.name+'未收到月俸，暂停工作。');}
+     if(w.arrears>=3){window.XTStaff54?.recordDebt(w);log(w.name+'因欠薪三月离去。');d.staff=d.staff.filter(x=>x!==w);continue;}
    }
    if(w.job&&w.job.due<=t){
     const j=jobs[w.job.type];
@@ -411,6 +415,7 @@ function renderGuide(){
 }
 function go(tab,sub=''){V.tab=tab;V.sub=sub;V.page=0;V.detail=null;closeMainOverlay();render();}
 function dispatch(action,arg){
+ if(action?.startsWith('s54:')&&window.XTStaff54){window.XTStaff54.dispatch(action.slice(4),arg);return;}
  if(G?.root&&window.XTInteraction42&&!XTInteraction42.busy)return XTInteraction42.observe(action,arg,()=>dispatch(action,arg));
  if(window.XTChildhood49?.dispatch(action,arg))return;
  if(window.XTBackground47?.dispatch(action,arg))return;
@@ -444,13 +449,14 @@ function dispatch(action,arg){
  if(action==='hire'){hire(arg);return;}
  if(action==='enterHome'){if(atHome()){V.tab='scene';data().room='home';V.actor=null;render();}return;}
  if(action==='renew'){
-   const p=data().property;if(!canAct()||!p?.expires||G.place!==p.place||G.stones<money(30))return notify('须在产业所在地区备足灵石续租。');
-   stoneChange(G,-(money(30)),'地方交易与经营');p.expires=Math.max(now(),p.expires)+360;log('续租一年。');save();render();return;
+   const p=data().property;if(!canAct()||!p?.expires||G.place!==p.place||!atHome()&&!physicalActor('broker'))return notify('须到产业院落或当地牙行续租。');
+   const C=XTContent47,q=C.estateRenewal(p);if(C.funds(q.currency)<q.fee)return notify('续租需'+C.coinText(q.fee,q.currency)+'。');
+   C.atomic(()=>act(1,'renew',()=>{if(data().property!==p||G.place!==p.place||C.funds(q.currency)<q.fee)return;C.debit(q.currency,q.fee,'小院续租');p.expires=Math.max(now(),p.expires)+360;log('付'+C.coinText(q.fee,q.currency)+'，续租一年。');}));return;
  }
  if(action==='build'){build(arg);return;}
  if(action==='assign'){assign(arg);return;}
  if(action==='selectWorker'){V.worker=arg;render();return;}
- if(action==='dismiss'){if(!canAct())return;const d=data(),w=d.staff.find(w=>w.id===arg);if(w){d.staff=d.staff.filter(x=>x!==w);log('遣散了'+w.name+'，未完工作的耗材不退。');save();render();}return;}
+ if(action==='dismiss'){if(window.XTStaff54){window.XTStaff54.dispatch('leave',arg);return;}if(!canAct())return;const d=data(),w=d.staff.find(w=>w.id===arg);if(w){d.staff=d.staff.filter(x=>x!==w);log('遣散了'+w.name+'，未完工作的耗材不退。');save();render();}return;}
  if(action==='cancelJob'){const w=data().staff.find(w=>w.id===arg);if(w){w.job=null;log(w.name+'的委派已取消，耗材不返。');save();render();}return;}
  if(action==='deposit'||action==='withdraw'){
    if(!canAct()||!atHome())return;const d=data(),from=action==='deposit'?G.inventory:d.warehouse,to=action==='deposit'?d.warehouse:G.inventory;

@@ -9,6 +9,10 @@ BAG_ITEMS.ironOre.desc='含有微弱灵性的赤铁砂，可用于炼制低阶�
 BAG_ITEMS.clothArmor.desc='以灵矿和药草辅助缝制的低阶法衣，装备后降低遭遇战伤势风险。';
 BAG_ITEMS.forgePrimer.desc='载青纹护衣的基础炼制工艺；凡器与引灵剑另有专册。';
 Object.assign(BAG_ITEMS,{
+ flawedPillBatch59:{name:'封存废丹',price:50,desc:'未验明的废丹一包，不可直接吞服。丹坊可按废料回收。'},
+ brokenIron59:{name:'凡铁剑残段',price:60,desc:'普通生铁断剑，可交铁匠按凡铁回收，不可装备。'},
+ brokenSpirit59:{name:'灵铁剑残段',price:60,desc:'含微弱灵气的断剑残料，可交收购灵材的商户回收，不可装备。'},
+ halfToken59:{name:'半块旧木牌',price:0,desc:'夜货旧袋中的木牌残片，来历未明。暂无已核实的用途，也不能据此支取他人物品。'},
  purpleFungus58:{name:'紫芝',price:90,desc:'崖下采得的完整灵药。可向收购灵药的商户出售；采得时不自动兑换钱款。'},
  pigIron47:{name:'凡铁料',price:60,desc:'普通铁料，三份可锻青钢短剑；不含灵性。'},
  linen47:{name:'麻布',price:30,desc:'普通纤维织成的布料，两匹可缝护身布衣。'},
@@ -18,6 +22,10 @@ Object.assign(BAG_ITEMS,{
  bladePattern47:{name:'引灵剑器谱',price:28,desc:'记载引灵剑的炼制工艺，需赤铁砂四份、青纹灵木两段和实际炉火。'}
 });
 const meta={
+ flawedPillBatch59:{currency:'stone',kind:'材料',grade:'废丹',source:'贱价废丹事件'},
+ brokenIron59:{currency:'wen',kind:'材料',grade:'凡铁残料',source:'断剑旧货事件'},
+ brokenSpirit59:{currency:'stone',kind:'灵矿',grade:'一阶残料',source:'旧货断剑或崖边残剑事件'},
+ halfToken59:{currency:'stone',kind:'旧物',grade:'来历未明',tradeable:false,source:'夜货旧袋'},
  purpleFungus58:{currency:'stone',kind:'灵药材',grade:'一阶灵药',source:'深山采药事件，采得后存入行囊'},
  ironSword:{currency:'wen',kind:'兵器',grade:'凡品·精制',slot:'weapon',source:'百工坊购买或凡铁锻造',effect:'主修修炼效率+2%；现有遭遇战中提供兵器加成'},
  pigIron47:{currency:'wen',kind:'材料',grade:'凡品·普通',source:'百工坊铁匠铺'},
@@ -41,6 +49,9 @@ const meta={
  blankSlip:{currency:'stone',kind:'制丹辅材',grade:'一阶下品',source:'坊市'},
  bladePattern47:{currency:'stone',kind:'书册',grade:'一阶·器谱',source:'铁匠铺与府城商铺',recipes:['spiritBlade']}
 };
+for(const id of ['dan','gu'])if(S.actors[id]?.stock)S.actors[id].stock.flawedPillBatch59=0;
+if(S.actors.smith?.stock)S.actors.smith.stock.brokenIron59=0;
+for(const id of ['smith','gu','prefect'])if(S.actors[id]?.stock)S.actors[id].stock.brokenSpirit59=0;
 for(const id of ['grocer','gu','prefect','sunset'])if(S.actors[id]?.stock)S.actors[id].stock.purpleFungus58=0;
 // 每种物品均有稳定ID；旧物品沿用原ID，不转换库存或原有灵石余额。
 const catalog=Object.fromEntries(Object.entries(BAG_ITEMS).map(([id,b])=>[id,{id,name:b.name,...(meta[id]||{currency:'stone',kind:'修仙用品',grade:'既有品阶',source:'既有事件与商店'}),price:id==='ironSword'?900:b.price,status:id==='blankSlip'?'用途待接入':'已接入既有或本批玩法',desc:b.desc}]));
@@ -55,14 +66,22 @@ for(const id of ['smith','prefect','sunset'])if(S.actors[id])Object.assign(S.act
 function money(){if(!G)return null;if(!G.money47)G.money47={version:1,wen:0,ledger:[],shops:{},employers:{},ownerId:G.world36?.playerId};G.money47.ownerId=G.world36?.playerId||G.money47.ownerId;return G.money47;}
 function fmt(n){n=Math.max(0,Math.floor(n));const gold=Math.floor(n/10000),silver=Math.floor(n%10000/1000),copper=n%1000;return [gold?gold+'两黄金':'',silver?silver+'两白银':'',copper?copper+'文':''].filter(Boolean).join(' ')||'0文';}
 function change(n,why){const m=money();if(!Number.isSafeInteger(n)||!Number.isSafeInteger(m.wen+n)||m.wen+n<0)throw Error('凡钱不足或金额无效');m.wen+=n;m.ledger.unshift({at:S.now(),change:n,balance:m.wen,why});m.ledger=m.ledger.slice(0,120);}
+// Confirmed trial contract prices; signed contracts retain amount and currency.
+function propertyQuote(type){const fees={rental:3600,courtyard:24000,cave:600};if(!fees[type])return null;return {currency:type==='cave'?'stone':'wen',fee:Math.round(fees[type]*economyFactor())};}
+function recruitQuote(id,spec){const prices={an:[1200,600],qiao:[1800,900]},v=prices[id];return {currency:v?'wen':'stone',fee:Math.round((v?v[0]:spec.fee)*economyFactor()),wage:Math.round((v?v[1]:spec.wage)*economyFactor())};}
+function funds(currency){return currency==='wen'?money().wen:G.stones;}
+function debit(currency,n,why){if(!['wen','stone'].includes(currency)||!Number.isSafeInteger(n)||n<0||funds(currency)<n)throw Error('对应币种的钱款不足或报价无效');if(currency==='wen')change(-n,why);else stoneChange(G,-n,why);}
+function coinText(n,currency){return currency==='wen'?fmt(n):n+'灵石';}
+function staffWage(w){return Number.isSafeInteger(w.wageFixed)?w.wageFixed:Math.round(w.wage*economyFactor());}
+function estateRenewal(p){return {currency:p.currency||'stone',fee:p.renewalAmount??Math.round(30*economyFactor())};}
 function shopMoney(id){const m=money();if(!m.shops[id])m.shops[id]={wen:20000};return m.shops[id];}
 function syncStock(id){const a=S.actors[id];if(!a?.stock)return null;const st=S.shopState(id);for(const [key,n]of Object.entries(a.stock))if(!Object.hasOwn(st.stock,key))st.stock[key]=n;return st;}
 function notify(text){message=text;failure=text;render();}
 function atomic(fn){if(locked||!G)return false;const before=JSON.stringify(G),persist=localStorage.getItem(SAVE_KEY);locked=true;failure='';try{fn();const raw=JSON.stringify(G);localStorage.setItem(SAVE_KEY,raw);if(localStorage.getItem(SAVE_KEY)!==raw)throw Error('读回失败');return true;}catch(e){G=JSON.parse(before);try{if(persist===null)localStorage.removeItem(SAVE_KEY);else localStorage.setItem(SAVE_KEY,persist);}catch(_){}message='无法保存，本次钱款、物品、日期和完成记录已撤回。';failure=message;return false;}finally{locked=false;}}
 function price(id,key,selling=false){const it=item(key);const unit=it.currency==='wen'?Math.max(1,Math.round(it.price*economyFactor())):S.price(id,key);return selling?Math.max(1,Math.floor(unit*.55)):unit;}
-function trade(key,selling){if(!systemReady())return;const id=V.detail?.id,it=item(key),a=S.actors[id];if(V.tab!=='shop'||!it||!a?.stock||!W.present(id)||!Object.hasOwn(a.stock,key))return notify('须到经营此物的商人面前交易。');const st=syncStock(id),unit=price(id,key,selling),wen=it.currency==='wen';
+function trade(key,selling){if(!systemReady())return;const id=V.detail?.id,it=item(key),a=S.actors[id];if(V.tab!=='shop'||!it||it.tradeable===false||!a?.stock||!W.present(id)||!Object.hasOwn(a.stock,key))return notify('须到经营此物的商人面前交易。');const st=syncStock(id),unit=price(id,key,selling),wen=it.currency==='wen';
  if((selling?(G.inventory[key]||0):st.stock[key])<1)return notify('当前没有可交割的货物。');if(selling?(wen?shopMoney(id).wen:st.wallet)<unit:(wen?money().wen:G.stones)<unit)return notify(wen?'凡钱不足；凡物以凡钱结算。':'灵石不足；修仙物品以灵石结算。');
- atomic(()=>{if(selling){G.inventory[key]--;st.stock[key]++;if(wen){shopMoney(id).wen-=unit;change(unit,'卖出'+it.name);}else{st.wallet-=unit;stoneChange(G,unit,'出售'+it.name);}}else{G.inventory[key]=(G.inventory[key]||0)+1;st.stock[key]--;if(wen){change(-unit,'购入'+it.name);shopMoney(id).wen+=unit;}else{stoneChange(G,-unit,'购入'+it.name);st.wallet+=unit;}}G.marketTrades++;window.XTLocal37?.onTrade(window.XTShop38?.shopId(id)??id,key,selling);addLog((selling?'售出':'购入')+it.name+'，'+(selling?'得':'付')+(wen?fmt(unit):unit+'灵石')+'。','mute');});render();
+ atomic(()=>{if(selling){G.inventory[key]--;st.stock[key]++;if(wen){shopMoney(id).wen-=unit;change(unit,'卖出'+it.name);}else{st.wallet-=unit;stoneChange(G,unit,'出售'+it.name);}}else{G.inventory[key]=(G.inventory[key]||0)+1;st.stock[key]--;if(wen){change(-unit,'购入'+it.name);shopMoney(id).wen+=unit;}else{stoneChange(G,-unit,'购入'+it.name);st.wallet+=unit;}}G.marketTrades++;window.XTLocal37?.onTrade(window.XTShop38?.shopId(id)??id,key,selling);window.XTFamily55?.onTrade(id,key,selling,unit);addLog((selling?'售出':'购入')+it.name+'，'+(selling?'得':'付')+(wen?fmt(unit):unit+'灵石')+'。','mute');});render();
 }
 function equipment(slot,key,s=G){const id=s?.equipment?.[slot];return item(id)?.[key]||0;}
 function equip(id,slot){const it=item(id);if(!systemReady()||!it?.slot||it.slot!==slot||(G.inventory[id]||0)<1)return notify('此物不能放入这个装备位置。');atomic(()=>{ensureGameSystems();const prev=G.equipment[slot];G.inventory[id]--;if(prev)G.inventory[prev]=(G.inventory[prev]||0)+1;G.equipment[slot]=id;addLog('装备'+it.name+'。','up');});render();}
@@ -87,9 +106,12 @@ sysBuy=id=>trade(id,false);sysSell=id=>trade(id,true);sysEquip=(id,slot)=>equip(
 renderScene=function(){old.renderScene();if(!G?.root)return;money();const scene=document.getElementById('scene');const balance=scene.querySelector('.sb-balance');if(balance&&!scene.querySelector('.content47'))balance.textContent=G.stones+'灵石 · '+fmt(money().wen);if(G.mode==='idle'){const head=scene.querySelector('.sb-head');if(head&&!head.querySelector('[data-sb="c47:account"]')){head.insertAdjacentHTML('beforeend',B('收支账目','c47:account'));bind(head);}}if(G.mode==='idle'&&V.tab==='scene'){const actions=scene.querySelector('.sb-place>.sb-buttons');if(actions&&S.state().room==='wild'&&['village','ridge','temple'].includes(G.place)){actions.insertAdjacentHTML('beforeend',B('寻青纹灵木 · 7日','c47:timber'));bind(actions);}const details=scene.querySelector('.sb-detail');if(details&&message){details.insertAdjacentHTML('afterbegin','<p class="notice47" role="status">'+esc(message)+'</p>');}}
  if(G.mode==='idle'&&V.tab==='cult'&&V.sub==='arts'){for(const card of scene.querySelectorAll('.sb-card')){const title=card.querySelector('h4')?.textContent.replace(/[《》]/g,''),m=manuals[title],b=S.state().books[title];if(m&&b){const p=document.createElement('p');p.className='manual-effect47';const factor=b.level?(.5+b.level*.5):0;p.textContent='来源：'+fillFate(m.source)+'；当前主修时修炼效率+'+Math.round((m.effect.absorb||0)*factor*100)+'%，突破加成'+Math.round((m.effect.bt||0)*factor*100)+'%。';card.append(p);}}}
 };
-restore=function(raw){const prev=G,before=localStorage.getItem(SAVE_KEY);let incoming;try{incoming=JSON.parse(raw);if(incoming?.money47){const m=incoming.money47;if(m.version!==1||!Number.isSafeInteger(m.wen)||m.wen<0||!Array.isArray(m.ledger)||!m.shops||!m.employers||Object.values(m.shops).some(x=>!Number.isSafeInteger(x?.wen)||x.wen<0)||Object.values(m.employers).some(n=>!Number.isSafeInteger(n)||n<0))throw Error('凡钱数据无效');}if(!incoming?.money47)stoneBackup(raw);}catch(e){XTEconomy40.lastRestoreError='凡钱迁移前备份失败或金额无效，原档未更改。';return false;}if(!old.restore(raw))return false;if(!incoming.money47&&!XTMode41.isPending()){try{money();const s=JSON.stringify(G);localStorage.setItem(SAVE_KEY,s);if(localStorage.getItem(SAVE_KEY)!==s)throw Error('读回失败');}catch(e){G=prev;try{if(before===null)localStorage.removeItem(SAVE_KEY);else localStorage.setItem(SAVE_KEY,before);}catch(_){}return false;}}message='';V.goods47='all';return true;};
+restore=function(raw){const prev=G,before=localStorage.getItem(SAVE_KEY);let incoming;try{incoming=JSON.parse(raw);const contracts=incoming?.sandbox35;
+if(contracts?.property){const p=contracts.property;if(p.currency!=null&&!['wen','stone'].includes(p.currency)||p.renewalAmount!=null&&(!Number.isSafeInteger(p.renewalAmount)||p.renewalAmount<=0))throw Error('房契报价无效');}
+for(const w of contracts?.staff||[])if(w.currency!=null&&!['wen','stone'].includes(w.currency)||w.wageFixed!=null&&(!Number.isSafeInteger(w.wageFixed)||w.wageFixed<=0))throw Error('聘约报价无效');
+if(incoming?.money47){const m=incoming.money47;if(m.version!==1||!Number.isSafeInteger(m.wen)||m.wen<0||!Array.isArray(m.ledger)||!m.shops||!m.employers||Object.values(m.shops).some(x=>!Number.isSafeInteger(x?.wen)||x.wen<0)||Object.values(m.employers).some(n=>!Number.isSafeInteger(n)||n<0))throw Error('凡钱数据无效');}if(!incoming?.money47)stoneBackup(raw);}catch(e){XTEconomy40.lastRestoreError='凡钱迁移前备份失败或金额无效，原档未更改。';return false;}if(!old.restore(raw))return false;if(!incoming.money47&&!XTMode41.isPending()){try{money();const s=JSON.stringify(G);localStorage.setItem(SAVE_KEY,s);if(localStorage.getItem(SAVE_KEY)!==s)throw Error('读回失败');}catch(e){G=prev;try{if(before===null)localStorage.removeItem(SAVE_KEY);else localStorage.setItem(SAVE_KEY,before);}catch(_){}return false;}}message='';V.goods47='all';return true;};
 newGame=function(...args){const inheritance=args.length>=4&&G?.mode==='dead',prior=inheritance?JSON.parse(JSON.stringify(money())):null;message='';V.goods47='all';const r=old.newGame(...args);if(prior){G.money47=prior;G.money47.ownerId=null;change(-Math.ceil(prior.wen*.6),'个人凡钱继承：沿用四成比例');}else money();if(!inheritance)save();return r;};
 const craftHelp47=XTHelp40.topics.find(t=>t[2]==='材料、设施与工时');if(craftHelp47)craftHelp47[3]='本人制作先核对已学配方、材料、对应钱款及工位。工序完成后结清材料与工钱；成品或失手都有明确结果。事件中断尚未完成的工序，本次不交材料和工钱，也不产生成品，已过时间会保留。保存失败撤回本次制作。雇员旧委派按已接约定结算。';
 XTHelp40.topics.push(['money','货币交易','凡钱与两类物品','1两黄金＝10两白银＝10贯＝10000文，1两白银＝1贯＝1000文。凡钱买凡物，灵石买修仙物品；钱款分别记账。县城、府城与渡镇货街可做凡间短工，工钱来自货栈当期预算。凡器可在百工坊用凡铁与工钱制作，灵材与法器另用灵石。旧版已签寄拍合同按原币种结清，新寄拍只收修仙物品。'],['start','开始修行','天赋与引气','选择测灵机会后，先完成住处安置与基础授法，再按灵根、悟性和根骨计算引气日数。普通天赋约一至三个月，极佳天赋数日至数周。引气实际推进日历并记录生平；已有入门角色不倒退重修。'],['craft','工艺制作','凡器与法器工艺','买到工艺册或器谱后在行囊阅读。凡器到百工坊找铁匠使用砧台，法器需炉位或合适工具。材料、工钱、灵石与工时分别核对，事件中断尚未完成的工序不产出成品；保存失败会撤回本次制作。']);
-window.XTContent47={catalog,manuals,item,money,fmt,change,shopMoney,atomic,dispatch,takeFailure(){const f=failure;failure='';return f;},equipment,make,trade,work,gatherTimber,price,site};if(G){try{if(!G.money47)stoneBackup(sGet(SAVE_KEY)||JSON.stringify(G));money();render();}catch(e){G=null;showStart();toast('凡钱升级前原档未能备份，请检查存储空间后重试，原档仍保留。');}}
+window.XTContent47={propertyQuote,recruitQuote,funds,debit,coinText,staffWage,estateRenewal,catalog,manuals,item,money,fmt,change,shopMoney,atomic,dispatch,takeFailure(){const f=failure;failure='';return f;},equipment,make,trade,work,gatherTimber,price,site};if(G){try{if(!G.money47)stoneBackup(sGet(SAVE_KEY)||JSON.stringify(G));money();render();}catch(e){G=null;showStart();toast('凡钱升级前原档未能备份，请检查存储空间后重试，原档仍保留。');}}
 })();

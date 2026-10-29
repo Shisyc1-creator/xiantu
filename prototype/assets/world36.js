@@ -311,6 +311,8 @@ function inherit(id){
  G.age=childAge;G.lifespan=n.realm<0?100:realmLife(n.realm);G.realm=Math.max(0,n.realm);G.layer=Math.max(1,n.layer||1);G.cult=0;G.month=month;G.day=day;
  G.difficulty={...oldG.difficulty};G.rescue40={generation:(oldG.generation||1)+1,used:false};G.generation=(oldG.generation||1)+1;G.ancestors=ancestors;stoneInherit(G,oldG);G.place=n.place;G.home=n.place;G.family=[];G.inventory={...(n.inventory||{})};
  G.world36={...estate,playerId:id,relations:{},partnerId:null,followers:[],children:[],contracts:[],birthPlan:null,startGranted:false};G.mode='idle';G.lastResult=null;
+ window.XTStaff54?.inherit(oldG.world36.playerId,id);
+ window.XTLife56?.inherit(oldG.world36.playerId,id);
  seedStart(false);log('由已登记的晚辈'+n.name+'接续家业，年龄和世界日期均保留。');saveRender();
 }
 openInherit=function(){
@@ -319,7 +321,7 @@ openInherit=function(){
  document.getElementById('overlay').classList.remove('hidden');md.querySelectorAll('[data-sb]').forEach(b=>b.onclick=()=>dispatch(b.dataset.sb,b.dataset.arg));document.getElementById('inheritClose36').onclick=closeMainOverlay;
 };
 // Retire the relationship-generating and identity-changing shortcuts.
-const retired=['H03','H04','H09','E005','E006','E013','E017','E018','E025','E033','E035','E043','E058','E059','E060','E061'];
+const retired=['E039','H03','H04','H09','E005','E006','E013','E017','E018','E025','E033','E035','E043','E058','E059','E060','E061'];
 for(const e of EVENTS){if(retired.includes(e.id)){e.retired36=true;e.cond=()=>false;}}
 // Legacy household scripts assume adult agency; unbound births, marriages and debts stay retired.
 const adultHousehold=new Set(['H01','H02','H05','H07','H08']);

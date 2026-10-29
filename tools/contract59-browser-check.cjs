@@ -1,0 +1,26 @@
+const fs=require('fs'),path=require('path'),assert=require('node:assert/strict'),{pathToFileURL}=require('url');
+const {chromium}=require('C:/Users/EDY/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const root=path.resolve(__dirname,'..'),out=path.join(root,'outputs/contract59');fs.mkdirSync(out,{recursive:true});
+(async()=>{const browser=await chromium.launch({channel:'msedge',headless:true});let n=0;try{for(const width of [1440,390]){
+ const context=await browser.newContext({viewport:{width,height:1000}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(pathToFileURL(path.join(root,'prototype/index.html')).href+'?developer=1');
+ const reset=()=>page.evaluate(()=>{XTDeveloper47.scenario('寒门散修');tryEvent=()=>null;meetLive=()=>null;tryRoadEvent=()=>null;pickRetreatEvent=()=>null;economyFactor=()=>1;G.age=25;G.lifespan=200;G.mode='idle';G.stones=3000;G.inventory={};XTContent47.money().wen=100000;XTDeveloper47.teleport('county','agency');});
+ await reset();await page.evaluate(()=>XTSandbox.dispatch('propertyOffers'));
+ assert.match(await page.locator('#scene').innerText(),/租住小院/);n++;
+ await page.screenshot({path:path.join(out,'property-offers-'+width+'.png')});
+ await page.locator('[data-sb="buyProperty"][data-arg="courtyard"]').click();assert.deepEqual(await page.evaluate(()=>[G.stones,XTContent47.money().wen,XTSandbox.state().property.currency]),[3000,76000,'wen']);n++;
+ await page.evaluate(()=>XTSandbox.dispatch('recruitOffers'));await page.locator('[data-sb="hire"][data-arg="an"]').click();assert.deepEqual(await page.evaluate(()=>[G.stones,XTContent47.money().wen,XTSandbox.state().staff[0].currency]),[3000,74800,'wen']);n++;
+ await page.evaluate(()=>{XTDeveloper47.teleport('county','home');XTSandbox.go('home','staff');XTSandbox.view.worker='an';render();});
+ assert.match(await page.locator('#scene').innerText(),/月俸\s*600文/);n++;
+ assert(!/培养预算\s*600灵石/.test(await page.locator('#scene').innerText()));n++;
+ await page.getByText('聘约与账目',{exact:true}).scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,'mortal-contract-'+width+'.png')});
+ await page.evaluate(()=>{advanceDays(30,{act:'browser59',rate:0,incomeMul:0,eventRate:0});XTSandbox.tick();save();});assert.deepEqual(await page.evaluate(()=>[G.stones,XTContent47.money().wen]),[3000,74200]);n++;
+ await page.reload();assert.deepEqual(await page.evaluate(()=>[G.stones,XTContent47.money().wen,XTSandbox.state().staff[0].currency]),[3000,74200,'wen']);n++;
+ await page.evaluate(()=>{G.mode='idle';XTDeveloper47.teleport('county','home');XTContent47.money().wen=0;XTSandbox.state().staff[0].nextWage=XTSandbox.now();XTSandbox.tick();XTSandbox.go('home','staff');XTSandbox.view.worker='an';render();});assert.equal(await page.evaluate(()=>XTSandbox.state().staff[0].arrears),1);n++;
+ await page.evaluate(()=>{XTContent47.money().wen=600;render();});await page.locator('[data-staff54="debt"]').click();assert.deepEqual(await page.evaluate(()=>[XTSandbox.state().staff[0].arrears,XTContent47.money().wen,G.stones]),[0,0,3000]);n++;
+ await reset();await page.evaluate(()=>{G.stones=100;Math.random=()=>0;XTDeveloper47.teleport('market','shops');startEvent(EVENTS.find(e=>e.id==='E029'));});await page.locator('.choice[data-i="1"]').click();assert.deepEqual(await page.evaluate(()=>[G.stones,G.inventory.brokenSpirit59]),[97,1]);n++;
+ await page.evaluate(()=>{G.mode='idle';XTDeveloper47.teleport('county','workshop');XTSandbox.dispatch('shop','smith');XTSandbox.dispatch('sub','sell');globalThis.price59=XTContent47.price('smith','brokenSpirit59',true);});await page.locator('[data-sb="sell"][data-arg="brokenSpirit59"]').click();assert(await page.evaluate(()=>G.stones===97+price59&&G.inventory.brokenSpirit59===0));n++;
+ await reset();await page.evaluate(()=>{XTDeveloper47.teleport('temple','hall');XTWorld36.get('mentor').wallet52=25;globalThis.started59=XTSandbox.now();startEvent(EVENTS.find(e=>e.id==='E036'));});await page.locator('.choice[data-i="0"]').click();assert.deepEqual(await page.evaluate(()=>[G.stones,G.inventory.qiManual,XTSandbox.now()-started59,XTWorld36.get('mentor').wallet52]),[3025,1,90,0]);n++;
+ assert(await page.evaluate(()=>localStorage.getItem('xiuxian_slice_v1')===null&&localStorage.getItem('xiuxian_slots_v1')===null));n++;
+ assert.deepEqual(errors,[]);n++;
+ await context.close();
+}console.log('PASS '+n+' real browser checks at 1440/390px; developer contexts only.');}finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

@@ -34,7 +34,7 @@ function fixture(){
  game.run(`XTDeveloper47.scenario('寒门散修');tryEvent=()=>null;meetLive=()=>null;tryRoadEvent=()=>null;pickRetreatEvent=()=>null;
  economyFactor=()=>1;G.realm=0;G.layer=4;G.mode='idle';G.lastResult=null;G.stones=3000;
  G.place='county';XTSandbox.state().roomAt='county';XTSandbox.state().room='agency';XTWorld36.sync();
- XTSandbox.dispatch('buyProperty','courtyard');`);
+ XTContent47.money().wen=100000;XTSandbox.dispatch('buyProperty','courtyard');`);
  return game;
 }
 function hire(game,id='lin'){
@@ -117,7 +117,7 @@ test('remote recruitment and full homes still reject without charging',()=>{
 });
 
 test('unpaid and dead employees retain existing consequences',()=>{
- const game=fixture();hire(game,'an');game.run('G.stones=0');
+ const game=fixture();hire(game,'an');game.run('G.stones=0;XTContent47.money().wen=0');
  game.run("advanceDays(90,{act:'test53',rate:0,incomeMul:0,eventRate:0});");
  assert.equal(game.run('XTSandbox.state().staff.length'),0);
  const dead=fixture();hire(dead,'an');

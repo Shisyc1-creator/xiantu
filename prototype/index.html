@@ -832,7 +832,7 @@ body.start-screen .frame{max-width:none;background:none;padding:0;height:100dvh}
 <link rel="stylesheet" href="assets/content47.css">
 <link rel="stylesheet" href="assets/qi51.css">
 <link rel="stylesheet" href="assets/qi52.css">
-<link rel="stylesheet" href="assets/runtime-ui.css"></head>
+<link rel="stylesheet" href="assets/runtime-ui.css"><link rel="stylesheet" href="assets/staff54.css"></head>
 <body>
 <div class="frame">
   <header class="hud" id="hud"></header>
@@ -1762,6 +1762,12 @@ function familyTurn(){
 /* =========================================================
    事件池：炼气段 40 条（31 条世界事 + 9 条家事）
    ========================================================= */
+function eventCopyReason59(){
+ const n=window.XTWorld36?.get('mentor');
+ if(!n||!XTWorld36.alive(n)||!XTWorld36.present('mentor'))return '须在观中与在世的传习执事当面办理。';
+ if((n.wallet52??120)<25)return '执事现有工钱不足，暂不接这份抄录。';
+ return '';
+}
 const EVENTS = [
 { id:'E001', name:'坊市散摊', place:'market', spot:'旧物摊', once:true, w:10,
   text:'城南坊市尽头，一个老道盘腿坐在地上，面前摊着七八件看不出名堂的旧物。\n他抬眼看你：「小友印堂发暗，是缺一部功法吧。」\n摊上有一卷边角焦黑的残页，标价三十灵石。',
@@ -1853,19 +1859,11 @@ const EVENTS = [
   ]},
 
 { id:'E007', name:'贱价废丹', place:'county', spot:'坊市口', once:true, w:9,
-  text:'丹坊后门，一个伙计悄悄兜售一批「废丹」——火候差了些，成色发乌，五十灵石一整包。\n「吃不死人，就是药性暴。」他说，「穷修士都这么过来的。」',
-  opts:[
-    { l:'买下，当场吞服', cost:50, chance:s=>0.55+(s.attr.gen-5)*0.05,
-      ok:s=>{ s.cult+=170;
-        return { t:'药力像一团火从胃里烧下去，你疼得在地上蜷了半个时辰。\n但疼过去之后，丹田里那股气竟厚实了一截。\n\n<span class="good">修为 +170</span>', log:'服废丹，修为 +170' }; },
-      no:s=>{ s.lifespan-=5; s.injured=2; s.attr.gen-=1;
-        return { t:'药力冲到一半忽然散了，逆着经脉往回撞。\n你吐了一口黑血，接下来两年，每次运功都觉得胸口堵着一块东西。\n\n<span class="bad">寿元 -5　根骨 -1　受伤两年</span>', log:'服废丹伤了根本' }; } },
-    { l:'买下，转手卖到外地', cost:50,
-      run:s=>{ stoneChange(s,95,'事件与修行');
-        return { t:'你把整包丹拆开，分装成小瓶，挑了个没人认识你的县城。\n半个月卖完，净赚四十五灵石。\n\n<span class="good">灵石 +45（净）</span>', log:'倒卖废丹，净赚 45 灵石' }; } },
-    { l:'不碰来路不明的东西', 
-      run:s=>({ t:'你摆摆手。伙计撇了撇嘴，把包又揣回怀里。\n走了几步，你还是回头看了一眼——那包丹已经不见了。', log:'拒绝废丹' }) }
-  ]},
+ text:'丹坊后门，一个伙计兜售封着的废丹，开价五十灵石。\n丹丸发乌，药性不明。没有验明前，不适合吞服；愿意接手的丹坊也只会按废料收购。',
+ opts:[
+  {l:'付五十灵石，封存带走',cost:50,run:s=>{ensureGameSystems();s.inventory.flawedPillBatch59=(s.inventory.flawedPillBatch59||0)+1;return {t:'你收下封好的废丹一包，存入行囊。它还没有验明药性，也没有卖出。',log:'花50灵石买得封存废丹一包，未服用、未转卖'};}},
+  {l:'不接这批药',run:s=>({t:'你把药包推回去，没有付钱。',log:'未买废丹'})}
+ ]},
 
 { id:'E008', name:'古树悟道', place:'ridge', spot:'半山老林', once:true, w:8,
   text:'山中有一株不知年岁的枯柏，雷劈过一半，另半边还活着。\n你在树下打坐，忽觉风向、叶响、远处水声，都在同一口气里。\n这种感觉一闪就散。',
@@ -2242,33 +2240,22 @@ const EVENTS = [
   ]},
 
 { id:'E029', name:'断剑', place:'market', spot:'旧物摊', once:true, w:8,
-  text:'坊市角上有个旧货摊。一口缺角的木箱，里头是断了的锄头、缺口的碗、锈成一块的铁钉。\n最上头压着半截剑：剑身断了，只剩一尺；剑柄缠着麻绳，绳头散了。\n老婆婆说：「三块灵石。当柴刀卖的。」\n麻绳底下，露出一角云纹。',
-  opts:[
-    { l:'买下', cost:3, chance:s=>0.3,
-      ok:s=>{ stoneChange(s,60,'事件与修行'); s.attr.wu+=1;
-        return { t:'你把剑拿在手里，比看上去沉。\n回去用磨石蹭了半宿，麻绳解下来，云纹是刻进铁里的，不是画的。断口发暗，是灵铁。\n坊市东头的铁匠看了很久，出六十灵石。你卖了。\n他说，这剑原先该有三尺。\n\n<span class="good">灵石 +57　悟性 +1</span>', log:'三灵石买得灵铁断剑，卖六十' }; },
-      no:s=>({ t:'你把剑拿在手里，比看上去沉。\n回去磨了半宿，麻绳解下来，云纹是拿刀尖划的，划得很浅，像谁闲得没事。\n断口是生铁。\n你把它插在门后，当了三年门闩。\n\n<span class="bad">灵石 -3</span>', log:'买得一把凡铁断剑' }) },
-    { l:'拿起来，对着天光看断口', chance:s=>0.25+(s.attr.wu-5)*0.08,
-      ok:s=>{ stoneChange(s,57,'事件与修行'); s.attr.wu+=1;
-        return { t:'断口里有一线极细的暗青。凡铁断不出这种颜色。\n你把三块灵石放在箱沿上，没还价。老婆婆愣了一下，收了。\n铁匠出六十。他问你还有没有，你说没有了。\n\n<span class="good">灵石 +57　悟性 +1</span>', log:'看出断剑是灵铁，转手赚五十七' }; },
-      no:s=>({ t:'你把它翻过来，对着天光看了很久。\n只看见锈。\n你放回去，压在那些锄头上头，位置没变。\n\n<span class="mute">什么也没有发生</span>', log:'没看出断剑的门道' }) },
-    { l:'走开',
-      run:s=>({ t:'你从旧货摊前走过去。\n老婆婆也没招呼你，只是把麻绳又缠了两圈。\n\n<span class="mute">什么也没有发生</span>', log:'未理会旧货摊' }) }
-  ]},
+ text:'旧货摊上压着半截断剑，摊主开价三灵石。\n锈斑下隐约有云纹，断口却看不真切。它可能含有灵铁，也可能只是普通生铁，不能当作完整兵器使用。',
+ opts:[
+  {l:'付三灵石买下，再清理锈迹',cost:3,chance:s=>.3,ok:s=>{ensureGameSystems();s.inventory.brokenSpirit59=(s.inventory.brokenSpirit59||0)+1;return {t:'灵铁剑残段已经收入行囊。若要出售，需带到收购此类材料的商户面前。',log:'买得灵铁剑残段一段，付3灵石，尚未出售'};},no:s=>{ensureGameSystems();s.inventory.brokenIron59=(s.inventory.brokenIron59||0)+1;return {t:'凡铁剑残段已经收入行囊。若要出售，需带到收购此类材料的商户面前。',log:'买得凡铁剑残段一段，付3灵石，尚未出售'};}},
+  {l:'细看断口，再付三灵石买下',cost:3,chance:s=>.25+(s.attr.wu-5)*.08,ok:s=>{ensureGameSystems();s.inventory.brokenSpirit59=(s.inventory.brokenSpirit59||0)+1;return {t:'灵铁剑残段已经收入行囊。若要出售，需带到收购此类材料的商户面前。',log:'买得灵铁剑残段一段，付3灵石，尚未出售'};},no:s=>{ensureGameSystems();s.inventory.brokenIron59=(s.inventory.brokenIron59||0)+1;return {t:'凡铁剑残段已经收入行囊。若要出售，需带到收购此类材料的商户面前。',log:'买得凡铁剑残段一段，付3灵石，尚未出售'};}},
+  {l:'放回去，不买',run:s=>({t:'你把断剑放回木箱，没有付钱。',log:'未买断剑'})}
+ ]},
 
 { id:'E030', name:'夜货', place:'market', spot:'修士集', once:true, w:6,
-  text:'散集之后，后巷没什么人。\n巷口蹲着一个，怀里抱着布包。见你过来，他把布包掀开一角——是一只储物袋。\n袋口结着一块黑褐色的渍，看着像血，也可能不是。\n「二十灵石。」他说，「别问哪来的。」',
-  opts:[
-    { l:'买下', cost:20, chance:s=>0.7,
-      ok:s=>{ stoneChange(s,70,'事件与修行'); s.buff.dan=2;
-        return { t:'你数了二十块给他。他把布包塞进你怀里，起身就走，没回头。\n袋口解开：七十灵石，两瓶没开封的聚气散，还有一块巴掌大的木牌。\n牌上刻着一个字，只刻了一半。\n\n<span class="good">灵石 +50　聚气两年　一块残牌</span>', log:'买下无主储物袋' }; },
-      no:s=>{ s.injured=Math.max(s.injured,2); s.karma+=5;
-        return { t:'你数了二十块给他。\n他刚走，巷子另一头就进来三个人，一样的青布短打，一样的腰牌。\n为首那个看了你手里的袋子一眼：「这东西，我们家丢了三天。」\n你没敢动。他们把袋子拿回去，临走在他肩上拍了一下——不重，你却在床上躺了两个月。\n\n<span class="bad">灵石 -20　受伤两年　业力 +5</span>', log:'买赃撞上失主，受伤' }; } },
-    { l:'先问一句，这是哪来的',
-      run:s=>({ t:'他把布包又合上了一点。\n「黑风岭那边。」他说，「上个月有人进了山，没出来。我进去找，人没了，袋子在。」\n他顿了顿：「你要是不买，就当我没说。」\n\n<span class="mute">得一条传闻</span>', log:'问出夜货来路：黑风岭' }) },
-    { l:'走开',
-      run:s=>({ t:'你绕过他，往巷子另一头走。\n他没有拦，也没有再喊价。\n过了些日子，你听说黑风岭下捞上来一个人，怀里的布包还在。\n\n<span class="mute">什么也没有发生</span>', log:'未接夜货' }) }
-  ]},
+ text:'散集后的巷口，有人拿出一只旧储物袋，开价二十灵石。\n他不肯说明来历，也不让你先打开。袋里有没有东西，全凭他一张嘴。',
+ opts:[
+  {l:'付二十灵石买下，自担来路与空袋风险',cost:20,chance:s=>.7,
+   ok:s=>{ensureGameSystems();stoneChange(s,70,'旧袋中留存灵石');s.inventory.qiPill=(s.inventory.qiPill||0)+2;s.inventory.halfToken59=(s.inventory.halfToken59||0)+1;return {t:'袋中留着七十灵石、两份封好的聚气散和半块旧木牌。钱款与实物已分别收好，丹药尚未服用，木牌来历也未查明。',log:'付20灵石买旧袋，得袋内70灵石、聚气散2份和半块木牌'};},
+   no:s=>({t:'打开后，里面只有碎布和尘土。那人已经离开，付出的二十灵石没能讨回。',log:'花20灵石买到空旧袋'})},
+  {l:'问一句来历，不付款',run:s=>({t:'他只说袋子是从山里带回来的，不肯讲清是谁留下的。你没有接手。',log:'问过旧袋来历，未购买'})},
+  {l:'离开',run:s=>({t:'你收好自己的钱袋，走回有灯火的街上。',log:'未接夜货'})}
+ ]},
 
 { id:'E031', name:'中人', place:'market', spot:'修士集', once:false, w:10, cd:6,
   text:'坊市门口支着一张桌子，桌后坐着个姓马的中年人，面前立一块木牌。\n牌上密密麻麻写着小字：谁要买什么，谁要卖什么，谁在找一个会写字的。\n他不收摊钱，只在成交之后抽一成。\n「散修？」他抬眼看了看你，「散修的消息最贵，也最便宜。」',
@@ -2287,19 +2274,13 @@ const EVENTS = [
    观里有六个人，崖下全县唯一结丹地，此前只有各两条，撑不起。
    ========================================================= */
 { id:'E036', name:'藏经楼抄经', place:'temple', spot:'藏经阁', once:false, w:10, cd:9,
-  text:'观里的藏经楼缺个抄经人。\n执事说，抄一冬的《清心诀》，不费脑子，管饭，还许你进楼里翻三本杂书。\n只是字要工整，错了半行，一页重抄。',
-  opts:[
-    { l:'接下这差事', 
-      run:s=>{ stoneChange(s,25,'事件与修行'); s.attr.wu+=1;
-        return { t:'你抄了一冬，手腕都僵了。\n夜里楼里只你一人，油灯下那些经文一行行淌过去，有些句子从前不懂，抄到第十遍时，忽然懂了。\n\n<span class="good">灵石 +25　悟性 +1</span>', log:'抄经一冬，悟性 +1' }; } },
-    { l:'抄一半，偷翻那三本杂书', chance:s=>0.5,
-      ok:s=>{ s.attr.wu+=2;
-        return { t:'杂书压在佛龛后面，你趁夜翻出来。\n有本缺了封面的册子，记的是旁人渡劫时的心得，字迹潦草，却句句戳心。\n\n<span class="good">悟性 +2</span>', log:'偷翻杂书，悟性 +2' }; },
-      no:s=>{ stoneChange(s,-(5),'事件与修行');
-        return { t:'翻到一半，楼门响了一声。\n你慌忙把书塞回去，打翻了油灯。执事没多问，只让你把烧焦的那页赔了。\n\n<span class="bad">赔了五灵石</span>', log:'偷翻杂书被撞破' }; } },
-    { l:'嫌字苦，不接', 
-      run:s=>({ t:'你推说手上有伤。\n执事也没勉强，只说了句：「楼里的字，不认人。」', log:'未接抄经差事' }) }
-  ]},
+ cond:s=>!eventCopyReason59(),
+ text:'观中传习执事正在整理《引气篇》基础抄本。\n纸墨由观中备好，抄录校对耗九十日；做完付二十五灵石工钱，另留一册给你。收入来自执事现有钱匣，须当面办理。',
+ opts:[
+  {l:'接下抄录，做满九十日',days:90,check:s=>eventCopyReason59(),run:s=>{const n=XTWorld36.get('mentor');n.wallet52=(n.wallet52??120)-25;stoneChange(s,25,'观中抄录工钱');ensureGameSystems();s.inventory.qiManual=(s.inventory.qiManual||0)+1;return {t:'你逐页抄写，再按原本核对错字。九十日后，执事验过抄本，结清二十五灵石，并把约好的《引气篇》一册交给你。抄本在行囊中，仍须阅读与研习。',log:'完成九十日抄录，执事实付25灵石，得《引气篇》一册'};}},
+  {l:'只看公开目录，不接差事',run:s=>({t:'你看了目录，将想找的书名记下。这次没有抄书，也没有领取工钱或书册。',log:'查看藏经目录，未接抄录差事'})},
+  {l:'另有安排，先离开',run:s=>({t:'你说明自己没有这段空闲，告辞离开。',log:'未接抄录差事'})}
+ ]},
 
 { id:'E037', name:'修殿募资', place:'temple', spot:'大殿', once:false, w:9, cd:12,
   text:'大殿檐下漏了雨，知客正在登记修瓦的钱款。\n募的是木料、瓦片与匠人工钱，按凡钱结算，来客自愿出资。',
@@ -2345,19 +2326,14 @@ const EVENTS = [
   ]},
 
 { id:'E041', name:'坠崖的剑', place:'cliff', spot:'雾顶', once:true, w:8,
-  text:'你在崖边捡到一柄剑，半截没在土里，剑身上缠着陈年的麻布。\n抽出来看，剑已断了，只剩尺许长的剑尖，可那点剑尖在月下冷得刺眼。\n崖下风大，像有什么东西在底下唤你。',
-  opts:[
-    { l:'收下这半截剑', 
-      run:s=>{ s.item='断剑（剑尖）'; s.attr.qi+=1;
-        return { t:'你把断剑揣进怀里。\n夜里它贴着你胸口，凉得让人睡不着，却又莫名心安。\n\n<span class="good">得断剑一截　根骨 +1</span>', log:'得断剑剑尖' }; } },
-    { l:'顺崖下去，找剑的另一半', chance:s=>0.3,
-      ok:s=>{ s.item='断剑（全）'; s.attr.qi+=2;
-        return { t:'你攀着崖壁下去，在一条石缝里找到了另一半。\n两截合拢，严丝合缝，剑身嗡地一声轻鸣，似有所应。\n\n<span class="good">断剑合一　根骨 +2</span>', log:'寻得断剑另一半' }; },
-      no:s=>{ s.injured=2;
-        return { t:'崖壁湿滑，你脚下一空。\n摔下去时被崖边的老藤兜了一下，命是保住了，腿却折了。\n\n<span class="bad">跌伤</span>', log:'寻剑摔伤' }; } },
-    { l:'剑主未远，物归原主难，弃之', 
-      run:s=>({ t:'你把剑原样插回土里，拜了一拜。\n这种东西，说不定有主，说不定有怨。', log:'未取断剑' }) }
-  ]},
+ text:'崖边泥土里露出一段断剑，金属内含微弱灵气。\n它已不能作为兵器使用，最多留作灵铁残料。崖下似乎还有一截，但石壁湿滑，攀下去有跌伤风险。',
+ opts:[
+  {l:'只收好眼前的残段',run:s=>{ensureGameSystems();s.inventory.brokenSpirit59=(s.inventory.brokenSpirit59||0)+1;return {t:'你用布将锋利的断口裹严，放进行囊，免得刮坏衣物。',log:'拾得灵铁剑残段一段'};}},
+  {l:'攀下石壁，寻找另一截',days:1,chance:s=>.3,
+   ok:s=>{ensureGameSystems();s.inventory.brokenSpirit59=(s.inventory.brokenSpirit59||0)+2;return {t:'你找到另一截，把两段一起裹好带回。断口能对上，但无法靠拼合恢复成法器；两段灵铁残料已收入行囊。',log:'寻回两段灵铁剑残料，耗一日'};},
+   no:s=>{s.injured=Math.max(s.injured||0,2);return {t:'落脚的石块松脱，你滑进一处浅槽，腿受了伤。两段断剑都没能取回。',log:'寻剑跌伤，未取得残料'};}},
+  {l:'不取，继续走',run:s=>({t:'你没有伸手，沿山道离开。',log:'未取崖边断剑'})}
+ ]},
 
 { id:'E042', name:'雷劫痕', place:'cliff', spot:'雾顶', once:true, w:8,
   text:'断云崖顶焦黑一片，是前些日子有人在此渡劫留下的。\n雷火把山石劈开，露出石心里一截焦黑的东西，还在往外渗着微光。\n有散修说那是渡劫者的残骸，也有人说，是雷劫淬出来的宝物。',
@@ -6395,5 +6371,5 @@ window.runWendaoLongSim=runWendaoLongSim;
 <script src="assets/qi52-data.js"></script>
 <script src="assets/qi51.js"></script>
 <script src="assets/qi52.js"></script>
-<script src="assets/runtime-ui.js"></script></body>
+<script src="assets/runtime-ui.js"></script><script src="assets/staff54.js"></script></body>
 </html>
