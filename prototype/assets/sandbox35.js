@@ -124,7 +124,7 @@ function renderRooms(){
  if(d.room==='square')actions=btn('附近路线','routes')+btn('打听见闻 · 30日','ask');
  if(d.room==='shops'){desc='货物由商铺和摊主经营。选中一位商人，查看他收什么、卖什么。';actions=btn('做短工 · 30日','work');}
  if(d.room==='workshop'){desc='炉坊备有地火、炉具与砧台。租用场地或携带工具后才能制作。';actions=btn('租用炉位 · 30日 / '+money(6)+'灵石','rentWorkshop')+btn('炼丹','craft','alchemy')+btn('炼器','craft','forge');}
- if(d.room==='wild'){desc='草木与矿砂散在山间。采集耗时，有机会遇见世事。';actions=btn('采集灵材 · 7日 / 1灵石','gather');}
+ if(d.room==='wild'){desc='草木与矿砂散在山间。采集耗时，有机会遇见世事。';actions=btn('采集灵材 · 7日','gather');}
  if(d.room==='hunt'){desc='更深处有妖兽踪迹。准备兵器与护具，再决定是否深入。';actions=btn('搜寻妖兽 · 30日','hunt');}
  if(d.room==='camp'){desc='你在安全落脚处安放随身工具。丹炉与器具只提供制作条件，工艺和耗材还需自己备齐。';actions=btn('使用丹炉','craft','alchemy',!(G.inventory.mobileFurnace>0))+btn('使用炼器工具','craft','forge',!(G.inventory.forgeKit>0));}
  if(d.room==='agency'){desc='这里有人出售宅院、介绍雇工。凡人照料日常，修士按住处与报酬商谈雇佣，境界高低不作硬性限制。';}

@@ -1799,7 +1799,7 @@ const EVENTS = [
         return { t:'你抢先动了手——没有花哨法诀，只是把全身气力压在一拳上。\n短刀脱手，那人捂着肋下退了两步。另一人见势不妙，架起同伙钻进林子。\n你从地上捡起他们的储物袋，里面有些碎灵石。\n\n<span class="good">灵石 +35　根骨 +1</span>', log:'击退劫修，得 35 灵石，根骨 +1' }; },
       no:s=>{ stoneSet(s,Math.floor(s.stones*0.3),'事件与修行'); s.lifespan-=4; s.injured=3;
         return { t:'刀锋擦着肋下过去，血一下子涌出来。\n你被他按在泥里，储物袋被扯走，只剩贴身的几块碎灵石。\n他们走后，你在山沟里躺了半夜才爬起来。\n\n<span class="bad">灵石被劫去大半　寿元 -4　受伤三年</span>', log:'被劫修所伤，损财损寿' }; } },
-    { l:'交出一半灵石，破财免灾', cost:0,
+    { l:'交出身上四成半灵石，破财免灾', cost:0,
       run:s=>{ const pay=Math.floor(s.stones*0.45); stoneChange(s,-(pay),'事件与修行');
         return { t:'你把储物袋解下来，倒出一半，推过去。\n那人掂了掂，冷笑一声：「识相。」两人退入林中，很快没了声息。\n你站着没动，直到腿有些发麻。\n\n<span class="bad">灵石 -'+pay+'</span>', log:'破财免灾，损失 '+pay+' 灵石' }; } },
     { l:'转身就跑', chance:s=>0.55+(s.attr.qi-5)*0.05,
@@ -1818,8 +1818,8 @@ const EVENTS = [
         return { t:'你贴着崖壁挪过去，一把揪住紫芝连根拔起，转身就往坡下滚。\n身后风声炸响，蛇尾抽在石壁上，碎石溅了满背。\n你滚出半里地方才停住，手里那株紫芝完好无损。\n\n<span class="good">灵石 +90</span>', log:'采得紫芝，得 90 灵石' }; },
       no:s=>{ s.lifespan-=6; s.injured=4;
         return { t:'蛇比你想的快。\n毒牙咬穿小腿的一瞬，你几乎没觉出疼，只觉得冷。\n你连滚带爬逃下山，紫芝丢在了崖上。伤口养了大半年才收口，走起路来仍有些跛。\n\n<span class="bad">寿元 -6　受伤四年</span>', log:'被青鳞蛇咬伤，损寿' }; } },
-    { l:'守在崖下，等它自己走', hint:'耗去两年，但有把握',
-      run:s=>{ stoneChange(s,70,'事件与修行'); s.age+=2;
+    { days:720, l:'守在崖下，等它自己走', hint:'耗去两年，但有把握',
+      run:s=>{ stoneChange(s,70,'事件与修行');
         return { t:'你在崖下守了两整年。第三年开春，蛇终于离洞觅食，你爬上去把紫芝取了。\n拿到手时，它的成色比你估的还好些。\n\n<span class="good">灵石 +70　时间 -2 年</span>', log:'守候两年，采得紫芝，得 70 灵石' }; } },
     { l:'退走，命比药值钱', 
       run:s=>({ t:'你退了半步，那条蛇也纹丝不动，只是看着你。\n下山的路上你想，它大概也在算，值不值得为一口吃食冒这个险。', log:'放弃紫芝' }) }
@@ -1870,8 +1870,8 @@ const EVENTS = [
 { id:'E008', name:'古树悟道', place:'ridge', spot:'半山老林', once:true, w:8,
   text:'山中有一株不知年岁的枯柏，雷劈过一半，另半边还活着。\n你在树下打坐，忽觉风向、叶响、远处水声，都在同一口气里。\n这种感觉一闪就散。',
   opts:[
-    { l:'就在这里坐下去，坐到明白为止', hint:'耗去数年，赌一次开悟',
-      run:s=>{ s.age+=3; s.attr.wu+=2;
+    { days:1080, l:'就在这里坐下去，坐到明白为止', hint:'耗去数年，赌一次开悟',
+      run:s=>{  s.attr.wu+=2;
         return { t:'你坐了三年。\n第三年秋，一片叶子落在膝上，你忽然听见了自己血流的声音。\n睁眼时，天已经黑透了。\n\n<span class="good">悟性 +2　时间 -3 年</span>', log:'枯柏下坐三年，悟性 +2' }; } },
     { l:'记下这种感觉，回头慢慢琢磨', 
       run:s=>{ s.attr.wu+=1;
@@ -1964,8 +1964,8 @@ const EVENTS = [
     { l:'散功重来', 
       run:s=>{ s.cult=Math.floor(s.cult*0.55); s.attr.xin+=1;
         return { t:'你缓缓收功，任那口乱气散回天地。\n修为退了一截，但经脉干净。\n老一辈常说：亏得起的，才叫修为。\n\n<span class="bad">修为 -45%</span>　<span class="good">心性 +1</span>', log:'散功重来，修为 -45%' }; } },
-    { l:'不管它，先停下来歇几日', 
-      run:s=>{ s.age+=1;
+    { days:360, l:'停功调养一年',
+      run:s=>{
         return { t:'你收了功，什么也不做，在山里闲走了一年。\n回来再运功时，那道滞涩竟自己通了。\n\n<span class="mute">时间 -1 年</span>', log:'停功一年，气机自通' }; } }
   ]},
 
@@ -1990,8 +1990,8 @@ const EVENTS = [
 { id:'E016', name:'玉简夜光', place:'any', once:true, w:20, cond:s=>s.origin==='寒门散修' && s.flag['残页'],
   text:'那卷残页买回来三年，今夜忽然发烫。\n你把灯吹了，纸面上的字竟自己浮起来，一行行往下走，走到末尾，落出一句：\n「气非纳于身，纳于天地；身非器，器在身外。」\n下面还有一行小字，写着某处地名。',
   opts:[
-    { l:'按图索骥，去那个地方看看', 
-      run:s=>{ s.age+=2; s.attr.wu+=3; s.cult+=120; s.flag.yujian=true;
+    { days:720, l:'按图索骥，去那个地方看看',
+      run:s=>{  s.attr.wu+=3; s.cult+=120; s.flag.yujian=true;
         return { t:'你走了两年，在一处荒废的道观底下找到一间密室。\n室里只有一块石碑，碑上刻着半部《引气篇》的下卷——原来你手里那卷，只是上半。\n你在碑前坐了七日，把字一个个刻进心里。\n\n<span class="good">悟性 +3　修为 +120　时间 -2 年</span>', log:'循玉简寻得《引气篇》下卷，悟性 +3' }; } },
     { l:'先把字抄下来，慢慢参', 
       run:s=>{ s.attr.wu+=1; s.cult+=50;
@@ -2053,18 +2053,18 @@ const EVENTS = [
         return { t:'你把镜子扣在桌上，出门去看了一场落日。\n那天之后，修行照旧，只是心里那块石头落了地——落地的石头，就不算压着了。\n\n<span class="good">心性 +2</span>', log:'直面寿元，心性 +2' }; } }
   ]},
 
-{ id:'E032', name:'旧伤复发', place:'any', once:false, w:8, cd:10,
+{ id:'E032', name:'旧伤复发', place:'any', once:false, w:8, cd:10, cond:s=>(s.injured||0)>0,
   text:'多年前那道暗伤，今秋又疼了起来。\n你按着伤处，能觉出那里有一线旧气，像没燃尽的火星，一遇换季就燎一下。\n若不理会，怕是要拖成暗疾；若要根治，得去坊市淘一味温养经脉的药。',
   opts:[
     { l:'硬扛过去，省下灵石', 
       run:s=>{ s.lifespan-=2; s.attr.xin+=1;
         return { t:'你咬着牙熬过这个秋天，伤处到底慢慢静了下去。\n疼过这一回，你对痛就多了一分耐性。\n\n<span class="bad">寿元 -2</span>　<span class="good">心性 +1</span>', log:'硬扛旧伤，寿元 -2，心性 +1' }; } },
     { l:'花灵石配一剂温养的药', cost:40,
-      run:s=>{ s.lifespan+=3;
-        return { t:'你去了趟坊市，配了剂温养经脉的药。\n药不便宜，但几帖下去，那线旧气到底灭了，伤处松快了许多。\n\n<span class="good">灵石 -40　寿元 +3</span>', log:'配药根治旧伤，寿元 +3' }; } },
-    { l:'先放一放，看它自己会不会好', 
-      run:s=>{ s.age+=1;
-        return { t:'你想着忍忍就过去了，谁料拖了一年，疼是轻了，气却凝成了顽疾，以后再难清净。\n\n<span class="mute">时间 -1 年　落下病根</span>', log:'拖延旧伤，落下病根' }; } }
+      run:s=>{ s.injured=0;
+        return { t:'你去了趟坊市，配了剂温养经脉的药。\n药不便宜，但几帖下去，那线旧气到底灭了，伤处松快了许多。\n\n<span class="good">灵石 -40　旧伤缓解</span>', log:'配药根治旧伤，旧伤缓解' }; } },
+    { days:360, l:'先放一放，看它自己会不会好',
+      run:s=>{
+        return { t:'你想着忍忍就过去了，谁料拖了一年，疼痛时轻时重，旧伤仍需留意。\n\n<span class="mute">时间 -1 年</span>', log:'带着旧伤调养一年' }; } }
   ]},
 
 { id:'E033', name:'坊市偶遇', place:'any', once:false, w:7, cd:6,
@@ -2167,8 +2167,8 @@ const EVENTS = [
 { id:'E024', name:'征丁', place:'county', spot:'县衙', once:true, w:10,
   text:'城门上贴了新告示：修北堤，征丁三千，凡在册男丁，一户出一人。\n执笔的吏员抬头看了你一眼，把册子翻到另一页：「有修为的更该去，一个顶三个。」\n工期一年。管饭，不给钱。',
   opts:[
-    { l:'应役，去修一年堤',
-      run:s=>{ s.age+=1; s.attr.gen+=1; stoneChange(s,10,'事件与修行');
+    { days:360, l:'应役，去修一年堤',
+      run:s=>{  s.attr.gen+=1; stoneChange(s,10,'事件与修行');
         return { t:'北堤的活是抬石头。石头从河里捞，抬上来，垒上去，再抬下一块。\n三个月后你手上不再起泡；半年后，你一个人能抬两人份。\n一年期满，监工在你名字上画了个圈，扔给你十块灵石，说：「明年别来了。」\n\n<span class="bad">时间 -1 年</span>　<span class="good">根骨 +1　灵石 +10</span>', log:'应役修堤一年，根骨 +1' }; } },
     { l:'纳钱免役', cost:60,
       run:s=>({ t:'吏员收了钱，笔尖在册子上轻轻一勾，连头都没抬。\n「下一个。」\n你走出县衙，看见门口还排着几十个人，有人正把家里的铜钱一枚一枚数出来。\n\n<span class="good">灵石 -60</span>', log:'纳六十灵石免役' }) },
@@ -2485,8 +2485,7 @@ const EVENTS = [
       run:s=>{ s.attr.xin+=1;
         return { t:'你把灵石放在桌上，压在那张字条底下。\n家里人谁也没有提。你走的时候，门帘掀开一条缝，有人在看。\n\n<span class="good">心性 +1</span>', log:'留下 20 灵石给家里，心性 +1' }; } },
     { l:'如实说手里也紧',
-      run:s=>{ s.attr.xin=Math.max(1,s.attr.xin-1);
-        return { t:'你说手里也紧。\n屋里静了一会儿，有人应了声「知道了」。\n\n<span class="bad">心性 -1</span>', log:'没给家里留钱，心性 -1' }; } },
+      run:s=>({ t:'你把手头的难处说了。家人收起字条，说先想想别的办法。', log:'向家人说明手头拮据，暂未赠钱' }) },
     { l:'把字条收进衣襟，没再提',
       run:s=>({ t:'你把字条折好收进衣襟里。\n这天晚上谁也没提这件事，第二天也没有。', log:'没管家里的钱' }) }
   ]},
@@ -2534,8 +2533,8 @@ const EVENTS = [
   cond:s=>s.family && s.family.some(f=>f.alive),
   text:'家里人劝了你一回。\n说这条道看不到头，说你已经不小了，说家里养得起一个人。',
   opts:[
-    { l:'留下来，陪他们住一年',
-      run:s=>{ s.age+=1; s.attr.xin+=1;
+    { days:360, l:'留下来，陪他们住一年',
+      run:s=>{  s.attr.xin+=1;
         return { t:'你留了下来，陪他们住了一年。\n这一年你没有修行，丹田里那口气只是静静地待着。\n\n<span class="good">心性 +1　时间 -1 年</span>', log:'留下陪家人一年，心性 +1' }; } },
     { l:'把自己的打算说清楚',
       run:s=>({ t:'你把自己的打算说了。\n家里人听着，没有拦，也没有应。\n走的那天，门是开着的。', log:'和家人说清了打算' }) },
@@ -2544,17 +2543,17 @@ const EVENTS = [
         return { t:'你没答。第二天天没亮就走了。\n路上你想起灶上的火，昨晚烧得很小。\n\n<span class="bad">心性 -1</span>', log:'不辞而别，心性 -1' }; } }
   ]},
 
-{ id:'H06', name:'先人祭日', place:'home', once:false, w:8, cd:10,
+{ id:'H06', name:'旧人旧物', place:'home', once:false, w:8, cd:10,
   cond:s=>s.family && s.family.some(f=>!f.alive),
-  text:'到了先人的祭日。\n家里在空位上摆了一副碗筷，又多摆了一副。',
+  text:'翻到家里留下的旧物，你想起了已经不在的人。',
   opts:[
-    { l:'陪着坐一炷香',
+    { l:'放下手头的事，坐一会儿',
       run:s=>{ s.attr.xin+=1;
-        return { t:'你在那个空位前坐了一炷香。\n家里人谁也没说话。\n\n<span class="good">心性 +1</span>', log:'在先人祭日坐了坐' }; } },
-    { l:'去坟上看一眼',
-      run:s=>({ t:'你去了坟地。坟头新添的土还没长草，你说的那些话，风一吹就散了。', log:'去先人坟前' }) },
+        return { t:'你把旧物放回原处，坐了一会儿。\n\n<span class="good">心性 +1</span>', log:'整理旧物，想起故人' }; } },
+    { l:'把旧物收拾妥当',
+      run:s=>({ t:'你拂去灰尘，将东西仔细收好。', log:'收好故人留下的旧物' }) },
     { l:'这一天照旧修行',
-      run:s=>({ t:'你把自己关在屋里练气。\n院里摆碗筷的声音，你听见了，没有出去。', log:'祭日照旧修行' }) }
+      run:s=>({ t:'你暂时放下旧物，继续今天的修行。', log:'暂放旧物，继续修行' }) }
   ]},
 
 { id:'H07', name:'邻里争执', place:'home', once:false, w:8, cd:8,
@@ -3359,8 +3358,7 @@ function sysGather(){
   if(!systemReady())return;
   ensureGameSystems(); const p=PLACES[G.place]||PLACES.village;
   if(!placeHas(p,'gather')){toast('此地不适合采集灵材，去山林、荒野或断崖。');return;}
-  if((G.stones||0)<1){toast('采集需准备一枚灵石作工具与路费。');return;}
-  stoneChange(G,-(1),'事件与修行'); if(!runSystemDays(7,'gather'))return; const herb=1+ri(0,2); G.inventory.herb=(G.inventory.herb||0)+herb;
+  if(!runSystemDays(7,'gather'))return; const herb=1+ri(0,2); G.inventory.herb=(G.inventory.herb||0)+herb;
   if(ri(1,100)<=25)G.inventory.ironOre=(G.inventory.ironOre||0)+1;
   addLog('在附近山野采集灵材，得青叶草 '+herb+' 株'+((G.inventory.ironOre||0)>0?'，也寻到矿砂的可能仍在。':''),'up');finishSystemAction('alchemy');
 }
@@ -3484,7 +3482,7 @@ function openBagPanel(tab){
     body='<div class="nav-kv"><div><span>灵石</span><b>'+Math.floor(G.stones||0)+'</b></div><div><span>当前境界</span><b>'+curRealmTxt()+'</b></div></div>';
     const owned=Object.keys(BAG_ITEMS).filter(id=>(G.inventory[id]||0)>0); body+=owned.length?owned.map(id=>{const it=BAG_ITEMS[id],n=G.inventory[id]||0;return '<div class="nav-card"><h4>'+it.name+'　× '+n+'</h4><p>'+it.desc+'</p><div class="modal-actions">'+(['qiPill','healingPowder','lowTalisman','bloodQiPill'].includes(id)&&n>0?'<button class="act" data-sys-use="'+id+'">使用</button>':'')+(market?'<button class="act ghost" data-sys-buy="'+id+'">购买 · '+marketPrice(id,it.price)+' 灵石</button>':'')+(market&&n>0?'<button class="act ghost" data-sys-sell="'+id+'">出售</button>':'')+'</div></div>';}).join(''):'<div class="nav-card empty-bag"><h4>行囊尚空</h4><p>行走山河，所得之物都会收在这里。可前往城镇或坊市购置丹药、法器与功法。</p><button class="act ghost" data-sys-tab="trade">前往交易</button></div>';
   }else if(tab==='alchemy'){
-    body='<div class="nav-card"><h4>采药</h4><p>山林、荒野与断崖可采集青叶草；偶尔可找到赤铁砂。每次耗时 7 日，消耗 1 灵石作为工具与路费。遇事中断不返还已用耗材。</p><button class="act" data-sys="gather">采集灵材（7 日 / 1 灵石）</button></div><div class="nav-card"><h4>基础炼丹：聚气散</h4><p>耗时 10 日；材料：青叶草 ×2；炉火与辅料：3 灵石。开炉即消耗材料，遇事中断无成丹。成功率随悟性与《引气篇》略有提升。</p><p>现有青叶草：'+(G.inventory.herb||0)+'　炼丹次数：'+G.alchemyCount+'</p><button class="act" data-sys="brew">开炉炼制</button></div>';
+    body='<div class="nav-card"><h4>采药</h4><p>山林、荒野与断崖可采集青叶草；偶尔可找到赤铁砂。每次耗时 7 日，不另收采集费。途中遇事会中断，未完成时没有采集产物。</p><button class="act" data-sys="gather">采集灵材（7 日）</button></div><div class="nav-card"><h4>基础炼丹：聚气散</h4><p>耗时 10 日；材料：青叶草 ×2；炉火与辅料：3 灵石。开炉即消耗材料，遇事中断无成丹。成功率随悟性与《引气篇》略有提升。</p><p>现有青叶草：'+(G.inventory.herb||0)+'　炼丹次数：'+G.alchemyCount+'</p><button class="act" data-sys="brew">开炉炼制</button></div>';
   }else if(tab==='gear'){
     body='<div class="nav-card"><h4>当前装备</h4><p>兵器：'+(G.equipment.weapon?BAG_ITEMS[G.equipment.weapon].name:'未装备')+'；护具：'+(G.equipment.armor?BAG_ITEMS[G.equipment.armor].name:'未装备')+'</p></div><div class="nav-card"><h4>装备与打造</h4><p>青钢短剑可在城镇购买并装备；赤铁砂暂作为后续打造材料保留。</p>'+(G.inventory.ironSword?'<button class="act" data-sys-equip="ironSword">装备青钢短剑</button>':'')+(market?'<button class="act ghost" data-sys-buy="ironSword">购买青钢短剑 · '+marketPrice('ironSword',35)+' 灵石</button><button class="act ghost" data-sys-buy="clothArmor">购买青纹护衣</button><button class="act ghost" data-sys-buy="spiritBlade">购买引灵剑</button>':'')+(G.inventory.clothArmor?'<button class="act" data-sys-equip="clothArmor" data-slot="armor">装备青纹护衣</button>':'')+(G.inventory.spiritBlade?'<button class="act" data-sys-equip="spiritBlade" data-slot="weapon">装备引灵剑</button>':'')+'</div>';
   }else if(tab==='trade'){
@@ -3763,6 +3761,7 @@ function renderEvent(){
     const disabled=o.cost&&G.stones<o.cost;
     const hint=[];
     if(o.cost) hint.push('<span class="cost">需 '+o.cost+' 灵石</span>');
+    if(o.days) hint.push('<span class="cost">耗时 '+o.days+' 日</span>');
     if(o.d) hint.push('<span class="cost">多 '+o.d+' 日</span>');
     if(o.cancel) hint.push('<span class="cost">这一趟白走</span>');
     if(o.hint) hint.push(o.hint);
@@ -4375,6 +4374,11 @@ function applyOption(ev, i){
   if(o.cost && G.stones<o.cost) return null;
   if(o.need && !hasRoute(G,o.need)) return null;   // 术法出路：没练对应手段，就没这条路
 
+  if(o.days){
+    const elapsed=advanceDays(o.days,{act:'事件经历',rate:0,incomeMul:0,eventRate:0},{stopOnEvent:true});
+    if(elapsed.died){G.curEvent=null;die('寿元耗尽');save();return null;}
+    if(elapsed.days<o.days){save();return null;}
+  }
   let res, succ=null;
   if(typeof o.chance==='function'){
     const p=Math.max(0.05,Math.min(0.92,o.chance(G)));

@@ -12,7 +12,7 @@ function actionGuide(d){
  const home=G.homes41?.places?.find(h=>h.id===G.homes41.residenceId),count=G.inventory?.herb||0;
  if(d.action==='h41:letter')return {room:'h41_inner',next:'打开家园 → '+(home?.name||'出身住处')+' → 进入门厅 → 进入个人居室 → 点击「整理家中旧物 · 1日」',need:'无需另找“起居簿”道具；它就是这次整理旧物的经历。'+(home?.letterRead?'此处旧物已经整理过，不能重复操作。':'' )};
  if(d.action==='work')return {room:'shops',next:'在当地地图走到商街 / 摊市，点击「做短工」',need:'不需要交付物品；实际耗时和报酬以行动按钮为准。'};
- if(d.action==='gather')return {room:'wild',next:'在当地地图走到采集地，点击「采集灵材」并完成一次采集',need:'耗7日、1灵石；实际完成采集才算履行，持有或买入药材不能代替。'};
+ if(d.action==='gather')return {room:'wild',next:'在当地地图走到采集地，点击「采集灵材」并完成一次采集',need:'耗7日，不另收采集费；实际完成采集才算履行，持有或买入药材不能代替。'};
  if(d.action==='sectTask')return {room:'hall',next:'到宗门前院，选中监院 → 山门事务 → 点击「交付草药」'+(!d.arg?'（也可交付矿砂）':''),need:'青叶草 '+count+'/4 株'+(!d.arg?'，或赤铁砂 '+(G.inventory?.ironOre||0)+'/3 份':'')+'；须有本门弟子资格，受每月差事次数限制。'};
  return {room:'square',next:d.label,need:'到目标地点查看当地可办事务。'};
 }
