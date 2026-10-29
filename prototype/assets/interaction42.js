@@ -46,7 +46,7 @@ function failedReason(action,arg){
   if(s?.contract?.status==='done')return '这份运药约定已经结清，不能重复领取。';
   return '本次未办理：请核对药讯状态、经办人、货物与约定期限。';
  }
- if(action==='eventChoice'){const o=G.curEvent?.opts?.[Number(arg)];if(o&&G.mode==='event')return o.cost>G.stones?'灵石不足，此事仍待处理，没有扣款。':'选项条件尚未满足，此事仍待处理。';return '当前事件已结束，没有重复结算。';}
+ if(action==='eventChoice'){const o=G.curEvent?.opts?.[Number(arg)];if(o&&G.mode==='event')return eventOptionReason(o)?eventOptionReason(o)+'，此事仍待处理，没有扣款。':'选项条件尚未满足，此事仍待处理。';return '当前事件已结束，没有重复结算。';}
  return '条件尚未满足，本次没有完成结算。请查看行动所需条件。';
 }
 function speech(id,topic='news'){

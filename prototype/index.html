@@ -1814,13 +1814,13 @@ const EVENTS = [
   text:'断云崖下有一片老药田，据说长着三十年份的紫芝。\n你摸到崖边时，看见那株紫芝就长在石缝里，旁边盘着一条青鳞蛇——两条人命那么长，正吐着信子看你。',
   opts:[
     { l:'趁它不备，抢了就跑', chance:s=>0.4+(s.attr.qi-5)*0.07,
-      ok:s=>{ stoneChange(s,90,'事件与修行');
-        return { t:'你贴着崖壁挪过去，一把揪住紫芝连根拔起，转身就往坡下滚。\n身后风声炸响，蛇尾抽在石壁上，碎石溅了满背。\n你滚出半里地方才停住，手里那株紫芝完好无损。\n\n<span class="good">灵石 +90</span>', log:'采得紫芝，得 90 灵石' }; },
+      ok:s=>{ ensureGameSystems();s.inventory.purpleFungus58=(s.inventory.purpleFungus58||0)+1;
+        return { t:'你贴着崖壁挪过去，一把揪住紫芝连根拔起，转身就往坡下滚。\n身后风声炸响，蛇尾抽在石壁上，碎石溅了满背。\n你滚出半里地方才停住，手里那株紫芝完好无损。\n\n<span class="good">紫芝 ×1，已入行囊</span>', log:'采得紫芝一株，未出售' }; },
       no:s=>{ s.lifespan-=6; s.injured=4;
         return { t:'蛇比你想的快。\n毒牙咬穿小腿的一瞬，你几乎没觉出疼，只觉得冷。\n你连滚带爬逃下山，紫芝丢在了崖上。伤口养了大半年才收口，走起路来仍有些跛。\n\n<span class="bad">寿元 -6　受伤四年</span>', log:'被青鳞蛇咬伤，损寿' }; } },
     { days:720, l:'守在崖下，等它自己走', hint:'耗去两年，但有把握',
-      run:s=>{ stoneChange(s,70,'事件与修行');
-        return { t:'你在崖下守了两整年。第三年开春，蛇终于离洞觅食，你爬上去把紫芝取了。\n拿到手时，它的成色比你估的还好些。\n\n<span class="good">灵石 +70　时间 -2 年</span>', log:'守候两年，采得紫芝，得 70 灵石' }; } },
+      run:s=>{ ensureGameSystems();s.inventory.purpleFungus58=(s.inventory.purpleFungus58||0)+1;
+        return { t:'你在崖下守了两整年。第三年开春，蛇终于离洞觅食，你爬上去把紫芝取了。\n拿到手时，它的成色比你估的还好些。\n\n<span class="good">紫芝 ×1，已入行囊　时间 -2 年</span>', log:'守候两年，采得紫芝一株，未出售' }; } },
     { l:'退走，命比药值钱', 
       run:s=>({ t:'你退了半步，那条蛇也纹丝不动，只是看着你。\n下山的路上你想，它大概也在算，值不值得为一口吃食冒这个险。', log:'放弃紫芝' }) }
   ]},
@@ -2027,16 +2027,14 @@ const EVENTS = [
   ]},
 
 { id:'E019', name:'灵兽幼崽', place:'ridge', spot:'半山老林', once:true, w:8,
-  text:'乱石堆里有一只幼兽，灰扑扑的，前腿断了，正呜呜地叫。\n看牙口，是青纹狼的崽子——养大了能当脚力，也能打架。\n但它现在连站都站不起来。',
+  cond:s=>!window.XTQi52?.state()?.pet,
+  text:'乱石下传来幼兽的叫声。一只青纹狼崽拖着受伤的前腿，缩在石缝里。\n它盯着你的手，还不肯让你靠近。要带走照料，需懂得同息御兽，并准备药草和兽粮。',
   opts:[
-    { l:'把它抱回去养', 
-      run:s=>{ stoneChange(s,-(25),'事件与修行'); s.beast='青纹狼'; s.lifespan-=1;
-        return { t:'你花了半年把它养好。它认了你，走哪跟哪。\n伤好之后它长得很快，不到两年就有半人高——快得有些反常。\n\n<span class="good">灵石 -25　得青纹狼</span>', log:'收养青纹狼幼崽' }; } },
-    { l:'卖给兽栏', 
-      run:s=>{ stoneChange(s,55,'事件与修行');
-        return { t:'兽栏老板看了看，说这崽子筋骨不错，给了五十五灵石。\n你接过钱的时候，它正被人拎着后颈，还在看你。\n\n<span class="good">灵石 +55</span>', log:'卖出狼崽，得 55 灵石' }; } },
-    { l:'放它在原地', 
-      run:s=>({ t:'你退开几步。它叫了一阵，声音渐渐低下去。\n三天后你再经过，那里什么也没有了。', log:'未救狼崽' }) }
+    { l:'用药草照料，试着接纳它', days:7, hint:'青叶草3株、兽粮2份；占一个灵兽位',
+      check:s=>window.XTQi52?.rescueReason()||'',
+      run:s=>{ XTQi52.adopt('青纹狼','wolf',3,2);
+        return {t:'你用七日为它清洗伤口、换药喂食。到最后一天，它才肯跟着你走出石缝。\n青纹狼已成为同行灵兽，需继续喂养、训练与养伤；饱食且未失去行动能力时可参与战斗。',log:'照料青纹狼七日，消耗青叶草3株、兽粮2份，接纳为同行灵兽'}; } },
+    { l:'暂不带走，退开不再惊扰',run:s=>({t:'你收回手，退回山道。狼崽仍缩在石缝里，你没有再靠近。',log:'未接纳青纹狼幼崽'}) }
   ]},
 
 { id:'E020', name:'岁月催人', place:'any', once:true, w:30, cond:s=>s.age>=55 && !s.flag.warned,
@@ -2194,15 +2192,12 @@ const EVENTS = [
   ]},
 
 { id:'E026', name:'客栈闲话', place:'county', spot:'东街', once:false, w:12, cd:4,
-  text:'客栈的堂屋里坐着三个人，说话不避人。\n一个说{观}要收外门，今年不看出身看根骨；一个说北边荒原夜里总有光，不知是哪一处；\n第三个只是喝酒，听了半天，忽然说：「你们说的那些地方，我都没去过。」',
+  text:'客栈堂屋里，几个行脚人谈起山路和药材行情。\n有人说岭上的草药少了，有人说只是采药的人多了。桌边还空着一条长凳。',
   opts:[
-    { l:'请他们喝一壶', cost:5,
-      run:s=>{ s.attr.qi+=1;
-        return { t:'一壶酒下去，话就多了。\n{观}的事是真的——那人有个亲戚在山门外挑水，说这回要招两百人；\n荒原的事他说不准，只说见过光的人回来之后，都不肯再提。\n\n<span class="good">气运 +1　得两条传闻</span>', log:'请酒，得两条传闻' }; } },
-    { l:'坐着听，不搭话',
-      run:s=>({ t:'你要了一碗最便宜的面，坐了半个时辰。\n他们说到后来自己吵起来了，一个说荒原的光是鬼火，一个说是有人在炼东西。\n散场时你只记住了一句：{观}要收人。\n\n<span class="mute">得一条模糊的传闻</span>', log:'旁听客栈闲话' }) },
-    { l:'不感兴趣，回房',
-      run:s=>({ t:'你上了楼。楼下的声音隔着一层板，听不真切，像水。\n\n<span class="mute">什么也没有发生</span>', log:'未听闲话' }) }
+    { l:'花40文请一壶酒，问清消息从哪来', wen:40, days:1,
+      run:s=>({t:'卖药的客人说，他前两日从岭上下来，常采的几处石缝已经空了。至于更远的地方，他也没去过。\n你记下了他的见闻；当地药货仍按铺里的实际库存和报价交易。',log:'付酒钱40文，听行脚药客谈岭上采药近况；消息尚待亲自核实'}) },
+    { l:'在门边听一会儿',run:s=>({t:'你听了一会儿。他们各有说法，没人拿出凭据。你记住了话头，没有据此改动行程。',log:'旁听客栈闲谈，未证实新的消息'}) },
+    { l:'离开客栈',run:s=>({t:'你走回街上，继续自己的安排。',log:'离开客栈'}) }
   ]},
 
 { id:'E027', name:'县学失火', place:'county', spot:'书院', once:true, w:8,
@@ -2306,17 +2301,12 @@ const EVENTS = [
       run:s=>({ t:'你推说手上有伤。\n执事也没勉强，只说了句：「楼里的字，不认人。」', log:'未接抄经差事' }) }
   ]},
 
-{ id:'E037', name:'香火钱', place:'temple', spot:'大殿', once:false, w:9, cd:12,
-  text:'观里修大殿，缺香火钱。\n知客挨个问门下弟子与挂单的散修：能出多少，写多少，名字刻在功德碑上。\n你摸了摸口袋，又看了看那块还没刻满的碑。',
+{ id:'E037', name:'修殿募资', place:'temple', spot:'大殿', once:false, w:9, cd:12,
+  text:'大殿檐下漏了雨，知客正在登记修瓦的钱款。\n募的是木料、瓦片与匠人工钱，按凡钱结算，来客自愿出资。',
   opts:[
-    { l:'出五十灵石，求个名', cost:50,
-      run:s=>{ s.karma-=3; s.rep=(s.rep||0)+2;
-        return { t:'你把名字刻在了碑上。\n此后进山门，执事见你总要拱一拱手，那名字替你省了不少口舌。\n\n<span class="good">业力 -3　声名 +2</span>', log:'捐香火钱五十，声名 +2' }; } },
-    { l:'出十灵石，意思一下', cost:10,
-      run:s=>({ t:'你出了十灵石。\n功德碑上，你的名字刻在很下面，小得几乎看不见。\n但你站在那儿看了一会儿，心里却踏实了。', log:'捐香火钱十灵石' }) },
-    { l:'一文不出', 
-      run:s=>{ s.karma+=2;
-        return { t:'你摇头说没有。\n知客没说什么，只是下回见你，脸上淡淡的。\n\n<span class="bad">业力 +2</span>', log:'未捐香火钱' }; } }
+    {l:'捐一千文',wen:1000,run:s=>({t:'知客点清一千文，在修殿簿上记下数目，向你道了谢。',log:'捐修殿钱一千文'})},
+    {l:'捐一百文',wen:100,run:s=>({t:'知客收下一百文，将这笔钱记在修殿簿上。',log:'捐修殿钱一百文'})},
+    {l:'这回不捐',run:s=>({t:'你说明这回不出钱。知客点点头，将簿子递给下一位来客。',log:'本次未参与修殿募资'})}
   ]},
 
 { id:'E038', name:'论道会', place:'temple', spot:'大殿', once:false, w:8, cd:15,
@@ -2399,29 +2389,20 @@ const EVENTS = [
    补 · 岭（ridge 3 条）村（village 2 条）市（market 1 条）
    ========================================================= */
 { id:'E044', name:'岭上樵夫', place:'ridge', spot:'半山老林', once:false, w:9, cd:8,
-  text:'黑风岭半山腰有个樵夫，背着一捆柴，正坐在石头上歇。\n他递给你一个水囊，说：「走这条岭，得看时辰。日头一斜，岭上就起风，风里有东西。」',
+  text:'半山有人收拾散落的柴枝，见你过来，指了指坡下：\n「雨后石头滑。走大路，别踩贴崖的那几级。」',
   opts:[
-    { l:'谢过水，听他讲岭上的事', 
-      run:s=>{ s.attr.wu+=1;
-        return { t:'他跟你讲了许多：哪段路白天走，哪段路夜里万万不能走，哪个山洞里住过什么。\n水囊里的水是山泉，甜得发苦。\n\n<span class="good">悟性 +1</span>', log:'听樵夫讲岭上事' }; } },
-    { l:'问风里的东西是什么', 
-      run:s=>{ s.knowsRidge=true;
-        return { t:'他脸色变了变，压低声音：「是山鬼。吃了黄昏人的魂，就在岭上飘，等下一个走夜路的。」\n说完他背起柴，头也不回地走了。\n\n<span class="mute">得知岭上旧事</span>', log:'问出岭上山鬼之说' }; } },
-    { l:'谢过就走', 
-      run:s=>({ t:'你灌了口水，谢过便走。\n他在你身后喊：「赶早下山！晚了，别回头！」', log:'未多留' }) }
+    {l:'谢过提醒，问问前面的路',run:s=>{s.knowsRidge=true;return {t:'樵夫说，大路绕得远些，却有人来往；贴崖小径省脚程，雨后容易落石。他只说自己今日走过的路，没替更远处打包票。',log:'问过岭上雨后路况，记下大路与小径的差别'};}},
+    {l:'问起山中的怪声',run:s=>({t:'他停下手，说自己只听过风灌进石洞的响动。别人的传言，他说不准。',log:'问过山中怪声，未得到确证'})},
+    {l:'谢过就走',run:s=>({t:'你向他拱了拱手，沿山道继续走。',log:'谢过樵夫提醒，继续行路'})}
   ]},
 
 { id:'E045', name:'破庙夜宿', place:'ridge', spot:'山口', once:false, w:8, cd:10,
-  text:'天黑前，你赶到岭上一座破庙。\n庙里供的神像塌了半边，蛛网挂了满梁。地上还铺着干草，像是有人住过。\n你要不要在这儿将就一夜？',
+  text:'天将黑，你走到山口一座破庙。屋顶还遮得住雨，门栓却已经坏了。\n留宿可以歇脚，也得提防夜里有人摸进来。',
   opts:[
-    { l:'在此歇一夜', chance:s=>0.6,
-      ok:s=>{ s.attr.xin+=1;
-        return { t:'你在干草上睡了一夜。\n半夜听见庙外有脚步声，来来回回，却始终没进来。\n你握着剑熬到天亮，倒也练出几分胆气。\n\n<span class="good">心性 +1</span>', log:'破庙夜宿，心性 +1' }; },
-      no:s=>{ stoneChange(s,-(10),'事件与修行');
-        return { t:'你睡到半夜，被一阵冷风冻醒。\n怀里装灵石的布包不知何时被人划开一道口子，少了几块。\n\n<span class="bad">夜里失窃</span>', log:'破庙夜宿失窃' }; } },
-    { l:'宁可多走夜路，也不住这里', 
-      run:s=>{ s.lifespan-=1;
-        return { t:'你连夜赶路。\n山路难行，摔了几跤，走到天亮才出岭。\n\n<span class="mute">赶了一夜路</span>', log:'连夜出岭' }; } }
+    {l:'收好钱袋，在此歇一夜',days:1,chance:s=>.6,
+      ok:s=>({t:'你把钱袋压在身下，睡得很浅。天亮时检查了一遍，钱物都在，便收拾行装出发。',log:'破庙歇一夜，钱物无失'}),
+      no:s=>{const lost=Math.min(10,s.stones);stoneChange(s,-lost,'破庙失窃');return {t:'醒来时衣袋被划开一道口子。你清点钱物，少了'+lost+'枚灵石。',log:'破庙夜宿失窃，实际损失'+lost+'灵石'};}},
+    {l:'继续赶路，天亮再休息',days:1,run:s=>({t:'你沿大路慢慢走，遇到湿滑处便停下探路。天亮后找了处平地歇脚，前后耽搁一日。',log:'连夜慢行至天明，耗一日'})}
   ]},
 
 { id:'E046', name:'山鬼哭', place:'ridge', spot:'北坡', once:true, w:8,
@@ -2494,9 +2475,9 @@ const EVENTS = [
   cond:s=>s.family && s.family.some(f=>f.alive),
   text:'下雨了。老屋那片瓦去年就该换，今年塌了。\n水顺着梁落到灶台上，接水的盆一夜换了三回。',
   opts:[
-    { l:'掏钱请人修缮', cost:8,
-      run:s=>({ t:'你请了泥瓦匠，半天就把那一片补齐了。\n新瓦颜色深，跟旧瓦接不上，可雨落下来的时候不响了。', log:'修好老屋，花 8 灵石' }) },
-    { l:'自己上房，把瓦挪一挪',
+    { l:'花80文请人补瓦', wen:80, days:1,
+      run:s=>({ t:'你请了泥瓦匠，半天就把那一片补齐了。\n新瓦颜色深，跟旧瓦接不上，可雨落下来的时候不响了。', log:'请泥瓦匠补瓦，付80文，耗一日' }) },
+    { days:1, l:'自己上房，把瓦挪一挪',
       run:s=>{ s.attr.xin+=1;
         return { t:'你踩着梯子上房，把塌的那一片挪开，又拿几块好瓦顶上。\n下来时衣袖全湿了，手上有两道口子。\n\n<span class="good">心性 +1</span>', log:'自己修了老屋，心性 +1' }; } },
     { l:'由它漏着',
@@ -2573,12 +2554,12 @@ const EVENTS = [
 
 { id:'H08', name:'家人病重', place:'home', once:false, w:8, cd:12,
   cond:s=>s.family && s.family.some(f=>f.alive),
-  text:'家里有人病了一冬。\n请来的郎中说，要用一味黄芪吊着；县城的药铺卖十五灵石一两。',
+  text:'家里有人病了一冬。\n请来的郎中说，要用一味黄芪吊着；县城的药铺按方抓取普通黄芪，一副药钱120文。',
   opts:[
-    { l:'掏十五灵石把药抓回来', cost:15,
+    { l:'花120文按方抓药', wen:120, days:1,
       run:s=>{ s.attr.xin+=1;
         return { t:'你把药抓回来了。\n药煎了三回，病人的气色好了些——只是一些。\n\n<span class="good">心性 +1</span>', log:'为家人抓药，心性 +1' }; } },
-    { l:'上山自己去采', chance:s=>0.55,
+    { l:'上山自己去采', days:2, chance:s=>0.55,
       ok:s=>{ s.attr.gen+=1;
         return { t:'你在山里转了两天，在一处石缝里摸到了黄芪。\n药是自己采的，煎出来味道重，那人的气色竟真好了些。\n\n<span class="good">根骨 +1</span>', log:'为家人上山采药，根骨 +1' }; },
       no:s=>{ s.injured=Math.max(s.injured||0,2);
@@ -3736,7 +3717,7 @@ function renderScene(){
   if(G.karma>=20) bits.push('<span class="bad">业力缠身（'+G.karma+'）</span>');
   if(G.hasMate) bits.push('道侣在侧');
   if(G.ward) bits.push('阿宁已成人');
-  if(G.beast) bits.push(G.beast+'随行');
+  const pet=window.XTQi52?.state()?.pet;if(pet) bits.push((pet.name||'青耳灵狐')+'随行');
   /* 关键警示：寿元将尽、有账未了。这些不是坏事，是「该拿主意了」的提示。
      寿元线压在 85%——过了这个坎，再想冲关就只剩孤注一掷。 */
   if(G.lifespan>0 && G.age/G.lifespan>=0.85) bits.push('<span class="bad">寿元将尽（余 '+(G.lifespan-G.age)+' 年）</span>');
@@ -3758,9 +3739,11 @@ function renderEvent(){
   ev.opts.forEach((o,i)=>{
     /* 术法出路：选项带 need（遁/护/攻），没练对应术法就不给这条出路——手段是「得」来的，不是人人都有。 */
     if(o.need && !hasRoute(G,o.need)) return;
-    const disabled=o.cost&&G.stones<o.cost;
+    const disabled=!!eventOptionReason(o);
     const hint=[];
     if(o.cost) hint.push('<span class="cost">需 '+o.cost+' 灵石</span>');
+    if(o.wen) hint.push('<span class="cost">需 '+o.wen+'文</span>');
+    if(o.check&&o.check(G)) hint.push('<span class="cost">'+o.check(G)+'</span>');
     if(o.days) hint.push('<span class="cost">耗时 '+o.days+' 日</span>');
     if(o.d) hint.push('<span class="cost">多 '+o.d+' 日</span>');
     if(o.cancel) hint.push('<span class="cost">这一趟白走</span>');
@@ -4368,10 +4351,15 @@ function startEvent(ev){
 }
 
 /* 结算一个选项：只改 G，不渲染。界面与模拟器共用。 */
+function eventOptionReason(o){
+  if(o.cost&&G.stones<o.cost)return '灵石不足';
+  if(o.wen&&(window.XTContent47?.money().wen??0)<o.wen)return '凡钱不足';
+  return o.check?o.check(G)||'':'';
+}
 function applyOption(ev, i){
   const o=ev.opts[i];
   if(!o) return null;
-  if(o.cost && G.stones<o.cost) return null;
+  if(eventOptionReason(o)) return null;
   if(o.need && !hasRoute(G,o.need)) return null;   // 术法出路：没练对应手段，就没这条路
 
   if(o.days){
@@ -4379,6 +4367,8 @@ function applyOption(ev, i){
     if(elapsed.died){G.curEvent=null;die('寿元耗尽');save();return null;}
     if(elapsed.days<o.days){save();return null;}
   }
+  if(eventOptionReason(o)) return null;
+  if(o.wen) XTContent47.change(-o.wen,ev.name);
   let res, succ=null;
   if(typeof o.chance==='function'){
     const p=Math.max(0.05,Math.min(0.92,o.chance(G)));
@@ -5058,8 +5048,8 @@ function openHere(){
   const hb=canHerbAt(p);
   html+='<div class="slot"><div class="info">'+
     '<div class="nm">采 药</div>'+
-    '<div class="meta">耗一月 · 进山采一月，背下山换钱'+
-      '<span class="dim">　'+(hb?('灵气 '+p.qi.toFixed(2)+'，出产看天'):'此地无药可采')+'</span></div>'+
+    '<div class="meta">耗7日 · 采得实物收入行囊，出售须到商户面前'+
+      '<span class="dim">　'+(hb?('可采青叶草，偶得赤铁砂'):'此地无药可采')+'</span></div>'+
     '</div><div class="ops">'+
     '<button class="mini" data-act="herb"'+(hb?'':' disabled')+'>去采</button></div></div>';
 
@@ -5190,43 +5180,8 @@ function actAsk(){
   afterAct(r);
 }
 
-/* --- 采药：耗一月，按此地灵气出产。修为只给行走的四成。 --- */
-function actHerb(){
-  if(!systemReady())return;
-  const k=G.place||'village';
-  const p=PLACES[k]||PLACES.village;
-  if(!canHerbAt(p)){ toast('此地无药可采'); return; }
-  ovHide();
-  const r=advanceMonths(1,{act:'herb',rate:CFG.walkRate*0.4,incomeMul:0},{stopOnEvent:true});
-  if(r.died || r.event || r.days<CFG.daysPerMonth){afterAct(r);return;}
-  const q=p.qi;
-  addLog('　你在'+placeName(k)+'一带采了一月药。','mute');
-  /* 灵气影响药材品质；已有修士会竞争采集点，人口稀少处则更难找到稳定销路。
-     这是地点层面的轻量修正，不改变世界总量，也不把修士存量当成每月刷新资源。 */
-  const competition=Math.min(0.12,(Number(p.cult)||0)/2000);
-  const miss=Math.max(0.08, Math.min(0.62, 0.42-q*0.15+competition));
-  let got=0;
-  if(Math.random()<miss){
-    addLog('　转了一月，背回来的只够抵鞋钱。'+(competition>0.04?'这片地方常有人采，能找到的药也少了。':''),'mute');
-  }else{
-    const n=ri(1,3);
-    const per=Math.round((1+q*1.6)*economyFactor());
-    /* 灵气厚的地方，偶尔能碰上一株值钱的；人烟稀少的野地更有机会，但风险也在。 */
-    const extra = (q>=1.4 && Math.random()<(p.tier==='野地'?0.10:0.06)) ? Math.round(ri(25,40)*economyFactor()) : 0;
-    got=n*per+extra;
-    stoneChange(G,got,'事件与修行');
-    addLog('　得药 '+n+' 味'+(extra?('，另有一株少见的，单卖了 '+extra):'')+
-           '，共换 '+got+' 灵石。','up');
-  }
-  if(p.tier==='野地' && Math.random()<0.12){
-    const loss=Math.min(G.stones, Math.max(3, Math.round(got*0.6)));
-    if(loss>0){
-      stoneChange(G,-(loss),'事件与修行');
-      addLog('　下山撞见一伙人，丢下 '+loss+' 灵石才脱身。','dn');
-    }
-  }
-  afterAct(r);
-}
+/* 旧采药入口共用七日采集：得到实物，出售另到商户办理。 */
+function actHerb(){return sysGather();}
 
 /* --- 营生：耗一月，只在交易场（城/市）。拿时间换钱，修为分文不涨。
        这是「城市是交易场」的落地——进城修炼慢三成，但进城能营生。 --- */
@@ -5726,7 +5681,7 @@ function openSelf(){
   const extra=[];
   if(G.hasMate) extra.push('道侣（'+G.mateRoot+'）');
   if(G.ward) extra.push('养子阿宁');
-  if(G.beast) extra.push(G.beast);
+  const pet=window.XTQi52?.state()?.pet;if(pet) extra.push(pet.name||'青耳灵狐');
   if(G.ally) extra.push('南疆沈氏因缘');
   if(G.injured>0) extra.push('<span style="color:var(--blood)">带伤（'+G.injured+' 年）</span>');
   if(extra.length){

@@ -9,6 +9,7 @@ BAG_ITEMS.ironOre.desc='含有微弱灵性的赤铁砂，可用于炼制低阶�
 BAG_ITEMS.clothArmor.desc='以灵矿和药草辅助缝制的低阶法衣，装备后降低遭遇战伤势风险。';
 BAG_ITEMS.forgePrimer.desc='载青纹护衣的基础炼制工艺；凡器与引灵剑另有专册。';
 Object.assign(BAG_ITEMS,{
+ purpleFungus58:{name:'紫芝',price:90,desc:'崖下采得的完整灵药。可向收购灵药的商户出售；采得时不自动兑换钱款。'},
  pigIron47:{name:'凡铁料',price:60,desc:'普通铁料，三份可锻青钢短剑；不含灵性。'},
  linen47:{name:'麻布',price:30,desc:'普通纤维织成的布料，两匹可缝护身布衣。'},
  mundanePatterns47:{name:'凡器工艺册',price:240,desc:'记有青钢短剑和护身布衣的工艺；阅读后可在铁匠铺制作。'},
@@ -17,6 +18,7 @@ Object.assign(BAG_ITEMS,{
  bladePattern47:{name:'引灵剑器谱',price:28,desc:'记载引灵剑的炼制工艺，需赤铁砂四份、青纹灵木两段和实际炉火。'}
 });
 const meta={
+ purpleFungus58:{currency:'stone',kind:'灵药材',grade:'一阶灵药',source:'深山采药事件，采得后存入行囊'},
  ironSword:{currency:'wen',kind:'兵器',grade:'凡品·精制',slot:'weapon',source:'百工坊购买或凡铁锻造',effect:'主修修炼效率+2%；现有遭遇战中提供兵器加成'},
  pigIron47:{currency:'wen',kind:'材料',grade:'凡品·普通',source:'百工坊铁匠铺'},
  linen47:{currency:'wen',kind:'材料',grade:'凡品·普通',source:'县城百工坊'},
@@ -39,6 +41,7 @@ const meta={
  blankSlip:{currency:'stone',kind:'制丹辅材',grade:'一阶下品',source:'坊市'},
  bladePattern47:{currency:'stone',kind:'书册',grade:'一阶·器谱',source:'铁匠铺与府城商铺',recipes:['spiritBlade']}
 };
+for(const id of ['grocer','gu','prefect','sunset'])if(S.actors[id]?.stock)S.actors[id].stock.purpleFungus58=0;
 // 每种物品均有稳定ID；旧物品沿用原ID，不转换库存或原有灵石余额。
 const catalog=Object.fromEntries(Object.entries(BAG_ITEMS).map(([id,b])=>[id,{id,name:b.name,...(meta[id]||{currency:'stone',kind:'修仙用品',grade:'既有品阶',source:'既有事件与商店'}),price:id==='ironSword'?900:b.price,status:id==='blankSlip'?'用途待接入':'已接入既有或本批玩法',desc:b.desc}]));
 const item=id=>catalog[id]||null;
@@ -81,7 +84,7 @@ function dispatch(a,arg){if(a.startsWith('c47:')){if(!systemReady())return true;
 const old={renderView:W.renderView,renderScene,restore,newGame,sysEquip,sysBuy,sysSell,actWork,renderActions};
 W.renderView=function(){if(G?.mode==='idle'){if(V.tab==='account47')return renderAccount();if(V.tab==='shop'&&renderShop())return true;if(V.tab==='bag')return renderBag();if(V.tab==='craft')return renderCraft();}return old.renderView();};
 sysBuy=id=>trade(id,false);sysSell=id=>trade(id,true);sysEquip=(id,slot)=>equip(id,slot);actWork=function(){if(['county','prefecture','riverTown'].includes(G?.place))return work();return old.actWork();};
-renderScene=function(){old.renderScene();if(!G?.root)return;money();const scene=document.getElementById('scene');const balance=scene.querySelector('.sb-balance');if(balance&&!scene.querySelector('.content47'))balance.textContent=G.stones+'灵石 · '+fmt(money().wen);if(G.mode==='idle'){const head=scene.querySelector('.sb-head');if(head&&!head.querySelector('[data-sb="c47:account"]')){head.insertAdjacentHTML('beforeend',B('收支账目','c47:account'));bind(head);}}if(G.mode==='idle'&&V.tab==='scene'){const actions=scene.querySelector('.sb-place>.sb-buttons');if(actions&&S.state().room==='wild'&&['village','ridge','temple'].includes(G.place)){actions.insertAdjacentHTML('beforeend',B('寻青纹灵木 · 7日 / 1灵石','c47:timber'));bind(actions);}const details=scene.querySelector('.sb-detail');if(details&&message){details.insertAdjacentHTML('afterbegin','<p class="notice47" role="status">'+esc(message)+'</p>');}}
+renderScene=function(){old.renderScene();if(!G?.root)return;money();const scene=document.getElementById('scene');const balance=scene.querySelector('.sb-balance');if(balance&&!scene.querySelector('.content47'))balance.textContent=G.stones+'灵石 · '+fmt(money().wen);if(G.mode==='idle'){const head=scene.querySelector('.sb-head');if(head&&!head.querySelector('[data-sb="c47:account"]')){head.insertAdjacentHTML('beforeend',B('收支账目','c47:account'));bind(head);}}if(G.mode==='idle'&&V.tab==='scene'){const actions=scene.querySelector('.sb-place>.sb-buttons');if(actions&&S.state().room==='wild'&&['village','ridge','temple'].includes(G.place)){actions.insertAdjacentHTML('beforeend',B('寻青纹灵木 · 7日','c47:timber'));bind(actions);}const details=scene.querySelector('.sb-detail');if(details&&message){details.insertAdjacentHTML('afterbegin','<p class="notice47" role="status">'+esc(message)+'</p>');}}
  if(G.mode==='idle'&&V.tab==='cult'&&V.sub==='arts'){for(const card of scene.querySelectorAll('.sb-card')){const title=card.querySelector('h4')?.textContent.replace(/[《》]/g,''),m=manuals[title],b=S.state().books[title];if(m&&b){const p=document.createElement('p');p.className='manual-effect47';const factor=b.level?(.5+b.level*.5):0;p.textContent='来源：'+fillFate(m.source)+'；当前主修时修炼效率+'+Math.round((m.effect.absorb||0)*factor*100)+'%，突破加成'+Math.round((m.effect.bt||0)*factor*100)+'%。';card.append(p);}}}
 };
 restore=function(raw){const prev=G,before=localStorage.getItem(SAVE_KEY);let incoming;try{incoming=JSON.parse(raw);if(incoming?.money47){const m=incoming.money47;if(m.version!==1||!Number.isSafeInteger(m.wen)||m.wen<0||!Array.isArray(m.ledger)||!m.shops||!m.employers||Object.values(m.shops).some(x=>!Number.isSafeInteger(x?.wen)||x.wen<0)||Object.values(m.employers).some(n=>!Number.isSafeInteger(n)||n<0))throw Error('凡钱数据无效');}if(!incoming?.money47)stoneBackup(raw);}catch(e){XTEconomy40.lastRestoreError='凡钱迁移前备份失败或金额无效，原档未更改。';return false;}if(!old.restore(raw))return false;if(!incoming.money47&&!XTMode41.isPending()){try{money();const s=JSON.stringify(G);localStorage.setItem(SAVE_KEY,s);if(localStorage.getItem(SAVE_KEY)!==s)throw Error('读回失败');}catch(e){G=prev;try{if(before===null)localStorage.removeItem(SAVE_KEY);else localStorage.setItem(SAVE_KEY,before);}catch(_){}return false;}}message='';V.goods47='all';return true;};

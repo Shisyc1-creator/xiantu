@@ -329,6 +329,7 @@ for(const e of EVENTS)if(adultHousehold.has(e.id)){
 function eventBlocked(ev){
  const current=EVENTS.find(e=>e.id===ev?.id)||ev;
  if(!current||current.retired36)return true;
+ if((current.once&&G.eventsDone[current.id])||(G.evtCd[current.id]||0)>G.age)return true;
  if(adultHousehold.has(current.id))return !current.cond(G)||(current.once&&G.eventsDone[current.id])||(G.evtCd[current.id]||0)>G.age;
  return false;
 }
