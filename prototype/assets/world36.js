@@ -14,7 +14,7 @@ const starts={
  '没落家族子弟':{book:'家传养元篇',place:'county',room:'square',method:'旧藏与长辈口传补成的基础养元法，完整高阶传承仍然缺失。',absorb:.03,tag:'残卷续脉，旧宅起步'},
  '世家嫡系':{book:'宗族培元诀',place:'county',room:'square',method:'族中蒙学使用的基础传承，不等于可以随意支用整个家族的产业。',absorb:.04,tag:'宗族教习，责任随身'},
  '妖血遗孤':{book:'藏息养脉法',place:'ridge',room:'square',method:'养育者教下的调息法，依自身血脉修习，不凭空获得完整妖族传承。',absorb:.03,tag:'血脉异禀，藏息求生'},
- '魔道弃徒':{book:'残页纳气法',place:'market',room:'square',method:'逃离血河道统凡界别院时记下的基础纳气口诀，不含夺人修为的秘法。',absorb:.03,tag:'残页护身，旧师门未远'}
+ '魔道弃徒':{book:'残页纳气法',place:'market',room:'square',method:'血河道统凡界别院流传的基础纳气残页，不含夺人修为的秘法。',absorb:.03,tag:'残页护身，旧师门未远'}
 };
 for(const v of Object.values(starts))MANUALS[v.book]={kind:'心法',tier:'黄',from:v.method,desc:v.method,effect:{absorb:v.absorb,bt:0,life:0}};
 MANUALS['太岳养气诀']={kind:'心法',tier:'玄',from:'太岳宗外山藏经处',desc:'太岳外山传授的养气法，外山弟子修习的基础传承。',effect:{absorb:.06,bt:.01,life:2}};
@@ -138,7 +138,7 @@ function seedStart(fresh=false){
  w.startGranted=true;w.start={origin:G.origin,method:s.book,from:s.method,residence:window.XTHome41?.specs[G.origin]?.name||({ '寒门散修':'乡中旧居','宗门外门弟子':'观中弟子住处','没落家族子弟':'城西家族旧宅','世家嫡系':'宗族大宅','妖血遗孤':'山间藏身处','魔道弃徒':'坊市暂居处'})[G.origin]};
  registerFamily();
  if(fresh){G.place=s.place;G.home=s.place;d.roomAt=s.place;d.room=s.room;}
- if(fresh&&G.origin==='宗门外门弟子'){
+ if(fresh&&G.origin==='宗门外门弟子'&&!G.opening46?.flow61){
   d.faction={id:'temple',name:'青云观',rank:'外门弟子',contribution:0,cd:{}};G.sect={name:'青云观',rank:'外门弟子',contribution:0};
   const r=relation('mentor');r.bonds.push('同门');r.trust=10;
  }
@@ -307,7 +307,7 @@ function inherit(id){
  estate.people[w.playerId]={id:w.playerId,name:G.name,realm:realmOf(),layer:G.layer,root:G.root,birth:S.now()-G.age*YEAR,life:G.lifespan,alive:false,place:G.place,room:'square',source:'上一代玩家'};
  const ancestors=(G.ancestors||[]).concat([{name:G.name,root:G.root,realm:G.realm,layer:G.layer,age:G.age,origin:G.origin,arts:Object.keys(G.arts||{}),master:G.master,place:G.place}]);
  newGame(n.name,G.origin,n.sex,t);
- G.root=n.root;G.coef=(ROOTS[n.root]||ROOTS['五灵根']).coef;G.cap=(ROOTS[n.root]||ROOTS['五灵根']).cap;
+ if(oldG.backgroundVersion61===1)G.backgroundVersion61=1;G.root=n.root;G.coef=(ROOTS[n.root]||ROOTS['五灵根']).coef;G.cap=(ROOTS[n.root]||ROOTS['五灵根']).cap;
  G.age=childAge;G.lifespan=n.realm<0?100:realmLife(n.realm);G.realm=Math.max(0,n.realm);G.layer=Math.max(1,n.layer||1);G.cult=0;G.month=month;G.day=day;
  G.difficulty={...oldG.difficulty};G.rescue40={generation:(oldG.generation||1)+1,used:false};G.generation=(oldG.generation||1)+1;G.ancestors=ancestors;stoneInherit(G,oldG);G.place=n.place;G.home=n.place;G.family=[];G.inventory={...(n.inventory||{})};
  G.world36={...estate,playerId:id,relations:{},partnerId:null,followers:[],children:[],contracts:[],birthPlan:null,startGranted:false};G.mode='idle';G.lastResult=null;

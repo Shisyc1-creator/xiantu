@@ -1,8 +1,9 @@
+// Retained four-stage opening regression; new two-decision flow is covered by opening61 checks.
 const assert=require('assert'),fs=require('fs'),path=require('path'),os=require('os');
 const {pathToFileURL}=require('url');
 const {chromium}=require('C:/Users/EDY/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 (async()=>{const browser=await chromium.launch({channel:'msedge',headless:true});let count=0;const errors=[];
-try{const context=await browser.newContext({viewport:{width:1440,height:1100}}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.stack));const url=pathToFileURL(path.resolve(__dirname,'../prototype/index.html')).href;await page.goto(url);
+try{const context=await browser.newContext({viewport:{width:1440,height:1100}}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.stack));const url=pathToFileURL(path.resolve(__dirname,'../prototype/index.html')).href;await page.addInitScript(()=>{globalThis.__legacyOpeningFixture=true;});await page.goto(url);
 async function check(name,fn){assert(await page.evaluate(fn),name);count++;console.log('PASS '+name);}
 await check('创建页明确显示两组概率与适用范围',()=>{const t=document.querySelector('#rootPrev').textContent;return t.includes('普通家庭')&&t.includes('修行家族')&&t.includes('0.5%')&&t.includes('2%');});
 await page.locator('#coverBegin').click();await page.locator('[data-o="世家嫡系"]').click();

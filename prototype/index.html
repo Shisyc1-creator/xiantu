@@ -3506,7 +3506,7 @@ function renderHUD(){
     '<div class="hud-brand"><strong>仙途</strong><span class="vermilion-seal">修行纪</span></div><div class="hud-left">'+
       '<div class="name-row">'+
         '<span class="name">'+G.name+'</span>'+
-        '<span class="tag">'+G.origin+'</span>'+
+        '<span class="tag">'+(G.backgroundVersion61===1?XTOpening46.identity():G.origin)+'</span>'+
         '<span class="tag root '+rootCls+'">'+G.root+'</span>'+
         (G.generation>1?'<span class="tag">第 '+G.generation+' 代</span>':'')+
         (btReady?'<span class="tag warn">可冲'+nextRealm+'</span>':'')+
@@ -5612,7 +5612,7 @@ function openSelf(){
   const row=(k,v)=>'<div class="ledger-row"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>';
 
   let html='<h3>自 身</h3>';
-  html+='<div class="sub">'+G.origin+'　·　第 '+G.generation+' 代</div>';
+  html+='<div class="sub">'+(G.backgroundVersion61===1?XTOpening46.identity():G.origin)+'　·　第 '+G.generation+' 代</div>';
 
   html+='<div class="attr-grid">'+
     cell('根骨',G.attr.gen)+cell('悟性',G.attr.wu)+cell('气运',G.attr.qi)+cell('心性',G.attr.xin)+
@@ -5634,7 +5634,7 @@ function openSelf(){
     '</div>';
 
   html+='<div class="ledger" style="border-top:none">';
-  html+=row('出　身',G.origin);
+  html+=row('家庭背景',G.backgroundVersion61===1?XTOpening46.familyLabels[G.origin]:G.origin);
   html+=row('性　别',G.sex||'男');
   html+=row('身　世',(G.variant||'—')+(G.mark?'　·　'+G.mark:''));
   html+=row('家　处',placeName(G.home||G.place));

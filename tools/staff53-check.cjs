@@ -3,7 +3,8 @@
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const assert=require('node:assert/strict'),{test}=require('node:test');
 const root=path.resolve(__dirname,'..');
-function loadGame(){
+// Existing suites retain their historical opening; opening61 suites opt into the current player flow.
+function loadGame(options={}){
  const nodes=new Map();
  function node(){return {value:'',checked:false,innerHTML:'',textContent:'',style:{setProperty(){}},dataset:{},classList:{add(){},remove(){},toggle(){},contains(){return false}},addEventListener(){},appendChild(){},after(){},before(){},append(){},prepend(){},insertAdjacentHTML(position,html){this.innerHTML+=html},remove(){},focus(){},close(){},showModal(){},scrollIntoView(){},closest(){return null},setAttribute(){},getAttribute(){return ''},querySelectorAll(){return []},querySelector(){return node()},getBoundingClientRect(){return {width:400,height:600,left:0,top:0}},getContext(){return null}};}
  const storage=()=>{const m=new Map();return {getItem:k=>m.get(k)??null,setItem:(k,v)=>m.set(k,String(v)),removeItem:k=>m.delete(k),clear:()=>m.clear()};};
@@ -13,7 +14,7 @@ function loadGame(){
   navigator:{userAgent:'logic-test'},performance:{now:()=>0},confirm:()=>true,alert(){},innerWidth:400,innerHeight:800,
   document:{body:node(),documentElement:node(),getElementById(id){if(!nodes.has(id))nodes.set(id,node());return nodes.get(id)},querySelector(){return node()},querySelectorAll(){return []},createElement:node,addEventListener(){}}
  });
- ctx.window=ctx;ctx.globalThis=ctx;ctx.addEventListener=()=>{};ctx.matchMedia=()=>({matches:false,addEventListener(){}});
+ ctx.__legacyOpeningFixture=!options.currentOpening;ctx.window=ctx;ctx.globalThis=ctx;ctx.addEventListener=()=>{};ctx.matchMedia=()=>({matches:false,addEventListener(){}});
  const html=fs.readFileSync(path.join(root,'prototype/index.html'),'utf8');
  for(const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)){
   const src=m[1].match(/src=["']([^"']+)["']/);

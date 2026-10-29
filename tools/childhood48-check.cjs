@@ -1,3 +1,4 @@
+// Retained four-stage opening regression; new two-decision flow is covered by opening61 checks.
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
@@ -14,7 +15,7 @@ const {chromium} = require('C:/Users/EDY/.cache/codex-runtimes/codex-primary-run
     const page = await context.newPage();
     page.on('pageerror', error => errors.push(error.stack));
     const url = pathToFileURL(path.resolve(__dirname,'../prototype/index.html')).href;
-    await page.goto(url);
+    await page.addInitScript(()=>{globalThis.__legacyOpeningFixture=true;});await page.goto(url);
     async function check(name, fn) {
       assert(await page.evaluate(fn), name);
       console.log('PASS ' + name);

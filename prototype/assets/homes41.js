@@ -12,11 +12,12 @@ const specs={
  '妖血遗孤':{name:'山间藏身处',kind:'personal',owner:'个人庇护处',description:'山石与枝叶掩着入口。这里可以落脚、保存私人物件，没有丹房、药圃或可雇人经营的工位。',letter:'你整理好养育者留下的寻路记号，重新辨认入口，记下附近安全的落脚处。'},
  '魔道弃徒':{name:'坊市暂居处',kind:'temporary',owner:'坊市借住房 · 有期限',description:'巷底的小房只供暂住。你的物柜单独上锁，期满后仍可到门厅取回私人物件。',letter:'暂住凭据夹在衣包里。旧师门的身份换不来这里的房契，你得为日后另寻安置。'}
 };
+function birthSpec61(origin){const spec=specs[origin];if(G?.backgroundVersion61!==1)return spec;if(origin==='宗门外门弟子')return {...spec,name:'观下家舍',kind:'family',owner:'附属家庭共有 · 个人居所',description:'家人依山门谋生，你在家舍中长大。能在此居住，并不等于已经拜入山门。',letter:'家人收好了旧信，嘱你求学时先问清授业者的来处。'};if(origin==='魔道弃徒')return {...spec,description:'家人借住坊市巷底，你有自己的铺盖和物柜。旧物记着家中往来的线索。',letter:'纸页是家中留下的旧物，你尚不知其中所有来历，先将它收好。'};return spec;}
 function state(){
  if(!G?.root||!G.world36?.startGranted)return null;
  const w=W.world();
  if(!G.homes41){
-  const spec=specs[G.origin];if(!spec)return null;
+  const spec=birthSpec61(G.origin);if(!spec)return null;
   const id='birth_'+w.playerId;
   G.homes41={version:1,lastPlayerId:w.playerId,residenceId:id,places:[{id,origin:G.origin,name:spec.name,kind:spec.kind,owner:spec.owner,place:G.home||XTWorld36.starts[G.origin].place,residentIds:[w.playerId],chestOwners:[w.playerId],storage:{},createdAt:S.now(),expires:spec.kind==='temporary'?S.now()+360:null,renewalQuote:Math.max(1,Math.round(12*economyFactor())),letterRead:false,history:[]}]};
  }
@@ -50,7 +51,7 @@ function overview(){
 }
 function roomInfo(room){
  const h=residence();if(!h||G.place!==h.place)return {description:'此处没有你的住处。',actions:''};
- const r=rights(h),spec=specs[h.origin];let actions=button('走出住处','leave');
+ const r=rights(h),spec=birthSpec61(h.origin);let actions=button('走出住处','leave');
  if(room==='residence36'){
   if(r.live)actions+=button('进入个人居室','inner')+button('打开私人物柜','storage');
   else if(r.retrieve)actions+=button('取回寄存物','reclaim');
@@ -103,7 +104,7 @@ function dispatch(action,arg){
   if(!r.live||S.state().room!=='h41_inner'||h.letterRead)return true;
   const result=advanceDays(1,{act:'residence',rate:0,incomeMul:0},{stopOnEvent:true});
   if(result.died){die('寿元耗尽');return true;}if(result.event){startEvent(result.event);return true;}if(result.days<1||!rights(h).live)return true;
-  h.letterRead=true;record(h,specs[h.origin].letter);save();render();return true;
+  h.letterRead=true;record(h,birthSpec61(h.origin).letter);save();render();return true;
  }
  return true;
 }
