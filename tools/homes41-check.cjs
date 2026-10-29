@@ -8,12 +8,12 @@ const root=path.resolve(__dirname,'..'),out=path.join(root,'.screenshots/batch41
   const page=await browser.newPage({viewport:{width:1440,height:1000}});page.on('pageerror',e=>errors.push(e.message));page.on('requestfailed',r=>failed.push(r.url()));
   await page.goto(pathToFileURL(path.join(root,'prototype/index.html')).href);await page.evaluate(()=>{globalThis.legacyChild47=function(i){if(G.mode==='child'){const c=G.origin==='妖血遗孤'?XTBackground47.contexts.find(c=>XTBackground47.visibleOriginVariants(G.origin,c).some(v=>v.i===i)):XTBackground47.contexts[0];G.birthContext=JSON.parse(JSON.stringify(c));G.fate=genFate();}return chooseChild(i);};});
   assert(await page.locator('#modeChoice41').count()===1);results.push('创角展示两种模式及当前差异说明');
-  await page.locator('#inName').fill('沈行舟');await page.locator('input[value="hardcore"]').check();await page.locator('#btnStart').click();
+  await page.locator('#coverBegin').click();await page.locator('#inName').fill('沈行舟');await page.locator('input[value="hardcore"]').check();await page.locator('#btnStart').click();
   async function check(name,fn){assert(await page.evaluate(fn),name);results.push(name);console.log('PASS '+name);}
   await check('真实创角按钮保存硬核选择，动作状态独立',()=>G.difficulty.id==='hardcore'&&G.mode==='child'&&G.difficulty.rulesVersion===1);
   await page.evaluate(()=>{
    tryEvent=()=>null;meetLive=()=>null;tryRoadEvent=()=>null;
-   globalThis.start41=(origin='寒门散修',mode='standard',variant=0)=>{XTMode41.start('沈行舟',origin,'男',mode);legacyChild47(variant);XTOpening46.chooseTimeline(8,8);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();G.mode='idle';G.lastResult=null;G.stones=3000;G.inventory={herb:12,ironOre:6};XTHome41.state();};
+   globalThis.start41=(origin='寒门散修',mode='standard',variant=0)=>{XTMode41.start('沈行舟',origin,'男',mode);legacyChild47(variant);for(let childhoodStep=0;childhoodStep<4;childhoodStep++)XTOpening46.chooseChildhood(XTOpening46.childhoodToken(),0);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();G.mode='idle';G.lastResult=null;G.stones=3000;G.inventory={herb:12,ironOre:6};XTHome41.state();};
    globalThis.home41=()=>{const h=XTHome41.residence();G.place=h.place;XTSandbox.state().roomAt=G.place;XTSandbox.dispatch('h41:visit',h.id);};
    globalThis.pass41=days=>advanceDays(days,{act:'test41',rate:0,incomeMul:0,eventRate:0});
    start41();globalThis.fixture41=JSON.stringify(G);globalThis.reset41=()=>{G=JSON.parse(fixture41);XTSandbox.view.actor=null;XTSandbox.view.detail=null;};
@@ -52,10 +52,11 @@ const root=path.resolve(__dirname,'..'),out=path.join(root,'.screenshots/batch41
   await page.locator('[data-sb="h41:visit"]').click();await page.locator('[data-sb="h41:storage"]').click();await page.locator('[data-sb="h41:deposit"][data-arg="herb"]').click();
   await check('手机真实按钮可进入物柜并存物，无横向溢出',()=>G.inventory.herb===11&&XTHome41.residence().storage.herb===1&&document.documentElement.scrollWidth<=innerWidth);
   await page.screenshot({path:path.join(out,'mobile-storage.png'),fullPage:true});
-  await page.evaluate(()=>{G=null;showStart();});await page.locator('#modeChoice41').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,'mobile-modes.png'),fullPage:true});
+  await page.evaluate(()=>{G=null;showStart();});await page.locator('#coverBegin').click();await page.locator('#modeChoice41').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,'mobile-modes.png'),fullPage:true});
   await check('手机两模式单选与开始按钮可见，页面无横向溢出',()=>document.querySelectorAll('input[name="difficulty41"]').length===2&&document.documentElement.scrollWidth<=innerWidth);
   assert.deepStrictEqual(errors,[]);assert.deepStrictEqual(failed,[]);
   fs.writeFileSync(path.join(out,'validation.json'),JSON.stringify({checks:results.length,results,errors,failed,scope:'Edge独立上下文；住处权限、实际旅行、私人物柜、期限与家人死亡、童年细分、六身份两模式、迁移与传承；未接触真实存档。'},null,2));
   console.log('ALL '+results.length+' CHECKS PASSED');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
+

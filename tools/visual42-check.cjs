@@ -87,7 +87,7 @@ async function readingReachable(page, label) {
     const reach = await target.evaluate(button => {
       const r = button.getBoundingClientRect(), nav = document.getElementById('primaryNav');
       const nr = nav?.getBoundingClientRect();
-      const bottom = nr && nr.height && nr.top >= 0 ? Math.min(innerHeight, nr.top) : innerHeight;
+      const bottom = nr && nr.height && nr.top >= 0 && nr.width>=innerWidth*.8 ? Math.min(innerHeight, nr.top) : innerHeight;
       return { top: r.top, bottom: r.bottom, viewportBottom: bottom, width: r.width, text: button.textContent.trim() };
     });
     assert(reach.top >= -1 && reach.bottom <= reach.viewportBottom + 1, label + ' 末尾操作无法完整滚入可操作区域：' + JSON.stringify(reach));
@@ -107,7 +107,7 @@ async function resetScroll(page) {
 async function fixture(page) {
   const ready = await page.evaluate(() => {
     newGame('沈行舟', '寒门散修', '男');
-    G.birthContext=JSON.parse(JSON.stringify(XTBackground47.contexts[0]));G.fate=genFate();chooseChild(0);XTOpening46.chooseTimeline(8,8);
+    G.birthContext=JSON.parse(JSON.stringify(XTBackground47.contexts[0]));G.fate=genFate();chooseChild(0);for(let childhoodStep=0;childhoodStep<4;childhoodStep++)XTOpening46.chooseChildhood(XTOpening46.childhoodToken(),0);
     G.root = '四灵根'; G.coef = ROOTS['四灵根'].coef; G.cap = ROOTS['四灵根'].cap;
     if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();
     G.mode = 'idle'; G.lastResult = null; G.stones = 3000; G.inventory = { herb: 36, ironOre: 12 };
@@ -148,7 +148,9 @@ async function creator(browser, width, height, name) {
         return v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4;
       }).reduce((total, value, index) => total + value * [.2126, .7152, .0722][index], 0);
       const text = getComputedStyle(button.querySelector('.t') || button).color;
-      const background = getComputedStyle(button).backgroundColor;
+      let background = getComputedStyle(button).backgroundColor;
+      // New choice rows are transparent: measure against their actual ancestor surface.
+      for(let surface=button;surface;surface=surface.parentElement){const value=getComputedStyle(surface).backgroundColor,parts=(value.match(/[\d.]+/g)||[]).map(Number);if(parts.length===3||parts.length===4&&parts[3]>=1){background=value;break;}}
       const [low, high] = [lum(rgb(text)), lum(rgb(background))].sort((a, b) => a - b);
       return { text, background, ratio: (high + .05) / (low + .05) };
     });
@@ -180,13 +182,13 @@ async function creator(browser, width, height, name) {
         await page.setViewportSize({ width, height });
         await fixture(page);
         for (const [tab, label] of [['cult', '修行'], ['scene', '场景'], ['bag', '行囊'], ['home', '家园'], ['self', '人物']]) {
-          await page.locator('[data-sb-nav="' + tab + '"]').click();
+          await page.locator('[data-live-nav="' + tab + '"]').click();
           assert(await page.evaluate(id => XTSandbox.view.tab === id, tab), label + ' 导航点击未生效');
           assert((await page.locator('#scene').innerText()).trim().length > 5, label + ' 页面为空');
           await pageFits(page, `${width}×${height} ${label}`);
           await readingReachable(page, `${width}×${height} ${label}`);
         }
-        await page.locator('[data-sb-nav="scene"]').click();
+        await page.locator('[data-live-nav="scene"]').click();
         if(await page.evaluate(()=>XTSandbox.state().room!=='shops'))await page.locator('[data-sb="room"][data-arg="shops"]').click();
         assert(await page.evaluate(() => !XTSandbox.view.actor && !XTSandbox.view.detail), `${width}×${height} 房间截图前仍有选中人物`);
         await resetScroll(page);
@@ -219,7 +221,7 @@ async function creator(browser, width, height, name) {
       }
       await page.setViewportSize({ width: 390, height: 844 });
       await fixture(page);
-      await page.locator('[data-sb-nav="self"]').click();
+      await page.locator('[data-live-nav="self"]').click();
       await page.locator('[data-sb="sub"][data-arg="settings"]').click();
       await page.locator('[data-sb="settings"]').click();
       await page.locator('#prefFont').selectOption('large');
@@ -228,7 +230,7 @@ async function creator(browser, width, height, name) {
       await page.locator('#tClose').click();
       assert(await page.evaluate(() => document.body.classList.contains('ui-large') && readUIPrefs().font === 'large'), '大字设置未应用');
       for (const [tab, label] of [['cult', '修行'], ['scene', '场景'], ['bag', '行囊'], ['home', '家园'], ['self', '人物']]) {
-        await page.locator('[data-sb-nav="' + tab + '"]').click();
+        await page.locator('[data-live-nav="' + tab + '"]').click();
         await pageFits(page, '390 大字 ' + label);
         await readingReachable(page, '390 大字 ' + label);
       }
@@ -244,3 +246,4 @@ async function creator(browser, width, height, name) {
   }
   console.log('ALL ' + results.length + ' VISUAL CHECKS PASSED');
 })().catch(error => { console.error(error); process.exitCode = 1; });
+

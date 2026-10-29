@@ -1,41 +1,11 @@
-const assert=require('assert'),fs=require('fs'),path=require('path');
-const {pathToFileURL}=require('url');
-const {chromium}=require('C:/Users/EDY/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-(async()=>{const browser=await chromium.launch({channel:'msedge',headless:true});let count=0;const errors=[];
-try{for(const width of [1440,390]){
- const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.stack));
- await page.goto(pathToFileURL(path.resolve(__dirname,'../prototype/index.html')).href+'?developer=1');
- await page.evaluate(()=>{XTDeveloper47.scenario('寒门散修');XTDeveloper47.teleport('county','square');
-  globalThis.offsets50=()=>{const m=document.querySelector('.map-pan44');return {content:document.querySelector('.sb-scroll')?.scrollTop,page:document.scrollingElement.scrollTop,mapX:m?.scrollLeft,mapY:m?.scrollTop};};
-  document.addEventListener('click',e=>{if(e.target.closest('[data-sb="m45:walk"]'))globalThis.clicked50=offsets50();},true);
- });
- const settle=()=>page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
- for(const destination of ['shops','workshop','notice45']){
-  await page.evaluate(()=>document.querySelector('.sb-scroll').scrollTop=100);
-  await page.locator('[data-sb="m45:walk"][data-arg="'+destination+'"]').click();await settle();
-  const result=await page.evaluate(()=>({before:clicked50,after:offsets50(),room:XTSandbox.state().room}));
-  assert.strictEqual(result.room,destination);for(const key of Object.keys(result.before))assert(Math.abs(result.before[key]-result.after[key])<=1,`${width}: ${destination}: ${key}`);
-  count++;console.log('PASS '+width+'px 连续移动至 '+destination+' 保持正文、页面和地图位置');
- }
- await page.evaluate(()=>{const s=document.querySelector('.sb-scroll');s.scrollTop=100;globalThis.keyBefore50=offsets50();});
- await page.locator('[data-sb="m45:walk"][data-arg="workshop"]').focus();
- await page.evaluate(()=>globalThis.keyBefore50=offsets50());
- await page.keyboard.press('Enter');await settle();
- const keyed=await page.evaluate(()=>({before:keyBefore50,after:offsets50(),room:XTSandbox.state().room}));
- assert.strictEqual(keyed.room,'workshop');for(const key of Object.keys(keyed.before))assert(Math.abs(keyed.before[key]-keyed.after[key])<=1);
- count++;console.log('PASS '+width+'px 键盘移动保持滚动位置');
- const unchanged=await page.evaluate(()=>{const role=JSON.stringify(G),saved=localStorage.getItem(SAVE_KEY),slots=localStorage.getItem(SLOT_KEY),before=offsets50();render();return role===JSON.stringify(G)&&saved===localStorage.getItem(SAVE_KEY)&&slots===localStorage.getItem(SLOT_KEY)&&Math.abs(before.content-offsets50().content)<=1;});assert(unchanged);
- count++;console.log('PASS '+width+'px 位置保持不改角色数据或自动、手动档');
- await page.evaluate(()=>{XTSandbox.go('cult');XTSandbox.go('scene');});await settle();
- assert.strictEqual(await page.evaluate(()=>document.querySelector('.sb-scroll').scrollTop),0);
- count++;console.log('PASS '+width+'px 跨页面导航不套用旧场景位置');
- await page.evaluate(()=>{document.querySelector('.sb-scroll').scrollTop=100;XTDeveloper47.teleport('village','square');});await settle();
- assert.strictEqual(await page.evaluate(()=>document.querySelector('.sb-scroll').scrollTop),0);
- count++;console.log('PASS '+width+'px 切换区域重新显示当地场景');
- await page.evaluate(()=>startEvent(EVENTS.find(e=>e.id==='E001')));await settle();
- assert(await page.evaluate(()=>G.mode==='event'&&!document.querySelector('.sb-scroll')));
- count++;console.log('PASS '+width+'px 进入事件不套用场景滚动区');
- await context.close();
-}
-assert.deepStrictEqual(errors,[]);assert(fs.readFileSync(path.resolve(__dirname,'view50.js')).equals(fs.readFileSync(path.resolve(__dirname,'../prototype/assets/view50.js'))));console.log('ALL '+count+' VIEW CHECKS PASSED; no browser errors; source/published match.');
-}finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});
+// Same-place reading continuity on the new location tabs; independent developer saves only.
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{pathToFileURL}=require('node:url');
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/EDY/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+(async()=>{const b=await chromium.launch({channel:'msedge',headless:true});let count=0;try{for(const width of [1440,390]){const c=await b.newContext({viewport:{width,height:900},reducedMotion:'reduce'}),p=await c.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(pathToFileURL(path.resolve(__dirname,'../prototype/index.html')).href+'?developer=1');await p.evaluate(()=>{XTDeveloper47.scenario('寒门散修');XTDeveloper47.teleport('county','square');document.addEventListener('click',e=>{const b=e.target.closest('[data-sb]');if(b&&['room','m45:walk'].includes(b.dataset.sb))globalThis.clickPosition50=scrollY;},true);});
+ async function move(destination,keyboard=false){const choice=p.locator(`.next-locations button[data-arg="${destination}"]`);if(await choice.getAttribute('data-sb')==='p44:route')await p.locator('.next-other-places>summary').click();if(keyboard){await choice.focus();await p.keyboard.press('Enter');}else await choice.click();if(await p.evaluate(()=>XTSandbox.state().room)!==destination){await p.locator('.next-route [data-sb="m45:walk"]').click();}await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));const x=await p.evaluate(()=>({room:XTSandbox.state().room,before:clickPosition50,after:scrollY,max:document.documentElement.scrollHeight-innerHeight}));assert.equal(x.room,destination);assert(Math.abs(Math.min(x.before,x.max)-x.after)<=1,JSON.stringify(x));count++;console.log('PASS '+width+' location '+destination+' preserves reading position');}
+ for(const id of ['shops','workshop','notice45'])await move(id);await move('workshop',true);
+ const raw=await p.evaluate(()=>JSON.stringify({g:G,a:localStorage.getItem(SAVE_KEY),s:localStorage.getItem(SLOT_KEY)}));await p.evaluate(()=>render());assert.equal(await p.evaluate(()=>JSON.stringify({g:G,a:localStorage.getItem(SAVE_KEY),s:localStorage.getItem(SLOT_KEY)})),raw);count++;
+ await p.evaluate(()=>{scrollTo(0,500);XTSandbox.go('cult');});assert.equal(await p.evaluate(()=>scrollY),0);count++;
+ await p.evaluate(()=>{XTSandbox.go('scene');scrollTo(0,500);XTDeveloper47.teleport('village','square');});assert.equal(await p.evaluate(()=>scrollY),0);count++;
+ await p.evaluate(()=>startEvent(EVENTS.find(e=>e.id==='E001')));assert.equal(await p.locator('body').getAttribute('data-ui-stage'),'event');assert.equal(await p.evaluate(()=>scrollY),0);count++;
+ assert.deepEqual(errors,[]);await c.close();}assert(fs.readFileSync(path.resolve(__dirname,'view50.js')).equals(fs.readFileSync(path.resolve(__dirname,'../prototype/assets/view50.js'))));console.log('ALL '+count+' VIEW CHECKS PASSED; new tabs/route confirmation, no browser errors or save changes.');}finally{await b.close()}})().catch(e=>{console.error(e);process.exitCode=1});

@@ -12,7 +12,7 @@ await page.evaluate(()=>{
 });
 async function check(n,f){assert(await page.evaluate(f),n);checks.push(n);console.log('PASS '+n);}
 await check('拍场只通过商街连接',()=>{const map=XTInteraction42.edges(XTSandbox.roomDefs());return map.shops.includes('auction43')&&!map.square.includes('auction43');});
-await page.locator('.map-node44[data-arg="auction43"]').click();await page.locator('[data-sb="u46:enter"]').click();
+await page.locator('.next-locations [data-arg="auction43"]').click();await page.locator('[data-sb="u46:enter"]').click();
 await check('真实点击进场看到用途、底价、加价与免费说明',()=>document.querySelector('.auction43').textContent.includes('底价 24 / 加价 2')&&document.querySelector('.auction43').textContent.includes('免费入场'));
 await page.locator('[data-sb="a43:open"]').click();
 await check('开场锁定三个拍品、真实人物和有限私款，不扣入场费或日期',()=>{globalThis.startTime43=XTSandbox.now();globalThis.totalStart43=total43();const a=XTAuction43.state();return a.session.lots.length===3&&a.session.participants.every(id=>!!XTWorld36.get(id))&&G.stones===1000&&a.house.stock.qiPill===0;});

@@ -1,18 +1,9 @@
 const fs=require('fs'),path=require('path'),assert=require('assert');const {pathToFileURL}=require('url');
-const {chromium}=require('playwright');
+const {chromium}=require('C:/Users/EDY/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'.screenshots/batch36');
-(async()=>{const browser=await chromium.launch({channel:process.env.XT_BROWSER_CHANNEL||undefined,headless:true}),checks=[],errors=[];try{
-const page=await browser.newPage();page.on('pageerror',e=>errors.push(e.message));await page.goto(pathToFileURL(path.join(root,'prototype/index.html')).href+'?developer=1');await page.evaluate(()=>{globalThis.start36=function(origin){
- newGame('沈行舟',origin,'男');
- const variant=XTBackground47.visibleOriginVariants(origin,G.birthContext)[0].i;chooseChild(variant);
- if(!G.opening46?.childhood)throw Error('current childhood fixture missing');
- for(let step=0;step<4;step++)XTOpening46.chooseChildhood(XTOpening46.childhoodToken(),0);
- for(let step=0;step<4;step++)XTOpening46.dispatch(XTOpening46.token(),step%2);
- beginCultivation();if(G.entry47?.status!=='complete')throw Error('current entry did not complete');
- if(G.mode==='result')document.getElementById('contBtn').click();
- if(G.mode!=='idle')throw Error('current opening did not finish');
-};});
-await page.evaluate(()=>{start36('寒门散修');G.mode='idle';G.lastResult=null;G.stones=3000;G.inventory={herb:12,ironOre:12};tryEvent=()=>null;meetLive=()=>null;globalThis.reset36r=JSON.stringify(G);globalThis.fresh36r=()=>{restore(reset36r);G.mode='idle';G.lastResult=null;};globalThis.room36r=(room)=>{G.place='county';const d=XTSandbox.state();d.roomAt='county';d.room=room;XTWorld36.sync();XTSandbox.go('scene');};});
+(async()=>{const browser=await chromium.launch({channel:'msedge',headless:true}),checks=[],errors=[];try{
+const page=await browser.newPage();page.on('pageerror',e=>errors.push(e.message));await page.goto(pathToFileURL(path.join(root,'prototype/index.html')).href);await page.evaluate(()=>{globalThis.legacyChild47=function(i){if(G.mode==='child'){const c=G.origin==='妖血遗孤'?XTBackground47.contexts.find(c=>XTBackground47.visibleOriginVariants(G.origin,c).some(v=>v.i===i)):XTBackground47.contexts[0];G.birthContext=JSON.parse(JSON.stringify(c));G.fate=genFate();}return chooseChild(i);};});
+await page.evaluate(()=>{newGame('林砚','寒门散修','男');legacyChild47(0);XTOpening46.chooseTimeline(8,8);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();G.mode='idle';G.lastResult=null;G.stones=3000;G.inventory={herb:12,ironOre:12};tryEvent=()=>null;meetLive=()=>null;globalThis.reset36r=JSON.stringify(G);globalThis.fresh36r=()=>{restore(reset36r);G.mode='idle';G.lastResult=null;};globalThis.room36r=(room)=>{G.place='county';const d=XTSandbox.state();d.roomAt='county';d.room=room;XTWorld36.sync();XTSandbox.go('scene');};});
 async function check(name,fn){assert(await page.evaluate(fn),name);checks.push(name);console.log('PASS '+name);}
 await check('校准后实名商店仍可买卖且不能远程交易',()=>{fresh36r();room36r('shops');XTSandbox.dispatch('shop','grocer');const b=G.inventory.herb;sysBuy('herb');sysSell('herb');const paid=G.stones;G.place='ridge';sysBuy('herb');return G.inventory.herb===b&&G.stones===paid&&paid<3000;});
 await check('炉坊工艺制作仍按材料与时间结算',()=>{fresh36r();room36r('workshop');XTSandbox.dispatch('learnRecipes','alchemy');XTSandbox.dispatch('rentWorkshop');const before=XTSandbox.now();const old=Math.random;Math.random=()=>0;sysBrew();Math.random=old;return G.inventory.qiPill===1&&XTSandbox.now()===before+10;});

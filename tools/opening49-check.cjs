@@ -5,7 +5,7 @@ const {chromium}=require('C:/Users/EDY/.cache/codex-runtimes/codex-primary-runti
 try{const context=await browser.newContext({viewport:{width:1440,height:1100}}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.stack));const url=pathToFileURL(path.resolve(__dirname,'../prototype/index.html')).href;await page.goto(url);
 async function check(name,fn){assert(await page.evaluate(fn),name);count++;console.log('PASS '+name);}
 await check('创建页明确显示两组概率与适用范围',()=>{const t=document.querySelector('#rootPrev').textContent;return t.includes('普通家庭')&&t.includes('修行家族')&&t.includes('0.5%')&&t.includes('2%');});
-await page.locator('[data-o="世家嫡系"]').click();
+await page.locator('#coverBegin').click();await page.locator('[data-o="世家嫡系"]').click();
 await check('切换身份不会恢复旧概率预览',()=>document.querySelector('#rootPrev').textContent.includes('普通家庭：绝灵根 8%'));
 await check('精确分层采样符合两张已确认概率表，含小数档位',()=>{const wanted={ordinary:[8,30,32,20,7,2.5,.5],cultivator:[2,15,28,32,16,5,2]};for(const [origin,group]of [['寒门散修','ordinary'],['世家嫡系','cultivator']]){const n=Array(7).fill(0);for(let i=0;i<10000;i++)n[XTChildhood49.order.indexOf(XTChildhood49.sample(origin,0,(i+.5)/10000))]++;if(n.some((v,i)=>v!==wanted[group][i]*100))return false;}return true;});
 await check('所有出身都有七档非零概率，妖族魔道附属无固定优势',()=>Object.keys(ORIGINS).every(o=>{const a=XTChildhood49.distribution(o,0);return a.length===7&&a.every(x=>x[1]>0)&&a.reduce((t,x)=>t+x[1],0)===100;})&&XTChildhood49.profile('妖血遗孤',0).id==='ordinary'&&XTChildhood49.profile('魔道弃徒',1).id==='ordinary'&&XTChildhood49.profile('宗门外门弟子',0).id==='ordinary');

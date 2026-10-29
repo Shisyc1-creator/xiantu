@@ -1,0 +1,5 @@
+const assert=require('node:assert/strict'),path=require('node:path'),{pathToFileURL}=require('node:url');
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+(async()=>{const b=await chromium.launch({channel:'msedge',headless:true});try{for(const width of [1440,390]){const c=await b.newContext({viewport:{width,height:667},reducedMotion:'reduce'}),p=await c.newPage();await p.goto(pathToFileURL(path.resolve(__dirname,'../prototype/index.html')).href+'?developer=1');await p.locator('#coverBegin').click();
+ async function wheel(label){await p.evaluate(()=>scrollTo(0,0));await p.mouse.move(width*.75,420);await p.mouse.wheel(0,900);await p.waitForTimeout(250);assert(await p.evaluate(()=>scrollY>0),label+' must scroll with actual mouse wheel '+width);await p.keyboard.press('Control+End');assert(await p.evaluate(()=>scrollY>0));console.log('PASS actual wheel/keyboard scrolling '+label+' '+width);}
+ await wheel('create');await p.locator('#btnStart').click();await wheel('birth');await p.locator('[data-v]:visible').last().click();await wheel('childhood');await c.close();}}finally{await b.close();}})().catch(e=>{console.error(e);process.exitCode=1});

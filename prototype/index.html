@@ -832,7 +832,7 @@ body.start-screen .frame{max-width:none;background:none;padding:0;height:100dvh}
 <link rel="stylesheet" href="assets/content47.css">
 <link rel="stylesheet" href="assets/qi51.css">
 <link rel="stylesheet" href="assets/qi52.css">
-<link rel="stylesheet" href="assets/runtime-ui.css"><link rel="stylesheet" href="assets/staff54.css"></head>
+<link rel="stylesheet" href="assets/runtime-ui.css"><link rel="stylesheet" href="assets/cultivation-ui.css"><link rel="stylesheet" href="assets/staff54.css"><link rel="stylesheet" href="assets/family55.css"><link rel="stylesheet" href="assets/life56.css"></head>
 <body>
 <div class="frame">
   <header class="hud" id="hud"></header>
@@ -3317,6 +3317,7 @@ function sysGather(){
   if(!placeHas(p,'gather')){toast('此地不适合采集灵材，去山林、荒野或断崖。');return;}
   if(!runSystemDays(7,'gather'))return; const herb=1+ri(0,2); G.inventory.herb=(G.inventory.herb||0)+herb;
   if(ri(1,100)<=25)G.inventory.ironOre=(G.inventory.ironOre||0)+1;
+  window.XTFamily55?.gathered(herb,G.place);
   addLog('在附近山野采集灵材，得青叶草 '+herb+' 株'+((G.inventory.ironOre||0)>0?'，也寻到矿砂的可能仍在。':''),'up');finishSystemAction('alchemy');
 }
 function sysBrew(){
@@ -6371,5 +6372,5 @@ window.runWendaoLongSim=runWendaoLongSim;
 <script src="assets/qi52-data.js"></script>
 <script src="assets/qi51.js"></script>
 <script src="assets/qi52.js"></script>
-<script src="assets/runtime-ui.js"></script><script src="assets/staff54.js"></script></body>
+<script src="assets/runtime-ui.js"></script><script src="assets/cultivation-ui.js"></script><script src="assets/staff54.js"></script><script src="assets/family55.js"></script><script src="assets/county56-data.js"></script><script src="assets/family56-data.js"></script><script src="assets/county56.js"></script><script src="assets/family56.js"></script><script src="assets/foundation57.js"></script><script src="assets/events60.js"></script><script src="assets/events60-content.js"></script><script src="assets/events60-public.js"></script><script src="assets/events60-people.js"></script></body>
 </html>
