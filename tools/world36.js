@@ -311,6 +311,7 @@ function inherit(id){
  G.age=childAge;G.lifespan=n.realm<0?100:realmLife(n.realm);G.realm=Math.max(0,n.realm);G.layer=Math.max(1,n.layer||1);G.cult=0;G.month=month;G.day=day;
  if(G.root==='无灵根'){G.realm=-1;G.layer=0;G.cult=0;}G.difficulty={...oldG.difficulty};G.rescue40={generation:(oldG.generation||1)+1,used:false};G.generation=(oldG.generation||1)+1;G.ancestors=ancestors;stoneInherit(G,oldG);G.place=n.place;G.home=n.place;G.family=[];G.inventory={...(n.inventory||{})};
  G.world36={...estate,playerId:id,relations:{},partnerId:null,followers:[],children:[],contracts:[],birthPlan:null,startGranted:false};G.mode='idle';G.lastResult=null;
+ window.XTFoundation57?.preserveMarkets(oldG);
  window.XTStaff54?.inherit(oldG.world36.playerId,id);
  window.XTLife56?.inherit(oldG.world36.playerId,id);
  seedStart(false);log('由已登记的晚辈'+n.name+'接续家业，年龄和世界日期均保留。');saveRender();

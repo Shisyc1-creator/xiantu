@@ -12,7 +12,7 @@ on:
       - 'tools/neighbor66*.cjs'
       - 'tools/neighbor66.js'
       - 'tools/pill67-*.cjs'
-      - 'tools/economy68-audit.cjs'
+      - 'tools/economy68*.cjs'
       - 'tools/save-r1-check.cjs'
       - 'tools/closeout65-browser-check.cjs'
       - 'tools/opening61-browser-check.cjs'
@@ -70,6 +70,8 @@ jobs:
           node tools/world-scale66-audit.cjs
           node --test tools/neighbor66-study-check.cjs tools/pill67-settlement-check.cjs tools/pill67-study-check.cjs
           node tools/pill67-study.cjs
+          node --test tools/economy68-check.cjs
+          node tools/economy68-browser-check.cjs
           node tools/economy68-audit.cjs
           node tools/neighbor66-study.cjs
       - name: Build complete review bundle
