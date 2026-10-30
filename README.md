@@ -234,3 +234,10 @@
 本轮决定、实测和待确认范围统一见[凡界统合计划本轮记录](设定与设计/06_凡界开发统合计划.md)。修复开发新档刷新在开局模块加载前恢复造成的异常；未调整世界数值。当前开局、无灵根/小阶和保存浏览器测试使用 `tools/browser-runtime.cjs`，默认项目Playwright Chromium；可用 `PLAYWRIGHT_MODULE` / `CODEX_PRIMARY_RUNTIME_NODE_MODULES` 指定依赖，`PLAYWRIGHT_CHANNEL=msedge` 选择Edge，或 `PLAYWRIGHT_EXECUTABLE_PATH` 指定浏览器（优先于channel）。受管理浏览器禁止file URL时，先用 `python -m http.server 8765 --bind 127.0.0.1 --directory prototype`，再设置 `XIANTU_TEST_URL=http://127.0.0.1:8765/index.html`。默认仍支持离线file入口。
 
 续批已修复world36两套旧夹具，与现行规则核对后42＋12项通过；原legacyPartner保护保留，增加新版百艺缺主人拒绝覆盖断言。人手浏览器按实际新版折叠面板操作，双尺寸16项通过；全部19个node:test入口本轮报告730项通过（含重复依赖）。这不代表全部历史浏览器入口或GitHub托管CI已通过。用户电脑目录由另行任务核对同步，手机真机未验收。
+
+
+## 2026-10-30 首条邻府商道试玩
+
+大梁青州角色到**云安府城→游历→府际商道**，或从山河地图的商道入口出发，抵达青州邻府城后进入商街、点陶衡看货。路线2400里，炼气/筑基/结丹起单程30/3/1日，可分段赶路、返回或存档后继续；这条跨府路线不自动产生营生灵石，旧县府行程不改。邻府首批青髓矿4份、每份8灵石；凝露芦最多收4份、每份12灵石，售罄后不按月刷新。云安原有材料供应保留，不要求跨府才能准备筑基。
+
+这些是用户确认的首轮试玩参数；邻府只完成商街与往返闭环，未新增矿山/高阶环境或实物筑基丹机制。测试入口为 `tools/neighbor66-check.cjs`、`tools/neighbor66-browser-check.cjs`，采用同一browser-runtime配置。最新实测和限制见[凡界统合计划](设定与设计/06_凡界开发统合计划.md)。

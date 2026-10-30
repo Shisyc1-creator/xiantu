@@ -9,7 +9,8 @@ on:
       - 'tools/browser-runtime.cjs'
       - 'tools/current-opening-fixture.cjs'
       - 'tools/world-scale66-audit.cjs'
-      - 'tools/neighbor66-study*.cjs'
+      - 'tools/neighbor66*.cjs'
+      - 'tools/neighbor66.js'
       - 'tools/save-r1-check.cjs'
       - 'tools/closeout65-browser-check.cjs'
       - 'tools/opening61-browser-check.cjs'
@@ -56,6 +57,8 @@ jobs:
           node tools/closeout65-browser-check.cjs
           node tools/opening61-browser-check.cjs
           node tools/save-r1-browser-check.cjs
+          node --test tools/neighbor66-check.cjs
+          node tools/neighbor66-browser-check.cjs
       - name: Check existing world and relationship regressions
         run: |
           node tools/world36-check.cjs
