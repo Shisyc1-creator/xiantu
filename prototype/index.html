@@ -3992,20 +3992,8 @@ function advanceMonths(n, ctx, opt){ return advanceDays((n|0)*CFG.daysPerMonth, 
 /* 跨年那一瞬：年龄、旧债、世界演化、遇事。
    与「按月结算」分开，是因为修为是月的事，寿元是年的事。 */
 function yearTurn(out, ctx){
-  // 设定总表「闭关与时间」：连续行走满一年，闭关效率递减重置。
-  // 只对明确的行走回合累计；闭关、营生、旅行或其他动作都会打断连续行走。
-  if(ctx && ctx.act==='walk'){
-    G.walkYearsSinceRetreat=(G.walkYearsSinceRetreat||0)+1;
-    if(G.walkYearsSinceRetreat>=1){
-      if((G.rtCount||0)>0){
-        G.rtCount=0;
-        addLogTo(G,'行走一年，心气渐复。下一次闭关可恢复全效。','up');
-      }
-      G.walkYearsSinceRetreat=0;
-    }
-  }else{
-    G.walkYearsSinceRetreat=0;
-  }
+  // 闭关次数仅保留历史记录，不再衰减或通过跨年恢复效率。
+
   // 设定总表规则：所在地点灵气低于当前境界门槛，修为不增且每年损耗1%。
   // 只损耗当前已积累的修为，不改变已完成的小境界；圆满冲关前的补修同样受影响。
   const gateAtYearEnd=qiGateStatus(G);
@@ -4390,11 +4378,7 @@ function clampState(){
 function retreatMax(){ return Math.floor(G.lifespan*CFG.retreatMaxPct); }
 
 function retreatEfficiency(){
-  // 大境界内共享递减；连续行走满一年后，yearTurn 会将 rtCount 归零。
-  const used=G.rtCount||0;
-  const base=Math.max(CFG.decayFloor, 1-CFG.decayPerUse*used);
-  // 设定总表：心魔使后续闭关效率 -20%，直到事件中化解。
-  return base * (G.flag && G.flag.heartDemon ? 0.8 : 1);
+  return G.flag && G.flag.heartDemon ? 0.8 : 1;
 }
 
 /* =========================================================
@@ -5213,7 +5197,7 @@ function openRetreat(){
   const md=document.getElementById('modal');
   md.innerHTML=
     '<h3>闭 关</h3>'+
-    '<div class="sub">封门落锁，不问春秋。\n修为尽数入丹田——行走只得其半。\n每岁耗灵石 '+currentRetreatCost()+' 枚，囊中一空，自会醒来。\n闭关效率随次数递减；连续行走满一年，可恢复全效。\n门闭得住，世道闭不住；出关时，外头已过了这些年。</div>'+
+    '<div class="sub">封门落锁，不问春秋。\n修为尽数入丹田——行走只得其半。\n每岁耗灵石 '+currentRetreatCost()+' 枚，囊中一空，自会醒来。\n闭关不因次数降低效率；心魔、伤势和资源仍影响修炼。\n门闭得住，世道闭不住；出关时，外头已过了这些年。</div>'+
     '<div class="slider-row">'+
       '<input type="range" id="rtRange" min="1" max="'+maxY+'" value="'+val+'">'+
       '<div class="slider-val" id="rtVal">'+val+' 年</div>'+
@@ -5238,7 +5222,7 @@ function openRetreat(){
     const short=G.stones<cost;
     let rows=[];
     rows.push('本次效率　<b>'+Math.round(eff*100)+'%</b>　（本境第 '+((G.rtCount||0)+1)+' 次闭关）');
-    rows.push('效率恢复　'+((G.rtCount||0)>0?'连续行走满一年可恢复基础效率':'当前已是本境基础全效／首次闭关'));
+    rows.push('修炼状态　不按闭关次数衰减，无需跨年恢复。');
     if(G.flag && G.flag.heartDemon) rows.push('<span class="bad">心魔影响　效率额外 ×0.8；需通过相关事件化解</span>');
     rows.push('闭关规则　单次上限 '+maxY+' 年；寿元不足10%或修为圆满时提前出关。');
     rows.push('预计修为　<b class="good">+' + Math.floor(gain).toLocaleString() + '</b>' + (need?('　/　距下一层 '+Math.floor(need).toLocaleString()):''));
@@ -6290,7 +6274,7 @@ function runWendaoLifeBalanceAudit(){
       let remaining=need, retreatYears=0, sessions=0;
       // 每次闭关按当前配置的寿元比例封顶；效率按真实 retreatEfficiency 公式逐次衰减。
       while(remaining>0 && sessions<100){
-        const eff=Math.max(CFG.decayFloor,1-CFG.decayPerUse*sessions);
+        const eff=1;
         const maxY=Math.max(1,Math.floor(s.lifespan*CFG.retreatMaxPct));
         const y=Math.min(maxY,Math.max(1,Math.ceil(remaining/Math.max(1,annual*eff))));
         const gain=Math.min(remaining,annual*eff*y);

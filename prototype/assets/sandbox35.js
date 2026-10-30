@@ -563,7 +563,12 @@ renderScene=function(){
  if(window.XTWorld36?.renderView())return;
  if(V.tab==='cult'){
   if(V.sub==='arts'){renderArts();return;}
-  document.body.classList.remove('sb-screen');old.renderScene();
+  const d=data(),mind=d.mind,level=d.books[mind]?.level||0,need=needOf(G.layer),speed=yearOutput()*retreatEfficiency();
+  page('修行',card('当前修为',esc(curRealmTxt())+' · 修为 '+Math.floor(G.cult)+' / '+Math.floor(need)+'<br>年龄 '+G.age+' 岁 · 寿元 '+G.lifespan+' 年 · 尚余约 '+Math.max(0,G.lifespan-G.age)+' 年')+
+   card('修炼安排','主修：'+esc(mind||'尚未选定')+' · '+(['未入门','入门','熟练','精通'][level]||'未入门')+'<br>所在地：'+esc(placeName(G.place))+'<br>当前足额闭关参考：每年约 '+Math.floor(speed)+' 修为；年耗 '+currentRetreatCost()+' 灵石。<br>选择闭关时长后查看预计收获与结束年龄；瓶颈、寿元危险或事件可能提前结束。<br>闭关不按次数衰减，无需修行到年末恢复。')+
+   card('功法研习','研习提升已学功法；切换主修影响实际修炼收益。进入功法页查看等级、研习时间与费用。')+
+   card('状态影响','当前闭关效率 '+Math.round(retreatEfficiency()*100)+'%。'+(G.flag?.heartDemon?'心魔使闭关效率降低20%，须通过相关事件化解。':'无心魔影响。')+(G.injured>0?'当前有伤，修炼产出受损。':'')+'<br>主修、灵根、所在地与实际增益共同决定修炼速度；资源不足时按既有半效规则结算后出关。')+
+   card('突破准备',window.XTBreakthrough65?.ready()?'已到小阶瓶颈，可查看突破条件。':realmBrim()?'当前修为已满，可查看大境界突破条件。':'尚需积累修为；达到瓶颈后再准备突破。'));
   const el=document.getElementById('scene'),strip=document.createElement('nav');strip.className='sb-tabs';strip.innerHTML=btn('修行','cultTab','practice',false,'on')+btn('功法','cultTab','arts');el.prepend(strip);strip.querySelectorAll('[data-sb]').forEach(b=>b.onclick=()=>{V.sub=b.dataset.arg;render();});return;
  }
  if(V.tab==='scene')renderRooms();else if(V.tab==='bag')renderBag();else if(V.tab==='home')renderHome();else if(V.tab==='self')renderSelf();else if(V.tab==='shop')renderShop();else if(V.tab==='craft')renderCraft(V.sub);else if(V.tab==='faction')renderFaction();else if(V.tab==='quests')renderQuests();else if(V.tab==='guide')renderGuide();else renderOffers();
@@ -571,7 +576,7 @@ renderScene=function(){
 renderActions=function(){
  const el=document.getElementById('actions');
  if(!G||G.mode!=='idle'||V.tab!=='cult'||V.sub==='arts'){el.innerHTML='';return;}
- el.innerHTML=btn('修行至年末','year')+btn('连续修行','auto')+btn('闭关','retreat')+(canBreak()?btn('突破'+(REALM_NAMES[realmOf()+1]||'飞升'),'break'):'');
+ el.innerHTML=btn('安排修炼 · 闭关','retreat')+(canBreak()?btn('突破'+(REALM_NAMES[realmOf()+1]||'飞升'),'break'):'');
  el.querySelectorAll('[data-sb]').forEach(b=>b.onclick=()=>{if(b.dataset.sb==='year')stepYear(false);if(b.dataset.sb==='auto')autoRun();if(b.dataset.sb==='retreat')openRetreat();if(b.dataset.sb==='break')openBreak();});
 };
 renderHUD=function(){old.renderHUD();const gold=document.querySelector('#hud .hud-right .stat:last-child .v');if(gold)gold.textContent=Math.floor(G.stones);const nav=document.getElementById('primaryNav');
