@@ -2984,7 +2984,7 @@ function curLayerCount(s){ return realmLayerCount(realmOf(s)); }
 /* 当前境界显示名：炼气一层 / 筑基初 / 结丹后 / 渡劫九重 …（层满未突破时用「XX圆满」由调用方自行拼） */
 function curRealmTxt(s){
   s=s||G; const r=realmOf(s);
-  if(realmFull(s)) return REALM_NAMES[r]+'圆满';
+  if(realmBrim(s)) return REALM_NAMES[r]+'圆满';
   return realmLayerName(r, s.layer);
 }
 /* 按任意存档/祖先对象显示境界（不依赖全局 G）。旧档没有 realm 字段，按炼气算。 */
@@ -3650,10 +3650,7 @@ function renderScene(){
       body='修为已至'+rname+'圆满，丹田中那股气满得发胀，再往前一步，就是'+nxtName+'。\n\n'+
            '只是那一步跨出去，未必能落在地上。';
     }else{
-      body='<span class="mute">那一步没踏稳，气散了。</span>\n\n'+
-           '丹田空了一截，得从头补回来。补多久，看你还有多少年，'+
-           '也看你肯拿多少灵石去换。\n\n'+
-           '这一次会更容易些，也未必。';
+      body='气机尚未蓄满，还需要把这一层修完。\n\n你收敛心神，循着功法继续运转周天，等到根基充实时再求突破。';
     }
   }else{
     body=AMBIENT[Math.floor(G.age/3)%AMBIENT.length];
@@ -3663,7 +3660,7 @@ function renderScene(){
 
   html+='<div class="stat-panel">'+
     '<div class="hd">'+
-      '<span>'+(brim?rname+'圆满':(full?realmLayerName(realmOf(), curLayerCount())+'　补修':curRealmTxt()+'　→　'+realmLayerName(realmOf(), G.layer+1)))+'</span>'+
+      '<span>'+(brim?rname+'圆满':(full?realmLayerName(realmOf(), curLayerCount())+'　修炼':curRealmTxt()+'　→　'+realmLayerName(realmOf(), G.layer+1)))+'</span>'+
       '<span><b>'+Math.floor(G.cult)+'</b> / '+need+'</span>'+
     '</div>'+
     '<div class="bar"><div class="bar-fill" style="width:'+pct.toFixed(1)+'%"></div></div>';
@@ -3672,7 +3669,7 @@ function renderScene(){
     html+='<div class="calc">'+
       (canBreak()
         ? '修为已满。<b>可以冲关了。</b>'
-        : '冲关打散的修为还得补：闭关 <b>'+yRt+'</b> 年，耗 <span class="amber">'+costRt+'</span> 灵石')+
+        : '距修满当前境界：闭关 <b>'+yRt+'</b> 年，耗 <span class="amber">'+costRt+'</span> 灵石')+
       '</div>';
   }else{
     html+='<div class="calc">'+
@@ -4107,8 +4104,8 @@ function gainCult(s, amount){
     s.layer++;
     addLogTo(s,'　修为精进，晋'+realmLayerName(r, s.layer)+'。','up');
     if(s.layer>=lc){
-      s.cult=realmFullNeed(s);
-      addLogTo(s,'　气满周天，'+REALM_NAMES[r]+'圆满。','up');
+      s.cult=r===0?Math.min(s.cult,realmFullNeed(s)):realmFullNeed(s);
+      if(realmBrim(s))addLogTo(s,'　气满周天，'+REALM_NAMES[r]+'圆满。','up');
       break;
     }
   }
@@ -4127,8 +4124,8 @@ function autoRun(){
     stepYear(true);
     if(G.mode!=='idle') return;               // 触发事件或死亡
     if(G.age===ageBefore) return;
-    if(!wasFull && (realmBefore<realmOf() || (realmBefore===realmOf() && layerBefore<curLayerCount() && G.layer>=curLayerCount()))){
-      addLog('连行 '+(G.age-age0)+' 年，'+REALM_NAMES[realmOf()]+'圆满。','up');
+    if(!wasFull && (realmBefore<realmOf() || realmBrim())){
+      addLog('连行 '+(G.age-age0)+' 年，'+(realmBrim()?REALM_NAMES[realmOf()]+'圆满':curRealmTxt())+'。','up');
       render(); return;
     }
   }
