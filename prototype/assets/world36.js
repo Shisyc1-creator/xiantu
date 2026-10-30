@@ -134,7 +134,7 @@ function sync(){
 }
 function seedStart(fresh=false){
  const w=world(),s=starts[G.origin];if(!s||w.startGranted)return;
- const deferred=window.XTOpening46?.deferGrant();const d=S.state();if(!deferred){d.books[s.book]=d.books[s.book]||{level:1};G.arts[s.book]=true;if(!d.mind)d.mind=s.book;}
+ const deferred=window.XTOpening46?.deferGrant();const d=S.state();if(!deferred&&!window.XTNoRoot64?.isNone(G)){d.books[s.book]=d.books[s.book]||{level:1};G.arts[s.book]=true;if(!d.mind)d.mind=s.book;}
  w.startGranted=true;w.start={origin:G.origin,method:s.book,from:s.method,residence:window.XTHome41?.specs[G.origin]?.name||({ '寒门散修':'乡中旧居','宗门外门弟子':'观中弟子住处','没落家族子弟':'城西家族旧宅','世家嫡系':'宗族大宅','妖血遗孤':'山间藏身处','魔道弃徒':'坊市暂居处'})[G.origin]};
  registerFamily();
  if(fresh){G.place=s.place;G.home=s.place;d.roomAt=s.place;d.room=s.room;}
@@ -237,7 +237,7 @@ function renderView(){
  }
  return false;
 }
-function interact(type,id){
+function interact(type,id){if(window.XTNoRoot64?.isNone(G)&&['study','mentor'].includes(type))return toastReason('你没有灵根，不能修炼。');
  if(!systemReady())return;id=npcKey(id);const n=get(id);if(!present(id))return toastReason('先找到这个人，当面互动。');
  const r=relation(id),w=world();
  const socialAct=(days,fn)=>act(days,'social',()=>{if(!present(id)){log('未能完成与'+n.name+'的相处，对方已不在原处或已寿尽。');return;}fn();});
@@ -309,7 +309,7 @@ function inherit(id){
  newGame(n.name,G.origin,n.sex,t);
  if(oldG.backgroundVersion61===1)G.backgroundVersion61=1;G.root=n.root;G.coef=(ROOTS[n.root]||ROOTS['五灵根']).coef;G.cap=(ROOTS[n.root]||ROOTS['五灵根']).cap;
  G.age=childAge;G.lifespan=n.realm<0?100:realmLife(n.realm);G.realm=Math.max(0,n.realm);G.layer=Math.max(1,n.layer||1);G.cult=0;G.month=month;G.day=day;
- G.difficulty={...oldG.difficulty};G.rescue40={generation:(oldG.generation||1)+1,used:false};G.generation=(oldG.generation||1)+1;G.ancestors=ancestors;stoneInherit(G,oldG);G.place=n.place;G.home=n.place;G.family=[];G.inventory={...(n.inventory||{})};
+ if(G.root==='无灵根'){G.realm=-1;G.layer=0;G.cult=0;}G.difficulty={...oldG.difficulty};G.rescue40={generation:(oldG.generation||1)+1,used:false};G.generation=(oldG.generation||1)+1;G.ancestors=ancestors;stoneInherit(G,oldG);G.place=n.place;G.home=n.place;G.family=[];G.inventory={...(n.inventory||{})};
  G.world36={...estate,playerId:id,relations:{},partnerId:null,followers:[],children:[],contracts:[],birthPlan:null,startGranted:false};G.mode='idle';G.lastResult=null;
  window.XTStaff54?.inherit(oldG.world36.playerId,id);
  window.XTLife56?.inherit(oldG.world36.playerId,id);

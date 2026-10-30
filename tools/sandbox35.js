@@ -218,7 +218,7 @@ function renderArts(){
  }
  page('功法与术法',note('可运用一门心法、两门术法。')+(body||note('尚未得到功法书册。县城百草铺、坊市摊主和宗门藏经处都有不同来路。')),[['practice','修行'],['arts','功法']]);
 }
-function practice(title){
+function practice(title){if(window.XTNoRoot64?.isNone(G))return notify('你没有灵根，无法修炼。');
  if(!canAct())return;
  const d=data(),b=d.books[title];if(!b||b.level>=3)return;
  const fee=money(b.level?4:2);if(G.stones<fee)return notify('研习需要 '+fee+' 灵石备纸墨与修炼所需。');
@@ -373,7 +373,7 @@ function renderFaction(){
  page('宗门与师承',body);
 }
 function sectPresent(id){const a=Object.entries(actors).find(([k,a])=>a.faction===id);return a&&physicalActor(a[0]);}
-function join(id){
+function join(id){if(window.XTNoRoot64?.isNone(G))return notify('你没有灵根，不能拜入修行门下。');
  if(!canAct()||!sectPresent(id)||data().faction)return;
  const f=factions[id];if(realmOf()<f.need)return notify('修为还不足以获得这座宗门的接引。');if(G.stones<money(12))return notify('仪礼需 '+money(12)+' 灵石。');
  stoneChange(G,-(money(12)),'地方交易与经营');act(3,'sect',()=>{data().faction={id,name:f.name,rank:'外门弟子',contribution:0,cd:{}};G.sect={name:f.name,rank:'外门弟子',contribution:0};log('拜入'+f.name+'，暂列外门。');});

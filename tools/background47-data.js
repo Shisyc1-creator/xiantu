@@ -4,7 +4,7 @@ window.XTBackground47Data={
     "港口船户": {
       "dist": [
         [
-          "绝灵根",
+          "无灵根",
           5
         ],
         [
@@ -147,7 +147,7 @@ window.XTBackground47Data={
     "北地部族家庭": {
       "dist": [
         [
-          "绝灵根",
+          "无灵根",
           5
         ],
         [

@@ -930,14 +930,14 @@ function travelDays(li){
 /* 地点境界门槛：境界只决定能否抵达，不凭空传送。具体行程仍按 ROUTES 的里数和境界日行计算。 */
 function placeAvailable(key){
   const p=PLACES[key];
-  return !!p && !p.closed && realmOf() >= (p.needRealm||0);
+  return !!p && !p.closed && Math.max(0,realmOf()) >= (p.needRealm||0);
 }
 function routeAvailable(r){
-  return !!r && placeAvailable(r.a) && placeAvailable(r.b) && realmOf() >= (r.needRealm||0);
+  return !!r && placeAvailable(r.a) && placeAvailable(r.b) && Math.max(0,realmOf()) >= (r.needRealm||0);
 }
 
 const ROOTS = {
-  '绝灵根':   { coef:0.90, cap:0, desc:'感应微弱，修行较慢，仍可积累道基' },
+  '无灵根':   { coef:0, cap:0, desc:'不能感应灵气，无法引气与修炼' },
   '五灵根':   { coef:0.93, cap:1, desc:'杂灵根，散修主流' },
   '四灵根':   { coef:0.95, cap:2, desc:'常见资质，修行较慢，境界不受硬性封锁' },
   '三灵根':   { coef:0.97, cap:3, desc:'基准资质' },
@@ -945,6 +945,7 @@ const ROOTS = {
   '变异灵根': { coef:0.99, cap:5, desc:'冰雷风暗，稀有而凶险' },
   '天灵根':   { coef:1.00, cap:6, desc:'资质极佳，修行更快，但飞升仍须资源与机缘' }
 };
+Object.defineProperty(ROOTS,'绝灵根',{value:ROOTS['五灵根'],enumerable:false});
 const REALM_NAMES = ['炼气','筑基','结丹','元婴','化神','炼虚','合体','大乘','渡劫'];
 
 /* =========================================================
@@ -1003,7 +1004,7 @@ const REALMS = [
 
 const ORIGINS = {
   '寒门散修': {
-    dist:[['绝灵根',10],['五灵根',55],['四灵根',30],['三灵根',5]],
+    dist:[['无灵根',10],['五灵根',55],['四灵根',30],['三灵根',5]],
     tag:'无师门、无功法、无靠山',
     birth:'{乡}在山的这一边，离最近的坊市要走两天。\n这里的人一辈子见不到几个修者；见到的，多半也没什么好下场。\n你出生那年，村里刚埋完上一批进山采药没回来的人。',
     awaken:'八岁这年，娘带你走了两天山路，到坊市边上那家杂货铺。\n测灵石是掌柜的私货，测一次两灵石。娘从箱底翻出那点钱，数了三遍。',
@@ -1108,7 +1109,7 @@ const ORIGINS = {
   },
 
   '魔道弃徒': {
-    dist:[['绝灵根',40],['五灵根',40],['变异灵根',20]],
+    dist:[['无灵根',40],['五灵根',40],['变异灵根',20]],
     tag:'正魔两道通缉',
     birth:'血河宗的辖地，天上终年有一层灰。\n这里的孩子长得快，死得也快。你能平安长大，已经算是运气。',
     awaken:'八岁这年，血河宗一年一度的验灵。\n轮到你时，验灵的执事皱了皱眉，把石头换了一块。\n那块石头试不出东西，你被记作「废物」。\n这一年，你搭上一队南下的商车，被丢在青石县城南的坊市。',
@@ -1268,8 +1269,8 @@ const GEN = {
   5:[0.0005,0.0080,0.0350,0.1800,0.6450,0.1315],
   6:[0.0001,0.0005,0.0030,0.0180,0.1200,0.8584]
 };
-const TIER_OF = {'绝灵根':1,'五灵根':2,'四灵根':3,'三灵根':4,'双灵根':5,'变异灵根':5,'天灵根':6};
-const TIER_ROOT = {1:'绝灵根',2:'五灵根',3:'四灵根',4:'三灵根',5:'双灵根',6:'天灵根'};
+const TIER_OF = {'无灵根':1,'五灵根':2,'四灵根':3,'三灵根':4,'双灵根':5,'变异灵根':5,'天灵根':6};
+const TIER_ROOT = {1:'无灵根',2:'五灵根',3:'四灵根',4:'三灵根',5:'双灵根',6:'天灵根'};
 
 /* =========================================================
    内容层 · 世界表（炼气段）
@@ -1493,13 +1494,13 @@ const NPCS = [
     knows:'断云崖哪一段有雾，哪一段没有' },
 
   { id:'N05', name:'明砚', title:'小道童', place:'temple', spot:'山门', realm:'炼气', layer:2,
-    root:'绝灵根', age:12, life:100,
+    root:'五灵根', age:12, life:100,
     look:'个子矮，扫地要踮脚',
     want:'他不知道此生到不了筑基——观里没人肯告诉他',
     knows:'观主夜里咳嗽，一直咳到天亮' },
 
   { id:'N06', name:'老周', title:'杂役', place:'temple', spot:'山门', realm:'炼气', layer:1,
-    root:'绝灵根', age:63, life:100,
+    root:'五灵根', age:63, life:100,
     look:'背驼，见谁都先低头',
     want:'把孙子送进观里，哪怕只是挑水',
     knows:'观里二十几个人，谁跟谁不对付' },
@@ -1535,7 +1536,7 @@ const NPCS = [
     knows:'谁在收什么、谁在卖什么、谁的货来路不正' },
 
   { id:'N12', name:'老鬼', title:'收旧物', place:'market', spot:'旧物摊', realm:'炼气', layer:1,
-    root:'绝灵根', age:71, life:100,
+    root:'五灵根', age:71, life:100,
     look:'指甲缝里全是黑的',
     want:'一枚真的储物袋。他收了三十年旧物，见过三个，一个也没留住',
     knows:'死人的东西是从哪条路上来的' },
@@ -1553,7 +1554,7 @@ const NPCS = [
     knows:'岭上哪条路今年没人走' },
 
   { id:'N15', name:'韩五', title:'猎户', place:'ridge', spot:'岭道', realm:'炼气', layer:2,
-    root:'绝灵根', age:34, life:100,
+    root:'五灵根', age:34, life:100,
     look:'一手弓一手刀，刀比弓用得熟',
     want:'一头能换三十石的野猪',
     knows:'山里什么东西今年多了' },
@@ -2236,7 +2237,7 @@ const EVENTS = [
       } },
     { l:'去叫坊市的管事',
       run:s=>{ stoneChange(s,8,'事件与修行'); addFame(s,'本地','market',1); s.flag.denounced=true;
-        return { t:'管事姓周，绝灵根，管这片场子三十年。\n他过去的时候一句话没说，只把蓝布掀了。底下压着一小袋陈面。\n摊主跑了，鞋掉了一只。\n周管事从没收的银钱里数出八块给你：「下回先来找我，别自己动手。」\n\n<span class="good">灵石 +8　声望 +1</span>', log:'告发假丹摊子' }; } }
+        return { t:'管事姓周，无灵根，管这片场子三十年。\n他过去的时候一句话没说，只把蓝布掀了。底下压着一小袋陈面。\n摊主跑了，鞋掉了一只。\n周管事从没收的银钱里数出八块给你：「下回先来找我，别自己动手。」\n\n<span class="good">灵石 +8　声望 +1</span>', log:'告发假丹摊子' }; } }
   ]},
 
 { id:'E029', name:'断剑', place:'market', spot:'旧物摊', once:true, w:8,
@@ -2983,7 +2984,7 @@ function realmFullNeed(s){ s=s||G; const r=realmOf(s); return realmNeed(r, realm
 function curLayerCount(s){ return realmLayerCount(realmOf(s)); }
 /* 当前境界显示名：炼气一层 / 筑基初 / 结丹后 / 渡劫九重 …（层满未突破时用「XX圆满」由调用方自行拼） */
 function curRealmTxt(s){
-  s=s||G; const r=realmOf(s);
+  s=s||G;if(window.XTNoRoot64?.isNone(s))return '凡人'; const r=realmOf(s);
   if(realmBrim(s)) return REALM_NAMES[r]+'圆满';
   return realmLayerName(r, s.layer);
 }
@@ -3871,7 +3872,7 @@ function currentRetreatCost(){ return Math.round(CFG.retreatCost * economyFactor
 function currentWalkIncome(){ return Math.round(CFG.walkIncome * economyFactor() * XTEconomy40.rule(G).incomeMultiplier); }
 function currentIdleIncome(){ return Math.round(CFG.idleIncome * economyFactor() * XTEconomy40.rule(G).incomeMultiplier); }
 
-function yearOutput(s){
+function yearOutput(s){if(window.XTNoRoot64?.isNone(s||G))return 0;
   s = s||G;
   // 年产基准取自《问道长生》设定总表「寿元平衡模拟」的“段内年产灵气”列。
   // 注意：REALMS.pace 是日行里数，只影响赶路，不是修炼倍率。
@@ -3934,6 +3935,7 @@ function advanceDays(n, ctx, opt){
               level0:G.layer, level1:G.layer, levelUp:false, full:false,
               event:null, died:false, broke:false, days:0, months:0, years:0 };
 
+  if(rate>0 && (ctx.act==='walk'||ctx.retreat) && window.XTBreakthrough65?.ready()){out.bottleneck=true;return out;}
   if(ctx.cost>0){
     if(G.stones<ctx.cost){ out.broke=true; return out; }
     stoneChange(G,-ctx.cost,'行动费用'); out.cost=ctx.cost;
@@ -3953,8 +3955,9 @@ function advanceDays(n, ctx, opt){
       const gate=qiGateStatus(G);
       if(gate.enough){
         const gain=yearOutput(G)*rate/CFG.monthsPerYear*seg/DPM;
+        const beforeCult=G.cult;
         gainCult(G,gain);
-        out.gain+=gain;
+        out.gain+=Math.max(0,G.cult-beforeCult);
       }
       // 灵气不足不妨碍谋生，但不能正常积累修为。
       
@@ -3976,6 +3979,7 @@ function advanceDays(n, ctx, opt){
         if(out.event && stopOnEvent) break;
       }
     }
+    if(rate>0 && (ctx.act==='walk'||ctx.retreat) && window.XTBreakthrough65?.ready()){out.bottleneck=true;break;}
   }
   expireLocalQuest();
   out.level1=G.layer;
@@ -4085,7 +4089,7 @@ function tickBuffs(s){
   if(s.karma>0 && Math.random()<0.06) s.karma--;
 }
 
-function gainCult(s, amount){
+function gainCult(s, amount){if(window.XTNoRoot64?.isNone(s||G))return 0;
   s = s||G;
   const r=realmOf(s);
   const lc=realmLayerCount(r);
@@ -4113,6 +4117,7 @@ function gainCult(s, amount){
 }
 
 function autoRun(){
+  if(window.XTBreakthrough65?.ready()){openBreak();return;}
   let guard=0;
   const wasFull=realmBrim();
   const cap=wasFull?5:300;                    // 道尽后只稳步营生，不一口气推到死
@@ -4123,6 +4128,7 @@ function autoRun(){
     const realmBefore=realmOf();
     stepYear(true);
     if(G.mode!=='idle') return;               // 触发事件或死亡
+    if(window.XTBreakthrough65?.ready()){save();render();return;}
     if(G.age===ageBefore) return;
     if(!wasFull && (realmBefore<realmOf() || realmBrim())){
       addLog('连行 '+(G.age-age0)+' 年，'+(realmBrim()?REALM_NAMES[realmOf()]+'圆满':curRealmTxt())+'。','up');
@@ -5264,13 +5270,14 @@ function openRetreat(){
 }
 
 function doRetreat(years, eff){
-  let done=0, gained=0, spent=0, shortYear=false, interrupted='';
+  let done=0, doneDays=0, gained=0, spent=0, shortYear=false, interrupted='';
   const wasBrim=realmBrim();
   const startLifespan=Math.max(1,G.lifespan);
   for(let i=0;i<years;i++){
     // 强制打断：寿元低于当前寿元上限的10%，不再继续闭关。
     if(G.lifespan-G.age < G.lifespan*0.10){ interrupted='寿元所剩不足一成'; break; }
     if(G.age>=G.lifespan-1) break;
+    if(window.XTBreakthrough65?.ready()){ interrupted='抵达小阶瓶颈'; break; }
     if(realmBrim()){ interrupted='修为已满'; break; }
     const annualCost=currentRetreatCost();
     const canPay=G.stones>=annualCost;
@@ -5281,7 +5288,10 @@ function doRetreat(years, eff){
                        cost:paid, retreat:true,
                        eventRate:(i===0?0:CFG.retreatEventRate) });
     if(r.broke){ interrupted='灵石不足'; break; }
+    doneDays+=r.days||0;
+    if(r.bottleneck&&r.days<360){const refund=Math.max(0,(r.cost||0)-Math.ceil((r.cost||0)*r.days/360));if(refund){stoneChange(G,refund,'闭关提前结束退回余款');r.cost-=refund;}}
     spent+=r.cost||0;
+    if(r.bottleneck){gained+=r.gain;done++;interrupted='抵达小阶瓶颈';break;}
     if(r.died) break;
     done++; gained+=r.gain;
     if(!canPay){ shortYear=true; interrupted='灵石不足，半效结算后出关'; break; }
@@ -5299,13 +5309,13 @@ function doRetreat(years, eff){
   }
   if(done>0){
     G.rtCount=(G.rtCount||0)+1;
-    addLog('闭关 '+done+' 年（效率 '+Math.round(eff*100)+'%'+(shortYear?'，资源不足按半效':'')+'），修为 +'+Math.floor(gained)+'。','up');
+    addLog('闭关 '+doneDays+' 日（效率 '+Math.round(eff*100)+'%'+(shortYear?'，资源不足按半效':'')+'），修为 +'+Math.floor(gained)+'。','up');
   }
 
   // 出关简报：明确记录实际消耗、效率惩罚、强制打断原因和当下灵气档位。
   if(done>0){
     const brief=[];
-    brief.push('你推开洞门。外面已经过了 '+done+' 年。');
+    brief.push('你推开洞门。外面已经过了 '+doneDays+' 日。');
     if(done>=8){
       brief.push(pick([
         '山下的村子换了名字，村口那棵老槐被雷劈了，还剩半截。',
@@ -5358,7 +5368,7 @@ function nextBtBase(){
   return target.bt[0];
 }
 
-function canBreak(){ return !!G && G.mode==='idle' && G.age<G.lifespan && realmBrim(); }
+function canBreak(){ return !!G && !window.XTNoRoot64?.isNone(G) && G.mode==='idle' && G.age<G.lifespan && realmBrim(); }
 function naturalBreakAllowed(){ return true; } // Compatibility with old tools; no root cap.
 function breakRate(invest){
   const money=Math.max(0,Math.min(G.stones,Number(invest)||0));
@@ -5495,7 +5505,7 @@ function renderDead(){
 
 /* 子代灵根：均值回归 + 变异判定。纯函数，界面与模拟器共用 */
 function rollHeirRoot(selfRoot, mateRoot){
-  const ROOT6=['绝灵根','五灵根','四灵根','三灵根','双灵根','天灵根'];
+  const ROOT6=['无灵根','五灵根','四灵根','三灵根','双灵根','天灵根'];
   const tSelf=TIER_OF[selfRoot]||1;
   const tMate=TIER_OF[mateRoot]||1;
   const mean=Math.round((tSelf+tMate)/2);
@@ -5512,7 +5522,7 @@ function rollHeirRoot(selfRoot, mateRoot){
 function openInherit(){
   const ov=document.getElementById('overlay');
   const md=document.getElementById('modal');
-  const mateRoot=G.hasMate?(G.mateRoot||G.root):pick(['绝灵根','五灵根','四灵根','三灵根']);
+  const mateRoot=G.hasMate?(G.mateRoot||G.root):pick(['无灵根','五灵根','四灵根','三灵根']);
   const h=rollHeirRoot(G.root, mateRoot);
   const heirRoot=h.root, mutated=h.mutated, mean=h.mean, tSelf=h.tSelf, tMate=h.tMate;
   const inherit=Math.floor(G.stones*0.4);
@@ -6049,7 +6059,7 @@ function showStart(){
   let cur=names[0];
   let sexCur='男';
   /* 七档灵根全列。此身出不了的档，写「—」并压暗——命的上限，一眼看得见。 */
-  const ROOT_ORDER=['绝灵根','五灵根','四灵根','三灵根','双灵根','变异灵根','天灵根'];
+  const ROOT_ORDER=['无灵根','五灵根','四灵根','三灵根','双灵根','变异灵根','天灵根'];
   function updPrev(){
     const m={};
     ORIGINS[cur].dist.forEach(([k,v])=>{ m[k]=v; });
@@ -6147,7 +6157,7 @@ window.addEventListener('error', function(ev){
 function runWendaoBreakSim(trials){
   const N=Math.max(1000,Math.min(100000,Math.floor(Number(trials)||10000)));
   const roots=[
-    {name:'绝灵根',coef:0.90}, {name:'五灵根',coef:0.93},
+    {name:'无灵根',coef:0.90}, {name:'五灵根',coef:0.93},
     {name:'四灵根',coef:0.95}, {name:'三灵根',coef:0.97},
     {name:'双灵根',coef:0.98}, {name:'变异灵根',coef:0.99},
     {name:'天灵根',coef:1.00}
@@ -6216,7 +6226,7 @@ function runWendaoWorldCheck(){
 /* 第六批：成长平衡审查器。诊断而非完整通关模拟。以当前年产出公式、逐阶需求和寿元数据，估算中性条件下的修炼耗时；不修改 G 或存档。 */
 function runWendaoGrowthAudit(){
   const roots=[
-    {name:'绝灵根',coef:0.90},{name:'五灵根',coef:0.93},
+    {name:'无灵根',coef:0.90},{name:'五灵根',coef:0.93},
     {name:'四灵根',coef:0.95},{name:'三灵根',coef:0.97},
     {name:'双灵根',coef:0.98},{name:'变异灵根',coef:0.99},{name:'天灵根',coef:1.00}
   ];
@@ -6267,7 +6277,7 @@ function runWendaoGrowthAudit(){
    采用当前 yearOutput、CFG.walkRate、闭关效率衰减和寿元配置；不模拟随机事件、灵石决策、丹药与突破随机性。 */
 function runWendaoLifeBalanceAudit(){
   const roots=[
-    {name:'绝灵根',coef:0.90},{name:'五灵根',coef:0.93},
+    {name:'无灵根',coef:0.90},{name:'五灵根',coef:0.93},
     {name:'四灵根',coef:0.95},{name:'三灵根',coef:0.97},
     {name:'双灵根',coef:0.98},{name:'变异灵根',coef:0.99},{name:'天灵根',coef:1.00}
   ];
@@ -6369,5 +6379,6 @@ window.runWendaoLongSim=runWendaoLongSim;
 <script src="assets/qi52-data.js"></script>
 <script src="assets/qi51.js"></script>
 <script src="assets/qi52.js"></script>
-<script src="assets/runtime-ui.js"></script><script src="assets/cultivation-ui.js"></script><script src="assets/staff54.js"></script><script src="assets/family55.js"></script><script src="assets/county56-data.js"></script><script src="assets/family56-data.js"></script><script src="assets/county56.js"></script><script src="assets/family56.js"></script><script src="assets/foundation57.js"></script><script src="assets/events60.js"></script><script src="assets/events60-content.js"></script><script src="assets/events60-public.js"></script><script src="assets/events60-people.js"></script></body>
+<script src="assets/runtime-ui.js"></script><script src="assets/cultivation-ui.js"></script><script src="assets/staff54.js"></script><script src="assets/family55.js"></script><script src="assets/county56-data.js"></script><script src="assets/family56-data.js"></script><script src="assets/county56.js"></script><script src="assets/family56.js"></script><script src="assets/foundation57.js"></script><script src="assets/events60.js"></script><script src="assets/events60-content.js"></script><script src="assets/events60-public.js"></script><script src="assets/events60-people.js"></script><script src="assets/no-root64.js"></script>
+<script src="assets/breakthrough65.js"></script></body>
 </html>

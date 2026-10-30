@@ -2,7 +2,7 @@
 (()=>{'use strict';
 const S=XTSandbox,W=XTWorld36,V=S.view;
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const order=['绝灵根','五灵根','四灵根','三灵根','双灵根','变异灵根','天灵根'];
+const order=['无灵根','五灵根','四灵根','三灵根','双灵根','变异灵根','天灵根'];
 const profiles={ordinary:{id:'ordinary',name:'普通家庭',weights:[8,30,32,20,7,2.5,.5]},cultivator:{id:'cultivator',name:'修行家族',weights:[2,15,28,32,16,5,2]}};
 function profile(origin,variant){
  // 已有资料明确记载这两类的家族传承；组织依附或族属不等于修士血亲。

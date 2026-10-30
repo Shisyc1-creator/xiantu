@@ -111,7 +111,7 @@ function turn(token){const q=state(),b=q?.battle;if(!b||token.split('|').slice(0
  });render();}
 function battlePage(){const b=state().battle;if(!b)return;const moves=[...new Set(['attack',...b.stats.spells.map(moveFor).filter(Boolean),'guard','breathe','heal','flee',...(window.XTQi52?.extraMoves(b)||[])])];page('斗法 · '+b.enemy.name,card('第'+(b.turn+1)+'回合','你的气血 '+b.hp+'/'+b.stats.maxHp+' · 真元 '+Number(b.mp.toFixed(1))+'/'+b.stats.maxMp+'<br>敌方气血 '+b.enemy.hp+'/'+b.enemy.maxHp+'<br><strong>敌方意图：'+esc(intent(b))+(b.charged?'（已蓄势）':'')+'</strong><br>配置已锁定：'+esc(b.stats.mind||'未定主修')+'；'+esc(b.stats.spells.join('、')||'普通攻击')+'<br>每回合兼修负担 '+b.stats.aux.burden+' 真元；真元不足时可调息或撤退。',moves.map(move=>B(moveDefs[move].label+' · '+Number(cost(b,move).toFixed(1))+'真元','turn',b.id+'|'+b.turn+'|'+move,!usable(b,move))).join(''))+(window.XTQi52?.battleInfo(b)||'')+'<p class="sb-note">'+moves.map(m=>esc(moveDefs[m].label+'：'+moveDefs[m].desc)).join('；')+'</p><ol class="qi-log51">'+b.log.slice(-12).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>');}
 function recordPage(){const r=state().record;page('斗法战报',(r?card(r.text,r.log.map(esc).join('<br>')):'')+guide()+B('返回炼气行程','hub')+B('返回场景','scene'));}
-function extraDispatch(type,arg){
+function extraDispatch(type,arg){if(window.XTNoRoot64?.isNone(G)&&['practice','main','aux','spell','train','hunt','routes52'].includes(type))return true;
  if(type==='turn'){turn(arg);return true;}
  if(state()?.battle)return true;
  if(type==='routes52'){window.XTQi52?.open();return true;}

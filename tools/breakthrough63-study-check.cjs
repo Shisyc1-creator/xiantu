@@ -1,0 +1,3 @@
+const {test}=require('node:test'),assert=require('node:assert/strict');const {prepared,rng,run}=require('./breakthrough63-study.cjs');
+test('candidate assistance covers a fraction of missing probability',()=>{assert.equal(prepared(.1,.5),.55);assert.equal(prepared(.9,.5),.95);assert.equal(prepared(0,0),0);assert.throws(()=>prepared(.5,-1));assert.throws(()=>prepared(.5,2));});
+test('study is reproducible and terminates an unaffordable lifetime',()=>{const d={root:'fixture',coef:.97,startAge:99,output:1,needs:Array(13).fill(1),smallBase:Array(13).fill(.9)};assert.deepEqual(run([d],{count:50}),run([d],{count:50}));assert.equal(run([d],{count:50})[0].successPercent,0);const a=rng(1),b=rng(1);for(let i=0;i<100;i++)assert.equal(a(),b());});
