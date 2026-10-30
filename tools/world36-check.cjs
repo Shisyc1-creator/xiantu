@@ -4,19 +4,19 @@ const root=path.resolve(__dirname,'..'),out=path.join(root,'.screenshots/batch36
 (async()=>{const browser=await launchBrowser();const results=[],errors=[],failed=[];
 try{
 const page=await browser.newPage({viewport:{width:1440,height:1000}});page.on('pageerror',e=>errors.push(e.message));page.on('requestfailed',r=>failed.push(r.url()));
-await page.goto(gameUrl());await page.evaluate(()=>{globalThis.legacyChild47=function(i){if(G.mode==='child'){const c=G.origin==='妖血遗孤'?XTBackground47.contexts.find(c=>XTBackground47.visibleOriginVariants(G.origin,c).some(v=>v.i===i)):XTBackground47.contexts[0];G.birthContext=JSON.parse(JSON.stringify(c));G.fate=genFate();}return chooseChild(i);};});
+await page.goto(gameUrl()+'?developer=1');await require('./current-opening-fixture.cjs')(page);
 await page.evaluate(()=>{
-newGame('沈行舟','寒门散修','男');legacyChild47(0);XTOpening46.chooseTimeline(8,8);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();G.mode='idle';G.lastResult=null;G.stones=3000;G.inventory.herb=120;G.inventory.ironOre=60;render();
+startCurrentOpening('寒门散修');G.mode='idle';G.lastResult=null;G.stones=3000;G.inventory.herb=120;G.inventory.ironOre=60;render();
 globalThis.fixture36=JSON.stringify(G);tryEvent=()=>null;meetLive=()=>null;
 globalThis.reset36=(extra={})=>{G=JSON.parse(fixture36);Object.assign(G,extra);const d=XTSandbox.state();d.roomAt=G.place;d.room='square';XTSandbox.view.actor=null;XTSandbox.view.detail=null;XTWorld36.sync();XTSandbox.go('cult');};
 globalThis.room36=(place,room)=>{G.place=place;const d=XTSandbox.state();d.roomAt=place;d.room=room;XTWorld36.sync();XTSandbox.go('scene');};
 globalThis.pass36=days=>advanceDays(days,{act:'test',rate:0,incomeMul:0,eventRate:0});
 });
 async function check(name,fn){assert(await page.evaluate(fn),name);results.push(name);console.log('PASS '+name);}
-const starts=await page.evaluate(()=>{const rows=[];for(const origin of Object.keys(ORIGINS)){newGame('沈行舟',origin,'男');legacyChild47(0);XTOpening46.chooseTimeline(8,8);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();G.mode='idle';G.lastResult=null;render();const d=XTSandbox.state(),w=XTWorld36.world();rows.push({origin,place:G.place,home:G.home,mind:d.mind,level:d.books[d.mind]?.level,from:w.start.from,location:w.start.residence});}return rows;});
-assert(starts.every(r=>r.mind&&r.level===1&&r.from));assert(new Set(starts.map(r=>r.mind)).size===9);results.push('六种开局各有已入门、来源明确且不同的基础心法');
-assert(new Set(starts.map(r=>r.location)).size===9);results.push('六种出身有各自家处描述与既有出生地点');
-await check('宗门开局已经属于本门而非再次付钱入门',()=>{newGame('沈行舟','宗门外门弟子','男');legacyChild47(0);XTOpening46.chooseTimeline(8,8);if(window.XTOpening46?.pending())for(let openingStep46=0;openingStep46<4;openingStep46++)XTOpening46.dispatch(XTOpening46.token(),0);beginCultivation();return XTSandbox.state().faction.id==='temple'&&G.sect.rank==='外门弟子';});
+const starts=await page.evaluate(()=>{const rows=[];for(const origin of Object.keys(ORIGINS)){startCurrentOpening(origin);G.mode='idle';G.lastResult=null;render();const d=XTSandbox.state(),w=XTWorld36.world();rows.push({origin,place:G.place,home:G.home,mind:d.mind,level:d.books[d.mind]?.level,from:w.start.from,location:w.start.residence});}return rows;});
+assert(starts.every(r=>r.mind&&r.level===1&&r.from));assert(new Set(starts.map(r=>r.mind)).size===9);results.push('九种开局各有已入门、来源明确且不同的基础心法');
+assert(new Set(starts.map(r=>r.location)).size===9);results.push('九种出身有各自家处描述与既有出生地点');
+await check('宗门家庭不自动入门，实际拜入后不重复收费',()=>{startCurrentOpening('宗门外门弟子');if(XTSandbox.state().faction||G.sect.rank!=='外人')return false;room36('temple','hall');G.stones=3000;XTSandbox.dispatch('join','temple');const paid=G.stones;XTSandbox.dispatch('join','temple');return XTSandbox.state().faction?.id==='temple'&&G.sect.rank==='外门弟子'&&G.stones===paid;});
 await check('升级年数与闭关预算预测文案已移除',()=>{reset36();return !document.querySelector('#scene .calc')&&!document.querySelector('#scene').textContent.includes('离下一层');});
 await check('普通城镇与道路不再按筑基硬锁',()=>{reset36();return ['prefecture','riverTown','spiritMarket','taiyueSect'].every(k=>placeAvailable(k))&&routeAvailable(routeOf('county','prefecture'))&&!placeAvailable('mistSecret');});
 await check('县观主持和监院按原设保持筑基层次',()=>{const w=XTWorld36.world();return w.people.N01.realm===1&&w.people.N01.layer===4&&w.people.mentor.realm===1&&w.people.mentor.layer===2;});
@@ -29,7 +29,10 @@ await check('开局家人有具体登记与家处，亲属不出现道侣入口'
 await check('低阶劫道事件绑定实际成员且不骚扰结丹玩家',()=>{const e=EVENTS.find(e=>e.id==='E003');G.realm=2;return e.people36.join(',')==='ridge_shi,ridge_luo'&&!e.cond(G);});
 await check('关系/师承/托孤捷径事件已停用',()=>['E005','E006','E013','E017','E018','E058','E059','E060','E061'].every(id=>EVENTS.find(e=>e.id===id).retired36));
 await check('直接调用旧道侣事件也不能生成关系',()=>{reset36();const count=Object.keys(XTWorld36.world().people).length;const r=applyOption(EVENTS.find(e=>e.id==='E018'),0);return !r&&!G.hasMate&&Object.keys(XTWorld36.world().people).length===count;});
-await check('旧档道侣标记保留待核记录不捏造一个人',()=>{const o=JSON.parse(fixture36);delete o.world36;o.hasMate=true;o.mateRoot='三灵根';return restore(JSON.stringify(o))&&!!G.world36.legacyPartner&&!G.world36.partnerId&&!G.hasMate;});
+// A modern per-person route record without its world owner is corrupt, not a legacy save.
+await check('新版百艺记录缺少所属人物时拒绝覆盖当前档',()=>{const before=JSON.stringify(G),o=JSON.parse(fixture36);delete o.world36;return !restore(JSON.stringify(o))&&JSON.stringify(G)===before;});
+// A pre-world36 fixture must also omit later per-person cultivation extensions.
+await check('旧档道侣标记保留待核记录不捏造一个人',()=>{const o=JSON.parse(fixture36);delete o.world36;delete o.qi51;delete o.qi52;o.hasMate=true;o.mateRoot='三灵根';return restore(JSON.stringify(o))&&!!G.world36.legacyPartner&&!G.world36.partnerId&&!G.hasMate;});
 await check('读到旧关系事件不会卡死在无效选项中',()=>{const o=JSON.parse(fixture36);o.mode='event';o.curEvent={id:'E018'};return restore(JSON.stringify(o))&&G.mode==='idle'&&!G.curEvent;});
 await check('未知人物ID不能生成社交对象',()=>{reset36();const n=Object.keys(G.world36.people).length;XTSandbox.dispatch('r36:talk','不存在的人');return Object.keys(G.world36.people).length===n&&!G.world36.relations['不存在的人'];});
 await check('远程不能凭空增加关系',()=>{XTSandbox.dispatch('r36:talk','N04');return !G.world36.relations.N04;});
@@ -51,7 +54,9 @@ await check('没有合格后人时传承不生成新人物',()=>{G.mode='dead';c
 await check('已有后人长大后可实际接续年龄和世界日期',()=>{G.mode='idle';pass36(8*360);G.mode='dead';const id=G.world36.children[0],age=XTWorld36.age(XTWorld36.get(id)),t=G.t;openInherit();XTSandbox.dispatch('r36:inherit',id);return G.mode==='idle'&&G.age===age&&G.t===t&&G.world36.playerId===id;});
 await check('结拜独立于道侣并保留具体人物',()=>{reset36({age:20});room36('temple','hall');for(let i=0;i<6;i++){XTSandbox.dispatch('r36:talk','N03');XTSandbox.dispatch('r36:help','N03');XTSandbox.dispatch('r36:study','N03');pass36(31);}XTSandbox.dispatch('r36:oath','N03');return XTWorld36.relation('N03').bonds.includes('结义')&&!G.hasMate&&!G.world36.partnerId;});
 await check('高阶师承需本门与实际信任而非匿名授业',()=>{const d=XTSandbox.state();d.faction={id:'temple',name:'青云观',rank:'外门弟子',contribution:0,cd:{}};const r=XTWorld36.relation('mentor');r.trust=40;r.respect=40;XTSandbox.dispatch('r36:mentor','mentor');return G.world36.mentorId==='mentor'&&G.master==='玄诚'&&r.bonds.includes('师徒');});
-await check('灵田多年报酬随世界钟支付，不立即预支',()=>{reset36();const before=G.stones;const e=EVENTS.find(e=>e.id==='E002');applyOption(e,0);const instant=G.stones;pass36(360);return instant===before&&Math.abs(G.stones-before-40)<.00001;});
+// Isolate the job-introduction branch with a living 60-year-old elder; no runtime age is changed.
+// E002 now introduces the actual finite-budget job; it no longer grants an anonymous yearly contract.
+await check('短工介绍不预支或自动发薪，实际做工才按世界钟结款',()=>{reset36();room36('village','square');const elder=XTWorld36.get('elder');elder.birth=XTSandbox.now()-60*360;elder.alive=true;const before=G.stones,cash=XTContent47.money().wen;const e=EVENTS.find(e=>e.id==='E002');if(!applyOption(e,0)||G.stones!==before||XTContent47.money().wen!==cash)return false;G.mode='idle';pass36(360);if(G.stones!==before||XTContent47.money().wen!==cash)return false;room36('county','shops');const at=XTSandbox.now(),pay=Math.round(1200*economyFactor());XTContent47.work();return XTSandbox.now()===at+30&&XTContent47.money().wen===cash+pay;});
 await check('已故人物不再出现在场景或交易',()=>{reset36();room36('county','shops');const n=XTWorld36.get('grocer');n.birth=XTSandbox.now()-100*360;XTWorld36.sync();render();return !XTWorld36.present('grocer')&&!document.querySelector('[data-sb="actor"][data-arg="grocer"]');});
 await check('旧匿名关系不会被捏造为新人物',()=>{const count=Object.keys(G.world36.people).length;rel(G,'李师兄',2,'旧账');return Object.keys(G.world36.people).length===count&&G.world36.unresolved['李师兄']&&!pendingRel(G,'恩').some(r=>r.nid==='李师兄');});
 await page.evaluate(()=>{reset36({place:'county'});room36('county','square');});await page.locator('[data-sb="map"]').click();
@@ -65,6 +70,6 @@ fs.writeFileSync(path.join(out,'人物与地点审查.json'),JSON.stringify(audi
 await page.setViewportSize({width:390,height:844});await page.evaluate(()=>{reset36({age:20});room36('temple','hall');XTSandbox.dispatch('actor','N04');});await page.screenshot({path:path.join(out,'mobile-person.png')});
 await check('手机具体人物面板无横向溢出',()=>document.documentElement.scrollWidth<=innerWidth&&!!document.querySelector('[data-sb="t42:talk"]'));
 assert.deepStrictEqual(errors,[],'browser errors');assert.deepStrictEqual(failed,[],'resource errors');
-fs.writeFileSync(path.join(out,'validation.json'),JSON.stringify({checks:results.length,results,errors,failed,scope:'真实Edge，六种出身、人物与地点登记、关系实名绑定、时日与条件、道侣/结义/师承、家庭出生与传承、旧档待核、九州诸国入口。受控初始状态，不是完整游戏平衡测试。'},null,2));
+fs.writeFileSync(path.join(out,'validation.json'),JSON.stringify({checks:results.length,results,errors,failed,scope:'真实隔离浏览器，九种出身、人物与地点登记、关系实名绑定、时日与条件、道侣/结义/师承、家庭出生与传承、旧档待核、九州诸国入口。受控初始状态，不是完整游戏平衡测试。'},null,2));
 console.log('ALL '+results.length+' CHECKS PASSED');
 }finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1});

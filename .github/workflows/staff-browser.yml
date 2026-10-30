@@ -7,6 +7,9 @@ on:
       - 'tools/world36-check.cjs'
       - 'tools/world36-regression.cjs'
       - 'tools/browser-runtime.cjs'
+      - 'tools/current-opening-fixture.cjs'
+      - 'tools/world-scale66-audit.cjs'
+      - 'tools/save-r1-check.cjs'
       - 'tools/closeout65-browser-check.cjs'
       - 'tools/opening61-browser-check.cjs'
       - 'tools/save-r1-browser-check.cjs'
@@ -56,6 +59,8 @@ jobs:
         run: |
           node tools/world36-check.cjs
           node tools/world36-regression.cjs
+      - name: Audit current world scale without changing rules
+        run: node tools/world-scale66-audit.cjs
       - name: Build complete review bundle
         run: python tools/build-review-bundle.py --commit "$REVIEW_COMMIT"
         env:

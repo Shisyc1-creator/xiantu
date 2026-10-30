@@ -233,4 +233,4 @@
 
 本轮决定、实测和待确认范围统一见[凡界统合计划本轮记录](设定与设计/06_凡界开发统合计划.md)。修复开发新档刷新在开局模块加载前恢复造成的异常；未调整世界数值。当前开局、无灵根/小阶和保存浏览器测试使用 `tools/browser-runtime.cjs`，默认项目Playwright Chromium；可用 `PLAYWRIGHT_MODULE` / `CODEX_PRIMARY_RUNTIME_NODE_MODULES` 指定依赖，`PLAYWRIGHT_CHANNEL=msedge` 选择Edge，或 `PLAYWRIGHT_EXECUTABLE_PATH` 指定浏览器（优先于channel）。受管理浏览器禁止file URL时，先用 `python -m http.server 8765 --bind 127.0.0.1 --directory prototype`，再设置 `XIANTU_TEST_URL=http://127.0.0.1:8765/index.html`。默认仍支持离线file入口。
 
-本批历史world36两套测试已解决Windows路径依赖，但仍被旧开局夹具阻塞；保留断言与CI失败信号，不宣称完整历史回归通过。用户电脑目录尚未同步，手机真机未验收。
+续批已修复world36两套旧夹具，与现行规则核对后42＋12项通过；原legacyPartner保护保留，增加新版百艺缺主人拒绝覆盖断言。人手浏览器按实际新版折叠面板操作，双尺寸16项通过；全部19个node:test入口本轮报告730项通过（含重复依赖）。这不代表全部历史浏览器入口或GitHub托管CI已通过。用户电脑目录由另行任务核对同步，手机真机未验收。

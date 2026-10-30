@@ -1,7 +1,7 @@
 // Real Chromium checks in isolated contexts; no daily player profile is opened.
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {pathToFileURL}=require('node:url');
-const {chromium}=require('playwright');
+const {launchBrowser,gameUrl}=require('./browser-runtime.cjs');
 const root=path.resolve(__dirname,'..'),out=path.join(root,'.screenshots/staff53');
 fs.mkdirSync(out,{recursive:true});
 
@@ -23,6 +23,7 @@ async function staff(page){await page.evaluate(()=>XTSandbox.go('home','staff'))
 async function assign(page){
  await staff(page);
  await page.locator('[data-sb="selectWorker"][data-arg="lin"]').click();
+ await page.locator('.staff54-production summary').click();
  await page.locator('[data-sb="assign"][data-arg="lin:gather"]').click();
 }
 async function inherit(page){
@@ -34,13 +35,13 @@ async function inherit(page){
 }
 
 (async()=>{
- const browser=await chromium.launch({headless:true});const results=[];
+ const browser=await launchBrowser();const results=[];
  try{
   for(const device of [{name:'desktop',viewport:{width:1440,height:1000},isMobile:false,hasTouch:false},{name:'mobile',viewport:{width:390,height:844},isMobile:true,hasTouch:true}]){
    const context=await browser.newContext({viewport:device.viewport,isMobile:device.isMobile,hasTouch:device.hasTouch});
    const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
    try{
-    await page.goto(pathToFileURL(path.join(root,'prototype/index.html')).href+'?developer=1');
+    await page.goto(gameUrl()+'?developer=1');
     assert(await page.evaluate(()=>XTDeveloper47.isolated),'developer saves must be isolated');
     async function check(name,fn){await fn();results.push(device.name+': '+name);console.log('PASS '+device.name+': '+name);}
     await check('same-realm hire with real button, existing fee and duplicate protection',async()=>{
@@ -89,11 +90,12 @@ async function inherit(page){
      const snapshot=()=>page.evaluate(()=>JSON.stringify({day:XTSandbox.now(),stones:G.stones,staff:XTSandbox.state().staff,warehouse:XTSandbox.state().warehouse}));
      const before=await snapshot();
      await page.locator('[data-sb="selectWorker"][data-arg="lin"]').click();
+     await page.locator('.staff54-production summary').click();
      const detail=await page.locator('#scene').innerText();
      assert(detail.includes('产业雇佣')&&detail.includes('年龄 ')&&detail.includes('寿限 100岁'));
      assert(detail.includes('下次发薪 30日后')&&detail.includes('欠薪 0个月'));
      assert.equal(await snapshot(),before,'opening employee details must not advance time, wages or work');
-     assert(await page.locator('[data-sb="dismiss"][data-arg="lin"]').isVisible());
+     assert(await page.locator('[data-staff54="leave"][data-person="lin"]').isVisible());
      const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth);
      assert(overflow<=1,'horizontal overflow '+overflow);
      await page.screenshot({path:path.join(out,device.name+'.png'),fullPage:true});
@@ -101,11 +103,11 @@ async function inherit(page){
     await check('real legacy missing birth survives page rendering and reload without inventing age',async()=>{
      await fixture(page);await hire(page);
      await page.evaluate(()=>{XTWorld36.get('lin').birth=null;XTSandbox.state().staff[0].born=XTSandbox.now()-22*360-5;});
-     await staff(page);await page.locator('[data-sb="selectWorker"][data-arg="lin"]').click();
+     await staff(page);await page.locator('[data-sb="selectWorker"][data-arg="lin"]').click();await page.locator('.staff54-production summary').click();
      assert.equal(await page.evaluate(()=>XTSandbox.state().staff.length),1);
      assert((await page.locator('#scene').innerText()).includes('年龄 22岁5日'));
      await page.evaluate(()=>{delete XTWorld36.get('lin').birth;XTSandbox.state().staff[0].born=null;save();});
-     await page.reload();await staff(page);await page.locator('[data-sb="selectWorker"][data-arg="lin"]').click();
+     await page.reload();await staff(page);await page.locator('[data-sb="selectWorker"][data-arg="lin"]').click();await page.locator('.staff54-production summary').click();
      assert.equal(await page.evaluate(()=>XTSandbox.state().staff.length),1);
      assert((await page.locator('#scene').innerText()).includes('年龄 未核定'));
      assert.equal(await page.evaluate(()=>XTWorld36.age(XTWorld36.get('lin'))),null);
