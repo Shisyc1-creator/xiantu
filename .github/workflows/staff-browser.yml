@@ -67,7 +67,8 @@ jobs:
       - name: Audit current world scale without changing rules
         run: |
           node tools/world-scale66-audit.cjs
-          node --test tools/neighbor66-study-check.cjs tools/pill67-settlement-check.cjs
+          node --test tools/neighbor66-study-check.cjs tools/pill67-settlement-check.cjs tools/pill67-study-check.cjs
+          node tools/pill67-study.cjs
           node tools/neighbor66-study.cjs
       - name: Build complete review bundle
         run: python tools/build-review-bundle.py --commit "$REVIEW_COMMIT"
