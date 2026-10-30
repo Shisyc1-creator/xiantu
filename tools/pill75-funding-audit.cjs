@@ -1,0 +1,9 @@
+'use strict';
+// Candidate prices only, no spending or runtime configuration. Real funding actions.
+const fs=require('node:fs'),Module=require('node:module');
+let source=fs.readFileSync(__dirname+'/economy71-audit.cjs','utf8');
+source=source.replace("stats.final=data('read71()');", "stats.atFull=data('read71()');const target=Number(strategy.match(/price(\\d+)/)?.[1]||240),reserve=30;const startFund=data('read71()');let attempts=0,blocked='';for(;attempts<240&&g.run('G.mode')==='idle'&&g.run('G.stones')<target+reserve;attempts++){const before=data('read71()');g.run(`walk71('market');room71('shops');actWork();XTContent47.laborCommit(XTContent47.laborToken());resume71();`);if(g.run('G.stones')<=before.stones){g.run(`walk71('ridge');room71('wild');sysGather();walk71('prefecture');room71('shops');shop71('prefect');for(let j=0;j<20&&(G.inventory.herb||0)>0;j++){const n=G.inventory.herb;XTContent47.trade('herb',true);if(n===G.inventory.herb)break;}`);}if(g.run('G.stones')<=before.stones){blocked='existing employers and herb buyer did not pay';break;}}stats.funding={candidatePrice:target,reserve,start:startFund,end:data('read71()'),attempts,blocked,reached:g.run('G.stones')>=target+reserve};stats.rateWithoutPill=g.run('breakRate(0)');stats.final=data('read71()');");
+source=source.replace("['market','sunset','herb','timber','craft','balanced','balanced_temple']","['balanced_price180','balanced_price240','balanced_price300']");
+source=source.replaceAll('economy71-results.json','pill75-funding-results.json');
+source=source.replace(/scope:'[^']*'/,"scope:'Nine event-free normal-opening funding routes. Prices 180/240/300 and reserve 30 are study assumptions only. No purchases, approved prices or potion grants.'");
+const m=new Module(__filename,module);m.filename=__filename;m.paths=module.paths;m._compile(source,__filename);
