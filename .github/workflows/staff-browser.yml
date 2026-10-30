@@ -13,6 +13,8 @@ on:
       - 'tools/neighbor66.js'
       - 'tools/pill67-*.cjs'
       - 'tools/economy68*.cjs'
+      - 'tools/labor69*.cjs'
+      - 'tools/workshop70*.cjs'
       - 'tools/save-r1-check.cjs'
       - 'tools/closeout65-browser-check.cjs'
       - 'tools/opening61-browser-check.cjs'
@@ -83,3 +85,13 @@ jobs:
           name: xiantu-review-bundle
           path: .artifacts/xiantu-review.zip
           if-no-files-found: error
+
+      - name: Check concrete labor and no passive income
+        run: |
+          node --test tools/labor69-check.cjs
+          node tools/labor69-browser-check.cjs
+
+      - name: Check workshop production and demand
+        run: |
+          node --test tools/workshop70-check.cjs
+          node tools/workshop70-browser-check.cjs

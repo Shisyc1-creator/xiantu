@@ -22,7 +22,7 @@ for(const [name,ctx,seed] of [
 const jobs=[];
 for(const p of ['county','prefecture','market','spiritMarket']){
  const g=fixture();place(g,p,'shops');let month;
- for(let i=0;i<12;i++){g.run(`actWork();G.mode='idle';G.lastResult=null;`);if(!i)month=data(g,'({stones:G.stones,wen:XTContent47.money().wen})');}
+ for(let i=0;i<12;i++){g.run(`actWork();if(['market','spiritMarket'].includes(G.place))XTContent47.laborCommit(XTContent47.laborToken());G.mode='idle';G.lastResult=null;`);if(!i)month=data(g,'({stones:G.stones,wen:XTContent47.money().wen})');}
  jobs.push(data(g,`({place:'${p}',month:${JSON.stringify(month)},days:XTSandbox.now()-auditStart,stones:G.stones,wen:XTContent47.money().wen})`));
 }
 const timber=[];
@@ -40,7 +40,7 @@ shop.run(`save();restore(localStorage.getItem(SAVE_KEY));`);place(shop,'county',
 const restored=data(shop,'({stones:G.stones,stock:G.inventory.spiritTimber47,wallet:XTSandbox.shopState("smith").wallet})');assert.deepEqual(restored,exhausted);
 shop.run(`advanceDays(30,{act:'audit',rate:0,incomeMul:0,eventRate:0});XTContent47.trade('spiritTimber47',true);`);
 const replenished=data(shop,'({stones:G.stones,stock:G.inventory.spiritTimber47,wallet:XTSandbox.shopState("smith").wallet})');
-assert.equal(exhausted.stones,240);assert.equal(replenished.stones,244);
+assert.equal(exhausted.stones,0);assert.equal(replenished.stones,0);
 // Approved procurement follows the existing economy factor; same-location resale must not profit.
 const arbitrage=[];
 for(const factor of [1,1.259712,Math.pow(1.08,7)]){const g=fixture();g.run(`economyFactor=()=>${factor};stoneSet(G,100,'审计交易本金');`);place(g,'spiritMarket','kiln57');g.run(`XTFoundation57.dispatch('buy','blueOre57');globalThis.auditAfterBuy68=G.stones;`);place(g,'spiritMarket','shops');g.run(`Object.assign(XTSandbox.view,{tab:'shop',detail:{id:'sunset'}});XTContent47.trade('blueOre57',true);`);arbitrage.push(data(g,`({factor:${factor},buy:100-auditAfterBuy68,sell:XTContent47.price('sunset','blueOre57',true),net:G.stones-100,days:XTSandbox.now()-auditStart})`));}
@@ -54,7 +54,7 @@ const guildLedger=data(guild,'({days:XTSandbox.now()-startGuild68,stones:G.stone
 const heir=fixture();heir.run(`stoneSet(G,100,'审计本金');`);place(heir,'spiritMarket','kiln57');heir.run(`for(let i=0;i<5;i++)XTFoundation57.dispatch('buy','blueOre57');globalThis.oldMarket68=JSON.stringify(G.foundation57.markets);const w68=XTWorld36.world();w68.people.child68={id:'child68',name:'继承审计',realm:0,layer:1,root:'五灵根',birth:XTSandbox.now()-8*360,life:100,alive:true,place:'county',room:'home',sex:'男',parents:[w68.playerId,'N04'],source:'审计夹具'};w68.children.push('child68');G.mode='dead';XTSandbox.dispatch('r36:inherit','child68');`);
 const inheritedBefore=data(heir,'({mode:G.mode,stones:G.stones,foundation:G.foundation57||null})');place(heir,'spiritMarket','kiln57');heir.run(`XTFoundation57.dispatch('buy','blueOre57');`);const inheritance=data(heir,'({mode:G.mode,stones:G.stones,oldMarkets:JSON.parse(oldMarket68),after:XTFoundation57.state()?.markets,player:G.world36.playerId})');inheritance.beforePurchase=inheritedBefore;assert.equal(inheritance.player,'child68');assert.equal(Object.values(inheritance.after)[0].stock.blueOre57,10);assert.equal(inheritedBefore.stones,16);
 assert.equal(flows.find(r=>r.name==='闭关计时'&&r.days===360).income,0);
-assert.equal(timber[0].stones,320);assert.equal(timber[1].stones,384);
+assert.equal(timber[0].stones,0);assert.equal(timber[1].stones,0);
 assert.equal(jobs.find(r=>r.place==='county').stones,0);
 assert.ok(arbitrage.every(row=>row.net<=0));assert.equal(arbitrage[2].buy,21);
 console.log(JSON.stringify({scope:'Current real runtime, legitimate current opening; neutral fixtures zero capital and normalize economy. Event-free fixed random .4 probes, not population medians. Seeded budget/arbitrage/inheritance fixtures are labeled, not claimed earned capital.',openings,flows,jobs,timber,budgets:{exhausted,restored,replenished},arbitrage,spreads,guildLedger,inheritance},null,2));

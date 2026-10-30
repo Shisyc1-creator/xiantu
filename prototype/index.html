@@ -875,12 +875,9 @@ const CFG = {
   layerRatio: 1.22,       // 每层需求等比递增（与 totalNeed 配套，改动须同时验 123/1335）
   baseOutput: 100,        // 年产灵气（灵根系数 1.0 时）
   walkRate: 0.3,          // 行走时的产出比例
-  walkIncome: 40,         // 行走年收入（灵石）
-  idleIncome: 110,        // 道尽后（不再修炼）专心营生的年收入
-  retreatCost: 8,         // 闭关年耗（灵石）
-                          // ★ xlsx v1.1 写「年耗约 30」，但 30 会让炼气段 100% 寿尽（见 10:30 实测）。
-                          //   行走年收 40 只够养 1.33 年闭关 → 年产上限 70，需 97.8 年 > 寿元 92。
-                          //   取 8（40 养 5 年），待设置表修订后统一。
+  walkIncome: 0,         // 日常修行与赶路不自动发放灵石
+  idleIncome: 0,         // 营生由具体工作结款
+  retreatCost: 8,        // 沿用已确认闭关年费，收入调整后另行验收长期筹资
   retreatMaxPct: 0.12,    // 单次闭关上限 = 寿元 × 12%（炼气 12 年）
   decayPerUse: 0.03,      // 同境界内每闭一次，效率 -3%
                           // ★ xlsx v1.1 写 -5%，但与「到顶年龄压在寿元 85%~94%」冲突：
@@ -3769,7 +3766,7 @@ function renderActions(){
   const leftDays = monthsLeft()*CFG.daysPerMonth - (G.day||0);
   const left = Math.ceil(leftDays/CFG.daysPerMonth);   // 不足一月的零头也算一月，写给人看
   const lblWalk = left>=CFG.monthsPerYear ? '修行一年' : ('修行 '+left+' 月');
-  const lblIdle = left>=CFG.monthsPerYear ? '谋生一年' : ('谋生 '+left+' 月');
+  const lblIdle = '查看营生';
   html+='<section class="action-group action-main"><div class="action-caption">修 行</div><div class="action-buttons">';
   if(!realmFull() || !brim){
     html+='<button class="act primary" id="btnYear"><span class="act-mark">☯</span><span>'+lblWalk+'</span></button>';
@@ -3778,7 +3775,7 @@ function renderActions(){
     html+='<button class="act" id="btnRetreat"><span class="act-mark">☷</span><span>闭关</span></button>';
   }else{
     html+='<button class="act primary" id="btnYear"><span class="act-mark">◇</span><span>'+lblIdle+'</span></button>';
-    html+='<button class="act" id="btnAuto"><span class="act-mark">⟳</span><span>连续谋生</span></button>';
+    html+='<button class="act" id="btnAuto"><span class="act-mark">⟳</span><span>查看营生</span></button>';
     if(canBreakNow) html+='<button class="act primary" id="btnBreak"><span class="act-mark">✦</span><span>'+(nxt==null?'渡劫飞升':'突破'+nxtName)+'</span></button>';
   }
   html+='</div></section><section class="action-group action-world"><div class="action-caption">行 走 江 湖</div><div class="action-buttons">';
@@ -4050,6 +4047,7 @@ function tickYear(ctx){
 
 function stepYear(silent){
   if(G.mode!=='idle') return;
+  if(realmBrim()&&!window.XTBreakthrough65?.ready())return stepIdle(silent);
   /* 推到年底为止，不是「推十二个月」——年中出过门的话，那一年已经短了一截 */
   const left = monthsLeft()*CFG.daysPerMonth - (G.day||0);
   const r=advanceDays(Math.max(1,left), {act:'walk'}, {stopOnEvent:true});
@@ -4063,20 +4061,10 @@ function stepYear(silent){
   return;
 }
 
-/* 专心挣钱：放下修行，把这一年的力气都换成灵石。
-   修为分毫不涨，但一年进账比「行走」高得多（idleIncome 110 vs walkIncome 40）。
-   这是炼气段攒闭关钱的正路——要往上走，先得有灵石。 */
+/* 营生先查看实际工作，不再按时间自动领取灵石。 */
 function stepIdle(silent){
-  if(G.mode!=='idle') return;
-  const left = monthsLeft()*CFG.daysPerMonth - (G.day||0);
-  const r=advanceDays(Math.max(1,left), {act:'idle', idle:true}, {stopOnEvent:true});
-  if(r.died){ die('寿元耗尽'); return; }
-  if(!silent){
-    addLog('你放下修行，专心谋生 '+r.months+' 月，得 '+r.income+' 灵石。修为未进分毫。','');
-  }
-  if(r.event){ startEvent(r.event); return; }
-  if(!silent) render();
-  return;
+  if(!systemReady()) return;
+  return window.XTContent47?.openLivelihood();
 }
 
 function tickBuffs(s){
@@ -4117,6 +4105,7 @@ function gainCult(s, amount){if(window.XTNoRoot64?.isNone(s||G))return 0;
 }
 
 function autoRun(){
+  if(realmBrim()&&!window.XTBreakthrough65?.ready())return stepIdle(false);
   if(window.XTBreakthrough65?.ready()){openBreak();return;}
   let guard=0;
   const wasFull=realmBrim();
@@ -6383,5 +6372,6 @@ window.runWendaoLongSim=runWendaoLongSim;
 <script src="assets/qi52.js"></script>
 <script src="assets/runtime-ui.js"></script><script src="assets/cultivation-ui.js"></script><script src="assets/staff54.js"></script><script src="assets/family55.js"></script><script src="assets/county56-data.js"></script><script src="assets/family56-data.js"></script><script src="assets/county56.js"></script><script src="assets/family56.js"></script><script src="assets/foundation57.js"></script><script src="assets/events60.js"></script><script src="assets/events60-content.js"></script><script src="assets/events60-public.js"></script><script src="assets/events60-people.js"></script><script src="assets/no-root64.js"></script>
 <script src="assets/breakthrough65.js"></script>
-<script src="assets/neighbor66.js"></script></body>
+<script src="assets/neighbor66.js"></script>
+<script src="assets/workshop70.js"></script></body>
 </html>

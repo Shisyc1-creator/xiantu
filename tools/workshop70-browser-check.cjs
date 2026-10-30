@@ -1,0 +1,20 @@
+const assert=require('node:assert/strict');
+const {launchBrowser,gameUrl}=require('./browser-runtime.cjs');
+(async()=>{const browser=await launchBrowser();let checks=0;try{for(const width of [1440,390]){
+ const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(gameUrl()+'?developer=1');await require('./current-opening-fixture.cjs')(page);
+ await page.evaluate(()=>{startCurrentOpening('寒门散修');tryEvent=()=>null;meetLive=()=>null;tryRoadEvent=()=>null;economyFactor=()=>1;G.stones=10000;XTDeveloper47.teleport('spiritMarket','shops');Object.assign(XTSandbox.view,{tab:'shop',detail:{id:'sunset'},sub:'buy'});render();});
+ const buy=()=>page.locator('[data-sb="buy"][data-arg="spiritBlade"]');
+ await buy().click();assert.equal(await page.evaluate(()=>XTWorkshop70.state().wood),10);assert.equal(await page.evaluate(()=>XTWorkshop70.state().blades),7);checks++;
+ await page.locator('#open70').click();assert((await page.locator('#scene').innerText()).includes('剩余 18日'));checks++;
+ await page.reload();assert.equal(await page.evaluate(()=>XTWorkshop70.state().wood),10);checks++;
+ await page.evaluate(()=>{tryEvent=()=>null;meetLive=()=>null;economyFactor=()=>1;advanceDays(18,{rate:0,incomeMul:0});save();Object.assign(XTSandbox.view,{tab:'shop',detail:{id:'sunset'},sub:'buy'});render();});assert.equal(await page.evaluate(()=>XTWorkshop70.state().blades),8);checks++;
+ for(let i=0;i<8;i++)await buy().click();assert.equal(await page.evaluate(()=>XTWorkshop70.demand()),6);checks++;
+ await page.evaluate(()=>{G.inventory.spiritTimber47=10;XTSandbox.view.sub='sell';render();});
+ const sell=()=>page.locator('[data-sb="sell"][data-arg="spiritTimber47"]');
+ for(let i=0;i<6;i++)await sell().click();assert.equal(await page.evaluate(()=>XTWorkshop70.demand()),0);assert.equal(await page.evaluate(()=>G.inventory.spiritTimber47),4);await sell().click();assert.equal(await page.evaluate(()=>G.inventory.spiritTimber47),4);checks++;
+ await page.locator('#open70').click();assert((await page.locator('#scene').innerText()).includes('木料缺口订单：0段'));await page.screenshot({path:`outputs/workshop70-${width}.png`,fullPage:true});checks++;
+ await page.reload();assert.equal(await page.evaluate(()=>XTWorkshop70.demand()),0);assert.equal(await page.evaluate(()=>G.inventory.spiritTimber47),4);checks++;
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));assert.deepEqual(errors,[]);for(const key of ['xiuxian_slice_v1','xiuxian_slots_v1'])assert.equal(await page.evaluate(k=>localStorage.getItem(k),key),null);checks++;
+ await context.close();console.log('PASS workshop '+width);
+ }}finally{await browser.close();}console.log(checks+' browser checks passed');})().catch(e=>{console.error(e);process.exitCode=1});
