@@ -227,3 +227,10 @@
 
 
 灵根/属性审查第62批：完成七档灵根、12组四属性敏感性、七条理想纯修路径与真实30日短工对照。按用户确认修正炼气第13层自动填满：现在实际修满后才可筑基，已有圆满旧档保留。未调整灵根概率和速率；结果、范围与候选分工见03审查文档第62批。
+
+
+## 2026-10-30 凡界收尾与可移植验收
+
+本轮决定、实测和待确认范围统一见[凡界统合计划本轮记录](设定与设计/06_凡界开发统合计划.md)。修复开发新档刷新在开局模块加载前恢复造成的异常；未调整世界数值。当前开局、无灵根/小阶和保存浏览器测试使用 `tools/browser-runtime.cjs`，默认项目Playwright Chromium；可用 `PLAYWRIGHT_MODULE` / `CODEX_PRIMARY_RUNTIME_NODE_MODULES` 指定依赖，`PLAYWRIGHT_CHANNEL=msedge` 选择Edge，或 `PLAYWRIGHT_EXECUTABLE_PATH` 指定浏览器（优先于channel）。受管理浏览器禁止file URL时，先用 `python -m http.server 8765 --bind 127.0.0.1 --directory prototype`，再设置 `XIANTU_TEST_URL=http://127.0.0.1:8765/index.html`。默认仍支持离线file入口。
+
+本批历史world36两套测试已解决Windows路径依赖，但仍被旧开局夹具阻塞；保留断言与CI失败信号，不宣称完整历史回归通过。用户电脑目录尚未同步，手机真机未验收。

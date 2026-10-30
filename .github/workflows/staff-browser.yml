@@ -6,6 +6,12 @@ on:
       - 'tools/staff53*'
       - 'tools/world36-check.cjs'
       - 'tools/world36-regression.cjs'
+      - 'tools/browser-runtime.cjs'
+      - 'tools/closeout65-browser-check.cjs'
+      - 'tools/opening61-browser-check.cjs'
+      - 'tools/save-r1-browser-check.cjs'
+      - 'tools/no-root64-check.cjs'
+      - 'tools/breakthrough65-check.cjs'
       - 'tools/build-review-bundle.py'
       - 'tools/test_review_bundle.py'
       - '.github/workflows/staff-browser.yml'
@@ -40,6 +46,12 @@ jobs:
           path: .screenshots/staff53/
           include-hidden-files: true
           if-no-files-found: ignore
+      - name: Check mortal opening, breakthrough and save recovery
+        run: |
+          node --test tools/no-root64-check.cjs tools/breakthrough65-check.cjs tools/save-r1-check.cjs
+          node tools/closeout65-browser-check.cjs
+          node tools/opening61-browser-check.cjs
+          node tools/save-r1-browser-check.cjs
       - name: Check existing world and relationship regressions
         run: |
           node tools/world36-check.cjs

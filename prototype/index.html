@@ -6137,7 +6137,7 @@ window.addEventListener('error', function(ev){
   }catch(e){}
 });
 
-(function boot(){
+function boot(){
   try{
     // 自动保存与启动读档分开：正常入口由玩家点击“续前缘”后恢复。
     // 开发测试局沿用独立存档与直接恢复，便于复现测试现场。
@@ -6147,7 +6147,9 @@ window.addEventListener('error', function(ev){
     console.error(e);
     try{ G=null; showStart(); }catch(e2){ fatal(e); }
   }
-})();
+}
+// 恢复新档依赖后续开局与运行模块；等待全部本地脚本注册后再启动。
+window.addEventListener('DOMContentLoaded', boot, {once:true});
 /*
   第五批：突破数值快速模拟（纯只读）。
   说明：只评估九次跨境突破的「单次尝试链式成功概率」和各境反复冲关的理论平均尝试次数；
